@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAL Mastery — Ultimate Edexcel IAL Physics, Chemistry, Biology & Maths Study Platform</title>
+<meta name="description" content="The ultimate free study platform for Edexcel International A Level Physics, Chemistry, Biology and Mathematics. Topical past paper questions, clear revision notes, mock exam builder and an AI tutor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+</head>
+<body>
+<header class="site">
+  <div class="wrap nav">
+    <div class="logo" onclick="go('home')">
+      <div class="badge">🎓</div>
+      <div>IAL MASTERY<small>EDEXCEL IAL • PCMB</small></div>
+    </div>
+    <nav class="nav-links" id="navLinks">
+      <button data-nav="home" onclick="go('home')">🏠 Home</button>
+      <button data-nav="physics" onclick="go('subject/physics')">⚛️ Physics</button>
+      <button data-nav="chemistry" onclick="go('subject/chemistry')">⚗️ Chemistry</button>
+      <button data-nav="biology" onclick="go('subject/biology')">🧬 Biology</button>
+      <button data-nav="maths" onclick="go('subject/maths')">📐 Maths</button>
+      <button data-nav="progress" onclick="go('progress')">📊 My Progress</button>
+    </nav>
+    <div class="nav-right">
+      <div class="searchbox">
+        <span>🔎</span>
+        <input id="globalSearch" type="text" placeholder="Search topics, questions…" autocomplete="off" oninput="globalSearch(this.value)" onfocus="globalSearch(this.value)">
+        <div id="searchResults"></div>
+      </div>
+      <div class="xp-pill" id="xpPill" title="Your study XP">⚡ 0 XP</div>
+      <button class="iconbtn" onclick="toggleTheme()" title="Toggle light / dark mode">🌓</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="app" style="min-height:70vh"></main>
+
+<footer>
+  <div class="wrap">
+    <div style="max-width:560px">
+      <b style="color:var(--text)">🎓 IAL MASTERY</b> — a free study platform for Edexcel International A Level
+      Physics (WPH11–WPH16), Chemistry (WCH11–WCH16), Biology (WBI11–WBI16) &amp; Mathematics (P1–P4, S1, M1).<br>
+      <span class="tiny">Topical questions here are original exam-style questions written for the current syllabus, each modelled on the style of a real past-paper question. Download official papers &amp; mark schemes via the linked hubs (Pearson, Save My Exams, Physics &amp; Maths Tutor). IAL Mastery is an independent revision resource, not affiliated with Pearson Edexcel. Your progress is stored privately in your own browser.</span>
+    </div>
+    <div class="tiny" style="text-align:right">
+      Made for IAL students, by a student-friendly AI 📚<br>
+      <span class="kbd">Tip:</span> press <span class="kbd">/</span> to search anything
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/data-physics.js"></script>
+<script src="js/data-chemistry.js"></script>
+<script src="js/data-biology.js"></script>
+<script src="js/data-maths.js"></script>
+<script src="js/q-physics.js"></script>
+<script src="js/q-chemistry.js"></script>
+<script src="js/q-biology.js"></script>
+<script src="js/q-maths.js"></script>
+<script src="js/tutor.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
