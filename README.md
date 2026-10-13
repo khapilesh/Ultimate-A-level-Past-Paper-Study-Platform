@@ -58,6 +58,14 @@ js/
   app.js             — routing, revise/papers/mock/AI/progress views
 ```
 
+## Assets & direct paper links
+
+The `assets/` folder (currently removed from the repo) can hold the official specs, formula book, sample assessments, guides — and real past papers organised per subject (e.g. `assets/biology/unit 1/JAN 2024/wbi11-01-que-20240109.pdf`; `assets/maths/P1/January 2019 QP.pdf` — one folder per unit). The site reads `js/archive-data.js` to show direct download buttons in the Archive tab and power the Resources page. Regenerate after adding/removing PDFs: `node tools/build-manifest.js` (scans `assets/` → `js/archive-data.js`). Keep pirated textbooks OUT of `assets/` (public repo, DMCA risk).
+
+## Test Focus page (🎯)
+
+The `#/test` route holds a swappable "Test Focus" for the current upcoming test. Right now: **WBI11 Topics 1B + 1C** — deep-dive notes (14 sections), 32 practice questions (real WBI11 June 2023 / Jan 2023 / Jan 2024 past-paper questions with condensed official mark-scheme points, stitched model answers and examiner-report pitfalls, plus an original exam-style topic bank), and a timed test (select questions → countdown at ~1.2 min/mark → auto-submit → per-marking-point self-marking → score, band and best-score tracking). All content lives in `js/test-focus.js` as one `TEST_FOCUS` object — swap that file for the next test; `js/test.js` is the generic engine.
+
 ## Content honesty
 
 - Topical questions are **original exam-style questions** written for the current syllabus, each credited as "modelled on" a real paper/question — full official papers are linked, never copied.

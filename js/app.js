@@ -32,7 +32,7 @@ function subjectProgress(sid){
 }
 
 /* ---------- router ---------- */
-var view = { sid:"physics", uid:null, tab:0, tid:null, qmode:"topical", qtopics:[], qdiff:"all", qsearch:"", mock:null, timerH:null, left:0, flashIdx:0, flashFlip:false };
+var view = { sid:"physics", uid:null, tab:0, tid:null, qmode:"topical", qtopics:[], qdiff:"all", qsearch:"", mock:null, timerH:null, left:0, flashIdx:0, flashFlip:false, testTab:"notes" };
 function go(path, tab){ if(tab!=null) view.tab=tab; location.hash="#/"+path; }
 window.addEventListener("hashchange", render);
 document.addEventListener("click", function(e){ var sr=document.getElementById("searchResults"); if(sr&&!e.target.closest(".searchbox")) sr.style.display="none"; });
@@ -48,10 +48,13 @@ function render(){
   if(parts[0]==="subject"&&SUBJECTS[parts[1]]){ view.sid=parts[1]; if(!unitOf(view.sid,view.uid)) view.uid=SUBJECTS[view.sid].units[0].id; if(!topicInUnit()) view.tid=null; app.innerHTML=vSubject(); afterSubject(); }
   else if(parts[0]==="topic"&&SUBJECTS[parts[1]]){ view.sid=parts[1]; view.uid=parts[2]; view.tid=parts[3]; view.tab=0; app.innerHTML=vTopic(); window.scrollTo(0,0); }
   else if(parts[0]==="progress"){ app.innerHTML=vProgress(); window.scrollTo(0,0); }
+  else if(parts[0]==="resources"){ app.innerHTML=vResources(); window.scrollTo(0,0); }
+  else if(parts[0]==="test"){ app.innerHTML=vTest(); window.scrollTo(0,0); }
   else { app.innerHTML=vHome(); window.scrollTo(0,0); }
   updateXP();
 }
 function topicInUnit(){ if(!view.tid) return false; return !!topicOf(view.sid,view.uid,view.tid); }
+function vTopic(){ var S=subj(view.sid); if(!unitOf(view.sid,view.uid)) view.uid=S.units[0].id; if(!topicOf(view.sid,view.uid,view.tid)) view.tid=unitOf(view.sid,view.uid).topics[0].id; return vSubject(); }
 
 /* ================= HOME ================= */
 function vHome(){
@@ -139,12 +142,11 @@ function vRevise(){
   "<div class='nsec'><h4>📌 Key points <span class='pill'>learn these</span></h4><ul class='tick'>"+pts+"</ul></div>"+
   (forms?"<div class='nsec'><h4>📐 Formulae <span class='pill'>memorise</span></h4><div class='formula-grid'>"+forms+"</div></div>":"")+
   (defs?"<div class='nsec'><h4>📚 Definitions <span class='pill'>word-perfect</span></h4><div class='def-grid'>"+defs+"</div></div>":"")+
-  worked+mist+tcards()+tips+oos+
+  worked+fc+mist+tips+oos+
   "<div class='done-row'><button class='btn "+(done?"btn-g":"btn-p")+"' onclick=\"toggleTopic('"+view.sid+"','"+t.id+"')\">"+(done?"✓ Completed — tap to undo":"+ Mark topic complete (+20 XP)")+"</button>"+
   "<button class='btn btn-g' onclick=\"practiceTopic('"+t.id+"')\">📝 Practise this topic</button>"+
   "<button class='btn btn-g' onclick=\"askAbout('"+t.id+"')\">🤖 Ask AI about this</button></div></div></div>";
 }
-function tcards(){ return ""; }
 function countQ(sid,uid,tid){ return unitQuestions(sid,uid).filter(function(q){return (q.topics||[]).indexOf(tid)>=0;}).length; }
 function setTopic(tid){ view.tid=tid; view.flashIdx=0; view.flashFlip=false; render(); }
 function flipFlash(){ view.flashFlip=!view.flashFlip; render(); }
@@ -210,20 +212,45 @@ function TUTORQUIZ(sid,uid,tid){ location.hash="#/subject/"+sid; view.sid=sid; v
 
 /* archive */
 var SESSIONS=[["Jan",2019],["Jun",2019],["Oct",2019],["Jan",2020],["Jun",2020],["Oct",2020],["Jan",2021],["Jun",2021],["Oct",2021],["Jan",2022],["Jun",2022],["Oct",2022],["Jan",2023],["Jun",2023],["Oct",2023],["Jan",2024],["Jun",2024],["Oct",2024],["Jan",2025],["Jun",2025],["Oct",2025],["Jan",2026],["Jun",2026]];
+function manifestRows(){ if(typeof ARCHIVE_DATA==="undefined"||!ARCHIVE_DATA[view.sid]) return []; var key = view.sid==="maths" ? String(view.uid).toLowerCase() : "unit "+String(view.uid).replace("U",""); return ARCHIVE_DATA[view.sid][key]||[]; }
+function sessKey(s){ return String(s||"").toLowerCase().replace("june","jun").replace(/\s+/g," "); }
+function fmtSize(n){ if(n==null||n==="") return ""; if(n>=1e9) return (n/1e9).toFixed(2)+" GB"; if(n>=1e6) return (n/1e6).toFixed(1)+" MB"; return Math.max(1,Math.round(n/1024))+" KB"; }
 function vArchive(){
   var S=subj(view.sid), U=unitOf(view.sid,view.uid);
   var hubQP=S.hubs[0]?S.hubs[0].url:"", hubMS=S.hubs[1]?S.hubs[1].url:"";
+  var manifest=manifestRows(), used={};
   var note = view.sid==="maths"
-    ? "Current-spec papers (first exams P1/S1/M1 2019). Older modular papers (C1–C4, S1, M1, 2009–2018) remain superb topical practice — find them via the hubs below."
-    : "Current-spec papers (first exams 2019). Legacy "+U.code.replace(/\d/,"0")+"-series papers (2014–2018) cover nearly identical content and are excellent extra practice — find them via the hubs below.";
+    ? "Sessions marked ✓ download straight from this repo's assets/ folder. Older modular papers (C1–C4, S1, M1, 2009–2018) remain superb topical practice — find them via the hubs below."
+    : "Sessions marked ✓ download straight from this repo's assets/ folder. Legacy "+U.code.replace(/\d/,"0")+"-series papers (2014–2018) cover nearly identical content — find them via the hubs below.";
+  function btn(label,file,hub,primary){ if(file) return "<a class='btn "+(primary?"btn-p":"btn-g")+" btn-xs' href='"+encodeURI(file)+"' target='_blank' rel='noopener'>"+label+" ⬇</a>"; return "<a class='btn btn-g btn-xs' href='"+hub+"' target='_blank' rel='noopener'>"+label+"</a>"; }
+  function rowHTML(label,m){ var tag=m?" <span class='tag hot'>✓ in assets</span>":""; var er=(m&&m.er)?" "+btn("📊 ER",m.er,hubMS,false):""; var ma=(m&&m.ma)?" "+btn("🌟 MA",m.ma,hubMS,false):""; return "<tr><td><b>"+label+"</b>"+tag+"</td><td class='mono'>"+U.code+"/01</td><td>"+(m?"Direct PDF download":"QP + MS via hubs")+"</td><td>"+btn("📄 QP",m&&m.qp,hubQP,true)+" "+btn("✅ MS",m&&m.ms,hubMS,!!(m&&m.ms))+er+ma+"</td></tr>"; }
   var rows=SESSIONS.slice().reverse().map(function(s){
-    return "<tr><td><b>"+s[0]+" "+s[1]+"</b></td><td class='mono'>"+U.code+"/01</td><td>QP + MS + Examiner Report</td>"+
-    "<td><a class='btn btn-g btn-xs' href='"+hubQP+"' target='_blank' rel='noopener'>📄 QP</a> <a class='btn btn-g btn-xs' href='"+hubMS+"' target='_blank' rel='noopener'>✅ MS</a></td></tr>";
+    var label=s[0]+" "+s[1], m=null;
+    for(var i=0;i<manifest.length;i++){ if(sessKey(manifest[i].session)===sessKey(label)){ m=manifest[i]; used[i]=1; break; } }
+    return rowHTML(label,m);
   }).join("");
+  var extras="";
+  manifest.forEach(function(m,i){ if(!used[i]) extras+=rowHTML(m.session,m); });
+  if(extras) extras="<h2 class='sec-title' style='font-size:1.15rem'>➕ Also in your assets</h2><div style='overflow:auto'><table class='arch-table'><tr><th>Session</th><th>Paper</th><th>Available</th><th>Download</th></tr>"+extras+"</table></div>";
   var hubs=S.hubs.map(function(h){ return "<a class='res-card' href='"+h.url+"' target='_blank' rel='noopener'><b>"+h.name+"</b><span>"+h.desc+"</span></a>"; }).join("");
-  return "<div class='q-toolbar'><h4>🗂️ "+U.code+" — full paper index (current spec)</h4><p class='small muted'>"+note+"<br>QP buttons open the paper archive hub for "+S.name+"; MS buttons open Pearson's official library. Examiner reports are gold — read them after every paper.</p></div>"+
+  return "<div class='q-toolbar'><h4>🗂️ "+U.code+" — full paper index (current spec)</h4><p class='small muted'>"+note+"<br>Examiner reports are gold — read them after every paper. <button class='btn btn-g btn-xs' onclick=\"go('resources')\">📚 Browse specs & resources →</button></p></div>"+
   "<div style='overflow:auto'><table class='arch-table'><tr><th>Session</th><th>Paper</th><th>Available</th><th>Download</th></tr>"+rows+"</table></div>"+
-  "<h2 class='sec-title'>Official paper & revision hubs</h2><div class='res-grid'>"+hubs+"</div>";
+  extras+"<h2 class='sec-title'>Official paper & revision hubs</h2><div class='res-grid'>"+hubs+"</div>";
+}
+function vResources(){
+  var rsrc=(typeof RESOURCE_DATA!=="undefined")?RESOURCE_DATA:[];
+  var cats=["Specifications","Formula books","Sample assessments","Guides","Topical revision","Training packs","Other"];
+  var icons={Specifications:"📋","Formula books":"📐","Sample assessments":"🧪",Guides:"🧭","Topical revision":"🎯","Training packs":"🏋️",Other:"📎"};
+  var body=cats.map(function(c){
+    var items=rsrc.filter(function(r){ return (r.cat||"Other")===c; });
+    if(!items.length) return "";
+    return "<h2 class='sec-title' style='font-size:1.15rem'>"+(icons[c]||"📎")+" "+c+"</h2><div class='res-grid'>"+items.map(function(r){
+      var s=r.sub&&SUBJECTS[r.sub]?SUBJECTS[r.sub]:null;
+      return "<a class='res-card' href='"+encodeURI(r.file)+"' target='_blank' rel='noopener'><b>"+esc(r.name)+"</b><span>"+(s?s.icon+" "+s.name+" • ":"")+(r.size?fmtSize(r.size)+" • ":"")+"click to open ↗</span></a>";
+    }).join("")+"</div>";
+  }).join("");
+  if(!rsrc.length) body="<div class='empty'>No manifest yet.<br>Run <span class='kbd'>node tools/build-manifest.js</span> on a machine with the assets/ folder,<br>then commit the generated js/archive-data.js.</div>";
+  return "<h2 class='sec-title'>📚 Specs & Resources</h2><p class='sec-sub'>Official specifications, formula books and your own revision files — served straight from this repo's <span class='mono'>assets/</span> folder ("+rsrc.length+" files).</p>"+body;
 }
 
 /* mock builder */
