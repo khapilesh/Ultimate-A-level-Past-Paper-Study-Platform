@@ -64,7 +64,7 @@ The `assets/` folder (currently removed from the repo) can hold the official spe
 
 ## Test Focus page (🎯)
 
-The `#/test` route holds a swappable "Test Focus" for the current upcoming test. Right now: **WBI11 Topics 1B + 1C** — deep-dive notes (14 sections), 32 practice questions (real WBI11 June 2023 / Jan 2023 / Jan 2024 past-paper questions with condensed official mark-scheme points, stitched model answers and examiner-report pitfalls, plus an original exam-style topic bank), and a timed test (select questions → countdown at ~1.2 min/mark → auto-submit → per-marking-point self-marking → score, band and best-score tracking). All content lives in `js/test-focus.js` as one `TEST_FOCUS` object — swap that file for the next test; `js/test.js` is the generic engine.
+The `#/test` route holds a swappable "Test Focus" for the current upcoming test. Right now: **WBI11 Topics 1B + 1C** — deep-dive notes (14 sections), 34 practice questions (25 real WBI11 June 2023 / Jan 2023 / Jan 2024 past-paper questions whose mark points are condensed from the official mark schemes, with model answers stitched to the marking points — read the answer in order and you tick the marks in order — plus an original exam-style topic bank), and a timed test (select questions → countdown at ~1.2 min/mark → auto-submit → per-marking-point self-marking → score, band and best-score tracking). The original topic-bank items and the June 2023 Q8(b)/(c)(iii) items (whose official mark scheme is not recoverable from the public PDFs) are labelled "Indicative points". All content lives in `js/test-focus.js` as one `TEST_FOCUS` object — swap that file for the next test; `js/test.js` is the generic engine.
 
 ## Content honesty
 

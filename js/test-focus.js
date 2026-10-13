@@ -13,10 +13,16 @@
    Questions labelled "WBI11 • ..." are REAL past-paper questions
    (Pearson publishes all of these for free). Questions labelled
    "Topic test bank • ..." are original exam-style items written
-   in the style of those papers. Mark-scheme points are condensed
+   in the style of those papers — their mark points are INDICATIVE
+   (official:false), not Pearson's. For the June 2023 Q8(b) and
+   Q8(c)(iii) items the real question stems are used, but the
+   official mark scheme for that question is not recoverable from
+   the public PDFs (corrupted text layer), so their points are also
+   labelled indicative. All other mark-scheme points are condensed
    from the official mark schemes; model answers are stitched to
-   the marking points; pitfalls cite the June/Jan 2023 examiner
-   reports, the mark schemes, the topic dataset or general tips.
+   the marking points (read in order = tick the marks in order);
+   pitfalls cite the June/Jan 2023 examiner reports, the mark
+   schemes, the topic dataset or general tips.
    ============================================================ */
 var TEST_FOCUS = {
   id: "wbi11-1b-1c",
@@ -207,87 +213,92 @@ var TEST_FOCUS = {
   }
   ],
 
-  /* ---------------- QUESTIONS (32) ---------------- */
+  /* ---------------- QUESTIONS (34) ---------------- */
+  /* Every `ms` bullet below is one tickable mark, taken (where official:true)
+     verbatim-or-condensed from the official Pearson mark scheme for that paper.
+     Every model answer is written so that reading it in order lets you tick
+     the marks one by one. official:false = points are INDICATIVE (the item is
+     original exam-style, or the official MS for that question is not
+     recoverable from the public PDFs). */
   questions: [
-  /* ============ TOPIC TEST BANK (original exam-style) ============ */
+  /* ============ TOPIC TEST BANK (original exam-style — NOT a past paper) ============ */
   {
-    id: "U1", topic: "1B", source: "Topic test bank • Atherosclerosis", title: "Atherosclerosis → myocardial infarction", marks: 6, official: true,
+    id: "U1", topic: "1B", source: "Topic test bank • Atherosclerosis", title: "Atherosclerosis → myocardial infarction", marks: 6, official: false,
     q: "Explain how atherosclerosis can lead to a myocardial infarction (heart attack). (6)",
     ms: [
-      "Damage to the artery endothelium (endothelial dysfunction)",
-      "Inflammatory response — white blood cells / macrophages accumulate",
-      "Cholesterol / LDLs accumulate, forming an atheroma",
+      "Endothelium of an artery is damaged (endothelial dysfunction)",
+      "White blood cells / macrophages move into the wall and accumulate (inflammatory response)",
+      "Cholesterol / LDLs accumulate to form an atheroma",
       "Calcium salts + fibrous tissue harden it into a plaque",
-      "Lumen narrows AND wall loses elasticity",
-      "Plaque rupture triggers the clotting cascade (thromboplastin released)",
+      "Lumen narrows AND the wall loses elasticity",
+      "Plaque ruptures → collagen exposed → thromboplastin released (clotting cascade)",
       "A thrombus forms in a coronary artery",
-      "Blocked flow starves heart muscle of oxygen/glucose",
-      "Muscle cells cannot carry out aerobic respiration and die"
+      "Blood flow blocked → heart muscle starved of oxygen / glucose",
+      "Cardiac muscle cells cannot carry out aerobic respiration and die"
     ],
-    answer: "<p>Atherosclerosis begins with <b>damage to the endothelial lining</b> of an artery, triggering inflammation in which white blood cells accumulate cholesterol and LDLs to form an <b>atheroma</b>. Calcium salts and fibrous tissue then harden it into a <b>plaque</b>, narrowing the lumen and reducing elasticity. If the plaque <b>ruptures</b>, platelets release thromboplastin and a <b>thrombus</b> forms. When this blocks a <b>coronary artery</b>, heart muscle is starved of oxygen and glucose, so it cannot carry out aerobic respiration — the tissue dies: a <b>myocardial infarction</b>.</p>",
+    answer: "<p><b>1.</b> Atherosclerosis begins when the <b>endothelium of an artery is damaged</b> (by high blood pressure, smoking or high cholesterol). <b>2.</b> This triggers an <b>inflammatory response</b> — <b>white blood cells / macrophages move into the wall and accumulate</b> there. <b>3.</b> They accumulate <b>cholesterol and LDLs, forming an atheroma</b>. <b>4.</b> <b>Calcium salts and fibrous tissue</b> then harden it into a <b>plaque</b>. <b>5.</b> The plaque <b>narrows the lumen</b> and the <b>wall loses elasticity</b>. <b>6.</b> If the plaque <b>ruptures</b>, collagen is exposed and <b>thromboplastin is released</b>, starting the clotting cascade. <b>7.</b> A <b>thrombus forms in a coronary artery</b>, blocking the flow. <b>8.</b> Heart muscle is then <b>starved of oxygen and glucose</b>, so <b>9.</b> its cells <b>cannot carry out aerobic respiration</b> and die — a <b>myocardial infarction</b>.</p>",
     pitfalls: [
-      { t: "Always name the coronary artery — “a vessel is blocked” is too vague.", s: "Dataset" },
-      { t: "Say cells lack oxygen for aerobic respiration, not “lose energy”.", s: "Dataset" },
-      { t: "Keep atherosclerosis (slow plaque build-up) separate from thrombosis (sudden clot).", s: "Dataset" }
+      { t: "Always name the CORONARY ARTERY — “a vessel is blocked” is too vague.", s: "Dataset" },
+      { t: "Finish the chain at aerobic respiration failing — “the heart stops working” is not precise enough.", s: "Dataset" },
+      { t: "Keep atherosclerosis (slow plaque build-up) separate from thrombosis (sudden clot after rupture).", s: "Dataset" }
     ]
   },
   {
-    id: "U2", topic: "1B", source: "Topic test bank • Vessels", title: "Artery vs capillary", marks: 4, official: true,
+    id: "U2", topic: "1B", source: "Topic test bank • Vessels", title: "Artery vs capillary", marks: 4, official: false,
     q: "Compare the structural adaptations of an artery and a capillary in relation to their functions. (4)",
     ms: [
-      "Artery: thick wall whereas capillary: wall one cell thick (single endothelium)",
-      "Artery: elastic fibres (stretch + recoil) whereas capillary: none",
-      "Artery: smooth muscle / collagen whereas capillary: none",
-      "Artery: narrow lumen keeps pressure high whereas capillary: ~7 µm lumen slows RBCs for exchange",
-      "Capillary: pores for tissue fluid whereas artery: none"
+      "Artery: thick wall (smooth muscle + collagen + elastic) WHEREAS capillary: wall one cell thick (single layer of endothelium)",
+      "Artery: elastic fibres stretch and recoil to maintain pressure WHEREAS capillary: none",
+      "Artery: narrow lumen maintains high pressure WHEREAS capillary: ~7–8 µm lumen — RBCs pass in single file, slowing flow for exchange",
+      "Capillary: pores in the wall let plasma out to form tissue fluid WHEREAS artery: no pores"
     ],
-    answer: "<p>An artery has a thick wall of smooth muscle, collagen and elastic fibres that withstand and maintain high pressure, <b>whereas</b> a capillary wall is a single layer of endothelium with no muscle or elastic tissue, giving a short diffusion distance. The artery's narrow lumen maintains pressure, <b>whereas</b> the capillary's ~7 µm lumen forces RBCs into single file, slowing flow for exchange. Capillaries also have pores for tissue-fluid formation, which arteries lack.</p>",
+    answer: "<p>An <b>artery has a thick wall of smooth muscle, collagen and elastic fibres</b>, <b>whereas a capillary wall is a single layer — one cell thick — of endothelium</b>, a very short diffusion distance. The artery's <b>elastic fibres stretch during systole and recoil in diastole to maintain pressure</b>, <b>whereas capillaries have none</b>. The artery's <b>narrow lumen maintains high pressure</b>, <b>whereas the capillary's ~7–8 µm lumen forces red cells into single file, slowing the flow</b> to maximise contact time for exchange. Capillaries also have <b>pores that let plasma leak out to form tissue fluid</b>, which <b>arteries lack</b>.</p>",
     pitfalls: [
-      { t: "Compare properly — use whereas / in contrast, not two separate lists (June 2023 ER).", s: "Examiner report" },
-      { t: "Capillary walls are one cell thick — never “cell walls”.", s: "Dataset" }
+      { t: "Compare properly — link artery AND capillary in the same sentences with whereas / in contrast; two separate descriptions score poorly (June 2023 ER).", s: "Examiner report" },
+      { t: "Capillary walls are ONE CELL THICK — never “cell walls” (that's plant tissue).", s: "Dataset" }
     ]
   },
   {
-    id: "U3", topic: "1B", source: "Topic test bank • Haemoglobin", title: "The Bohr effect in exercise", marks: 4, official: true,
+    id: "U3", topic: "1B", source: "Topic test bank • Haemoglobin", title: "The Bohr effect in exercise", marks: 4, official: false,
     q: "Explain the significance of the Bohr effect during intense physical exercise. (4)",
     ms: [
-      "Exercise → more respiration → more CO2 in muscles",
-      "CO2 forms carbonic acid → lower pH / more H+",
-      "H+ binds haemoglobin, changing its tertiary structure",
-      "Hb affinity for O2 falls — curve shifts down and RIGHT",
-      "More O2 unloaded at respiring muscles → aerobic respiration continues"
+      "Exercise → more (aerobic) respiration → more CO2 produced in the muscles",
+      "CO2 forms carbonic acid → lower pH / more H+ ions",
+      "H+ binds to haemoglobin, changing its tertiary structure",
+      "Hb's affinity for O2 FALLS — the curve shifts down and to the RIGHT",
+      "More O2 unloaded at the respiring muscles → aerobic respiration continues (less lactic acid / less fatigue)"
     ],
-    answer: "<p>Intense exercise raises respiration in muscles, producing more CO<sub>2</sub>. This forms carbonic acid, lowering blood pH, and H<sup>+</sup> ions bind to haemoglobin, altering its tertiary structure. Hb's affinity for oxygen therefore falls — the dissociation curve shifts down and right (the Bohr effect) — so oxygen is unloaded readily at the muscles, sustaining aerobic respiration and delaying fatigue.</p>",
+    answer: "<p>During intense exercise <b>respiration in the muscles increases, so more CO<sub>2</sub> is produced</b>. <b>The CO<sub>2</sub> forms carbonic acid, which lowers the pH (more H<sup>+</sup> ions)</b>. <b>H<sup>+</sup> ions bind to haemoglobin, changing its tertiary structure</b>, so <b>its affinity for oxygen falls — the dissociation curve shifts down and to the right (the Bohr effect)</b> — and <b>more oxygen is unloaded to the respiring muscles, so aerobic respiration continues</b> and fatigue is delayed.</p>",
     pitfalls: [
-      { t: "High CO2 shifts the curve RIGHT — the commonest direction error.", s: "Dataset" },
-      { t: "Use “decreased affinity”, not “holds on tighter/looser”.", s: "Dataset" }
+      { t: "High CO2 shifts the curve RIGHT (lower affinity) — the most common direction error.", s: "Dataset" },
+      { t: "Say “affinity decreases” — “holds on tighter / looser” is imprecise.", s: "Dataset" }
     ]
   },
   {
-    id: "U4", topic: "1C", source: "Topic test bank • Antioxidants", title: "Observational studies vs supplement trials", marks: 4, official: true,
+    id: "U4", topic: "1C", source: "Topic test bank • Antioxidants", title: "Observational studies vs supplement trials", marks: 4, official: false,
     q: "Explain why observational studies suggested vitamin C reduces CVD risk, but clinical trials with vitamin C supplements showed no significant reduction. (4)",
     ms: [
-      "Observational studies show correlation, not causation",
-      "High-vitamin-C eaters also eat more fruit/veg and live healthier lives (exercise, no smoking)",
-      "Confounding variables (fibre, other antioxidants, low saturated fat) explain the lower risk",
+      "Observational studies show only a correlation — correlation is not causation",
+      "High-vitamin-C eaters also eat more fruit/veg and live healthier lives (exercise, less smoking)",
+      "Confounding variables (fibre, other antioxidants, lower saturated fat) explain the lower risk",
       "Supplements lack the whole-food matrix / synergy — isolated vitamin C behaves differently"
     ],
-    answer: "<p>Observational studies show only a <b>correlation</b> between dietary vitamin C and lower CVD — correlation is not causation. People eating lots of vitamin C also eat more whole fruit and vegetables and tend to exercise and avoid smoking, so <b>confounding variables</b> such as fibre and other antioxidants probably explain the benefit. Trials test isolated synthetic vitamin C without this whole-food matrix, so no effect is seen.</p>",
+    answer: "<p>Observational studies show only a <b>correlation</b> between dietary vitamin C and lower CVD — <b>correlation is not causation</b>. People who eat a lot of vitamin C also <b>eat more whole fruit and vegetables and tend to exercise and smoke less</b>, so <b>confounding variables such as fibre, other antioxidants and lower saturated-fat intake</b> probably explain the lower risk. Supplement trials give <b>isolated synthetic vitamin C without the whole-food matrix or synergy</b>, so no significant effect is seen.</p>",
     pitfalls: [
-      { t: "Never write that observational studies prove prevention.", s: "Dataset" },
-      { t: "Always name confounding variables explicitly.", s: "Dataset" }
+      { t: "Never write that observational studies PROVE prevention.", s: "Dataset" },
+      { t: "Name at least one confounding variable explicitly.", s: "Dataset" }
     ]
   },
   {
-    id: "U5", topic: "1C", source: "Topic test bank • Drugs", title: "Statins vs antihypertensives", marks: 4, official: true,
+    id: "U5", topic: "1C", source: "Topic test bank • Drugs", title: "Statins vs antihypertensives", marks: 4, official: false,
     q: "Compare the mechanism of action, benefits and risks of statins and antihypertensives in treating CVD. (4)",
     ms: [
-      "Statins block liver cholesterol synthesis whereas antihypertensives dilate vessels / lower BP",
-      "Statins cut LDL + plaque whereas antihypertensives cut endothelial damage",
-      "Both lower the risk of atherosclerosis, thrombosis and MI",
-      "Statins: muscle pain (myopathy) / liver damage whereas antihypertensives: dizziness / fainting / hypotension"
+      "Statins block a liver enzyme in cholesterol synthesis WHEREAS antihypertensives dilate blood vessels / lower heart rate to reduce BP",
+      "Statins lower blood LDL and plaque build-up WHEREAS antihypertensives reduce stress on the endothelium",
+      "Both reduce the risk of atherosclerosis, thrombosis and MI",
+      "Statins: muscle pain (myopathy) / liver damage WHEREAS antihypertensives: dizziness / fainting / dangerous low BP (hypotension)"
     ],
-    answer: "<p>Statins inhibit a liver enzyme in cholesterol synthesis, lowering blood LDL and slowing plaque build-up, <b>whereas</b> antihypertensives lower blood pressure via vasodilation or reduced heart rate, cutting stress on artery linings. Both reduce the risk of atherosclerosis, thrombosis and MI — but statins can cause muscle inflammation and liver damage, <b>whereas</b> antihypertensives can cause dizziness and fainting through hypotension.</p>",
+    answer: "<p><b>Statins inhibit a liver enzyme in cholesterol synthesis</b>, lowering blood LDL, <b>whereas antihypertensives dilate blood vessels or reduce heart rate to lower blood pressure</b>. <b>Statins therefore cut LDL and plaque build-up</b>, <b>whereas antihypertensives cut the stress on the artery lining (endothelium)</b>. <b>Both reduce the risk of atherosclerosis, thrombosis and MI</b> — but <b>statins can cause muscle pain (myopathy) and liver damage</b>, <b>whereas antihypertensives can cause dizziness, fainting and dangerously low blood pressure</b>.</p>",
     pitfalls: [
       { t: "Don't swap the mechanisms: statins ≠ BP drugs, antihypertensives ≠ cholesterol drugs.", s: "Dataset" },
       { t: "Name specific side effects (myopathy, hypotension) — “feeling unwell” scores nothing.", s: "Dataset" }
@@ -295,6 +306,7 @@ var TEST_FOCUS = {
   },
 
   /* ============ JUNE 2023 WBI11/01 (real past paper) ============ */
+  /* Mark scheme: wbi11-01-rms-20230817 (QP P71934A). ER: WBI11_01_2306_ER. */
   {
     id: "J23-2", topic: "1B", source: "WBI11 • June 2023 • Q2(b)–(c)", title: "Cardiac cycle: pressure & volume data", marks: 4, official: true,
     q: "The graphs show how the pressure and volume of blood in the left ventricle change during the cardiac cycle." +
@@ -306,83 +318,84 @@ var TEST_FOCUS = {
       "<tr><td>1.2</td><td>0.2</td><td>51</td></tr><tr><td>1.3</td><td>—</td><td>95</td></tr></table><br>" +
       "(b) Calculate the time for one cardiac cycle. (1) (c) The volume of blood in the left ventricle changes during the cardiac cycle. Explain these changes. (3)",
     ms: [
-      "(b) 0.70–0.76 s (any value in this range)",
-      "(c) Volume increases during atrial systole — the atrium contracts, squeezing blood into the ventricle",
-      "(c) Volume decreases during ventricular systole — ventricles contract, blood pumped out into the aorta",
-      "(c) Volume increases during (ventricular) diastole — the ventricle refills"
+      "(b) 0.7–0.76 s — any value up to 3 decimal places in this range (no other values)",
+      "(c) Volume INCREASES during atrial systole — the (left) atrium contracts, squeezing its blood into the ventricle",
+      "(c) Volume DECREASES during ventricular systole — the ventricles contract and blood is pumped out (into the aorta)",
+      "(c) Volume INCREASES (again) during diastole — the ventricle relaxes and starts to fill"
     ],
-    answer: "<p>(b) The pressure pattern repeats after ~0.72 s (peak-to-peak), so one cardiac cycle ≈ <b>0.72 s</b> (any value 0.70–0.76 s is accepted — but not more than 3 decimal places). (c) Volume <b>rises</b> during atrial systole as the contracting atrium forces blood through the open AV valve into the ventricle. It then <b>falls</b> during ventricular systole as the ventricles contract and eject blood into the aorta. Finally it <b>rises again</b> during diastole as the relaxing ventricle refills with blood.</p>",
+    answer: "<p><b>(b)</b> The pressure and volume pattern repeats every <b>0.7 s</b> (e.g. from the 15.2 kPa systolic peak at 0.3 s to the next peak at 1.0 s), so one cardiac cycle = <b>0.7 s</b> — any value <b>0.7–0.76 s to at most 3 decimal places</b> is accepted, nothing else. <b>(c)</b> Volume <b>increases during atrial systole</b> — the contracting atrium <b>squeezes its blood into the ventricle</b>. Volume then <b>decreases during ventricular systole</b> — the ventricles <b>contract and pump blood out into the aorta</b>. Finally volume <b>increases again during diastole</b> as the relaxing ventricle <b>starts to fill</b>.</p>",
     pitfalls: [
-      { t: "(b): too many decimal places is a classic error — 0.72 s, not 0.72333 s (June 2023 ER).", s: "Examiner report" },
-      { t: "(c): EXPLAIN with pressures/stages — describing the graph or narrating blood's journey scores little (June 2023 ER).", s: "Examiner report" },
-      { t: "(c): the refilling-during-diastole point was the least awarded — don't forget it (June 2023 ER).", s: "Examiner report" },
-      { t: "“Changes” → always write increase / decrease / no change (June 2023 ER).", s: "Examiner report" }
+      { t: "(b): a common error was giving too many decimal places — 0.7 s, not 0.72333 s (June 2023 ER).", s: "Examiner report" },
+      { t: "(c): mark point 3 (refilling during diastole) was the least awarded — don't forget it (June 2023 ER).", s: "Examiner report" },
+      { t: "(c): many lost marks by just describing the graphs or narrating blood's journey — EXPLAIN the change with the stage of the cycle (June 2023 ER).", s: "Examiner report" },
+      { t: "“Changes” → always write increase / decrease / no change (June 2023 ER tip).", s: "Examiner report" }
     ]
   },
   {
     id: "J23-5a", topic: "1B", source: "WBI11 • June 2023 • Q5(a)", title: "Stents: damage → thrombin", marks: 2, official: true,
     q: "Stents widen a diseased coronary artery but can damage endothelial cells and trigger clotting. (a) Explain how damage to the endothelial cells results in the formation of thrombin. (2)",
     ms: [
-      "Platelets contain / release thromboplastin",
-      "Thromboplastin converts prothrombin into thrombin"
+      "Platelets {contain / release} thromboplastin",
+      "Thromboplastin results in the formation of thrombin from prothrombin"
     ],
-    answer: "<p>Damaged endothelium exposes collagen, so platelets adhere and <b>release thromboplastin</b>. Thromboplastin then catalyses the conversion of the inactive plasma protein <b>prothrombin</b> into active <b>thrombin</b>.</p>",
+    answer: "<p>Platelets <b>contain — and release — thromboplastin</b> in response to the damage. Thromboplastin then <b>results in the formation of thrombin from prothrombin</b>. (Those are the two marks — describing plaque formation first, or the endothelium itself, is not credited.)</p>",
     pitfalls: [
-      { t: "You MUST say thromboplastin comes from platelets — this mark was frequently lost (June 2023 ER).", s: "Examiner report" },
-      { t: "Don't write the whole clotting story — answer what's asked and save time (June 2023 ER).", s: "Examiner report" }
+      { t: "You MUST say the thromboplastin comes FROM (is contained in / released by) PLATELETS — mark 1 was frequently lost without it (June 2023 ER).", s: "Examiner report" },
+      { t: "A high number of candidates wrote everything they knew about clotting — it doesn't cost marks but wastes time (June 2023 ER).", s: "Examiner report" }
     ]
   },
   {
     id: "J23-5b", topic: "1C", source: "WBI11 • June 2023 • Q5(b)", title: "Risk of anticoagulants", marks: 1, official: true,
     q: "Patients with a stent are given anticoagulants. (b) Give one risk of treating patients with anticoagulants. (1)",
     ms: [
-      "Excessive / uncontrolled / internal bleeding (e.g. severe bruising, prolonged nosebleeds)"
+      "Person bleeds {too easily / uncontrollably / internally / excessively} — accepted: (severe/frequent) bruising, (prolonged/frequent) nosebleeds, heavy periods (in women), liver damage, kidney damage"
     ],
-    answer: "<p>The patient may bleed <b>excessively or uncontrollably</b> (e.g. severe bruising, prolonged nosebleeds, heavy periods), because clotting is impaired.</p>",
+    answer: "<p>The patient may <b>bleed excessively, uncontrollably or internally</b> — e.g. severe or frequent bruising, prolonged nosebleeds, heavy periods (liver or kidney damage also accepted), because clotting is impaired.</p>",
     pitfalls: [
-      { t: "A risk (bleeding) ≠ a side effect (fainting) — side effects score zero here (June 2023 ER).", s: "Examiner report" }
+      { t: "A RISK (bleeding) ≠ a SIDE EFFECT (fainting) — side effects/symptoms cannot gain this mark (June 2023 ER).", s: "Examiner report" }
     ]
   },
   {
     id: "J23-5c2", topic: "1B", source: "WBI11 • June 2023 • Q5(c)(ii)", title: "Variegin vs thrombin", marks: 2, official: true,
     q: "Variegin (a tick peptide) binds to the active site of thrombin and prevents blood clotting. (ii) Explain how variegin prevents blood clotting. (2)",
     ms: [
-      "Blocked active site → thrombin cannot convert fibrinogen into fibrin",
-      "Without fibrin, platelets / blood cells are not trapped — no mesh, no clot"
+      "(If the active site is blocked) thrombin will NOT be able to convert fibrinogen into fibrin",
+      "Without fibrin {the mesh won't form / less mesh forms} — platelets / blood cells are NOT trapped, so no clot"
     ],
-    answer: "<p>With its active site blocked by variegin, thrombin <b>cannot convert soluble fibrinogen into insoluble fibrin</b>. With no fibrin mesh, platelets and blood cells are not trapped, so no clot forms.</p>",
+    answer: "<p><b>If the active site is blocked, thrombin will not be able to convert fibrinogen into fibrin</b>. <b>Without fibrin the mesh won't form, so platelets and blood cells will not get trapped</b> — no clot. (Both marks need the NEGATIVE idea — what will NOT happen.)</p>",
     pitfalls: [
-      { t: "State what will NOT happen — the positive story alone caps you at 1 mark (June 2023 ER).", s: "Examiner report" },
-      { t: "Never just repeat the stem (“prevents clotting”) — it earns zero.", s: "Topic tip" }
+      { t: "Tell the NEGATIVE story: telling the positive story (fibrin IS formed, mesh IS formed) caps you at 1 mark — the MS needs “what will not happen” for both (June 2023 ER).", s: "Examiner report" },
+      { t: "Repeating the stem (“therefore a clot would not form”) after the first point can leave you on 1 mark (June 2023 ER).", s: "Examiner report" }
     ]
   },
   {
     id: "J23-6d", topic: "1C", source: "WBI11 • June 2023 • Q6(d)", title: "Why antioxidants matter", marks: 4, official: true,
     q: "Explain why dietary antioxidants are important. (4)",
     ms: [
-      "Antioxidants reduce / neutralise free radicals (donate electrons to them)",
-      "Less cell damage / damage to blood-vessel linings / oxidative stress",
-      "Less plaque / atheroma formation",
-      "Lower risk of CVD / heart disease / atherosclerosis / stroke"
+      "Antioxidants reduce / neutralise free radicals (ACCEPT donate electrons to / break down / stabilise)",
+      "Therefore {cell damage / damage to the lining of blood vessels / oxidative stress} is {reduced / prevented}",
+      "Therefore {plaque / atheroma} formation is {reduced / prevented}",
+      "Therefore {cardiovascular disease / CVD / heart disease / heart attack / atherosclerosis / stroke} is reduced"
     ],
-    answer: "<p>Dietary antioxidants <b>neutralise free radicals</b> by donating electrons to them. This reduces damage to cells and to the linings of blood vessels (oxidative stress), so less plaque/atheroma builds up — lowering the risk of atherosclerosis, CVD and stroke.</p>",
+    answer: "<p><b>Mark 1:</b> antioxidants <b>reduce / neutralise free radicals</b> (donating electrons to them). <b>Mark 2:</b> so <b>cell damage, damage to the lining of blood vessels and oxidative stress are reduced or prevented</b>. <b>Mark 3:</b> so <b>plaque / atheroma formation is reduced</b>. <b>Mark 4:</b> so <b>cardiovascular disease / heart disease / atherosclerosis / stroke is reduced</b>. (You can equally tell marks 2–4 the other way — what the free radicals WOULD do — and still score.)</p>",
     pitfalls: [
-      { t: "Build the full chain: radicals → vessel damage → plaque → CVD. Stopping at “neutralises radicals” leaves marks behind.", s: "Topic tip" }
+      { t: "Build the full chain: radicals → vessel damage → plaque → CVD. Stopping at “neutralises free radicals” leaves 3 marks behind.", s: "Topic tip" },
+      { t: "The mark scheme ACCEPTS the converse (describing what free radicals do) for the last three marks — use whichever direction you're more confident in (mark scheme).", s: "Mark scheme" }
     ]
   },
   {
     id: "J23-8a", topic: "1C", source: "WBI11 • June 2023 • Q8(a)", title: "Which risks ignore lifestyle?", marks: 1, official: true,
     q: "CVD risk calculators use: age, blood pressure, smoking, total cholesterol, HDL cholesterol. (a) How many of these risk factors are NOT influenced by lifestyle?<br>A — 1&nbsp;&nbsp;B — 2&nbsp;&nbsp;C — 3&nbsp;&nbsp;D — 4 (1)",
     ms: [
-      "A — 1 (age only)"
+      "A — 1 (age only; blood pressure, smoking and both cholesterol measures respond to lifestyle)"
     ],
-    answer: "<p><b>A.</b> Only <b>age</b> is uninfluenced by lifestyle — blood pressure, smoking and cholesterol can all be modified.</p>",
+    answer: "<p><b>A — 1.</b> Only <b>age</b> is not influenced by lifestyle. <b>B, C and D are incorrect because age is not influenced by lifestyle</b> — and blood pressure, smoking and cholesterol can all be modified by diet, exercise and stopping smoking.</p>",
     pitfalls: [
-      { t: "BP and cholesterol feel “medical” but both respond to diet, exercise, smoking and alcohol.", s: "Topic tip" }
+      { t: "BP and cholesterol feel “medical”, but both respond to diet, exercise, smoking and alcohol — so they ARE lifestyle-modifiable.", s: "Topic tip" }
     ]
   },
   {
-    id: "J23-8b", topic: "1C", source: "WBI11 • June 2023 • Q8*(b)", title: "★ Are the risk calculators any good?", marks: 6, official: true,
+    id: "J23-8b", topic: "1C", source: "WBI11 • June 2023 • Q8*(b)", title: "★ Are the risk calculators any good?", marks: 6, official: false,
     q: "Two calculators (RAC-1, RAC-2) estimate 10-year CVD risk. RAC-1 asks for age, BP, smoking, total cholesterol. RAC-2 asks for age, BP, total cholesterol and HDL (but not smoking)." +
       "<table class='mini'><tr><th>Information</th><th>RAC-1</th><th>RAC-2</th></tr>" +
       "<tr><td>Age</td><td>✓</td><td>✓</td></tr><tr><td>Blood pressure</td><td>✓</td><td>✓</td></tr>" +
@@ -390,79 +403,81 @@ var TEST_FOCUS = {
       "<tr><td>HDL cholesterol</td><td>✗</td><td>✓</td></tr></table><br>" +
       "*(b) Explain the effectiveness of these two calculators in assessing risk, and whether other factors should be considered. (6) — ★ question: structure your answer logically (QWC).",
     ms: [
-      "Risk rises with age (arteries stiffen; more time for other risks to act)",
-      "High BP damages the arterial endothelium → plaque formation",
-      "Smoking raises blood pressure",
-      "More blood cholesterol → more plaque build-up",
-      "HDL level gives the HDL:LDL ratio, which affects CVD risk",
-      "BUT other factors matter too: salt (↑BP), alcohol (liver/cholesterol), diabetes, obesity, genetics / family history",
-      "RAC-1 lacks HDL data and RAC-2 lacks smoking data — both are important",
-      "RAC-1 is possibly more effective (it includes smoking)",
-      "Both miss key factors → inaccurate / underestimate of risk",
-      "Effectiveness depends on honest, accurate answers — people guess BP/cholesterol/HDL"
+      "Both calculators use genuine risk factors — age, blood pressure, total cholesterol (plus smoking or HDL)",
+      "Risk increases with age (more time for damage to accumulate; arteries stiffen)",
+      "High blood pressure damages the artery wall / endothelium → atheroma formation",
+      "Smoking is a major modifiable risk factor (raises BP, damages endothelium)",
+      "More blood cholesterol → more plaque; HDL lets you estimate the HDL:LDL ratio, which affects risk",
+      "Each calculator misses one of the other's factors — RAC-1 has no HDL, RAC-2 has no smoking",
+      "Other factors NOT asked about: salt, alcohol, diabetes, obesity/BMI, inactivity, genetics / family history, stress",
+      "Because key factors are missing, the estimates can be inaccurate / underestimate true risk",
+      "Effectiveness depends on the person giving accurate, honest answers (BP / cholesterol / HDL are often guessed)"
     ],
-    answer: "<p>Both calculators include genuine risk factors: risk rises with age as arteries stiffen; high BP damages the endothelium, triggering plaque; smoking raises BP; more cholesterol means more plaque; and HDL allows the HDL:LDL ratio. However, both omit important factors — <b>salt, alcohol, diabetes, obesity and family history</b> — so both will underestimate true risk. Comparing them, RAC-1 lacks HDL data while RAC-2 lacks smoking data, and since both matter, RAC-1 is arguably more effective as it captures smoking. Finally, both depend on accurate self-reporting, yet people often guess their BP or cholesterol — so neither calculator is fully effective and more factors should be considered.</p>",
-    levels: "Level 3 (5–6): detailed explanation covering ALL THREE aspects — the listed factors, the missing factors, and the RAC-1 vs RAC-2 comparison. Level 2 (3–4): two aspects. Level 1 (1–2): one aspect / simple description.",
+    answer: "<p><b>Factors the calculators use:</b> both include genuine risk factors — risk <b>increases with age</b>; <b>high blood pressure damages the artery wall</b>, promoting atheroma; <b>smoking</b> is a major modifiable risk factor; <b>more blood cholesterol means more plaque</b>; and <b>HDL</b> allows the <b>HDL:LDL ratio</b> to be estimated. <b>What both miss:</b> neither asks about <b>salt, alcohol, diabetes, obesity, inactivity or family history</b>, so with key factors absent the calculators can <b>underestimate the true risk</b> — and they only work if the person <b>reports their values honestly and accurately</b>, when in fact BP and cholesterol are often guessed. <b>RAC-1 vs RAC-2:</b> RAC-1 has no HDL data while RAC-2 has no smoking data; since smoking is a very large risk factor, <b>RAC-1 is arguably the more effective calculator</b>, though neither is fully effective on its own.</p>",
+    levels: "Indicative (official grid not recoverable from the public PDF): Level 3 (5–6) = sustained, logically linked discussion of ALL THREE aspects — the factors each calculator uses, the factors both miss, and the RAC-1 vs RAC-2 comparison. Level 2 (3–4) = two or more aspects with some linkage. Level 1 (1–2) = isolated facts / description.",
     pitfalls: [
-      { t: "Level 3 needs ALL THREE aspects — listed factors, missing factors, comparison. Miss one and you're capped (mark scheme).", s: "Mark scheme" },
-      { t: "It's a ★ question: link ideas logically with specialist vocabulary.", s: "Topic tip" }
+      { t: "The official mark scheme and level grid for this question are NOT readable in the public PDF — the points above are INDICATIVE, compiled from the question's own data and standard marking conventions.", s: "Topic tip" },
+      { t: "It's a ★ (QWC) question: order the discussion logically — factors used → factors missing → RAC-1 vs RAC-2 — and link ideas with specialist vocabulary.", s: "Topic tip" }
     ]
   },
   {
     id: "J23-8c1", topic: "1C", source: "WBI11 • June 2023 • Q8(c)(i)", title: "Why risk gets underestimated", marks: 2, official: false,
     q: "(c)(i) Explain why the information entered by a person may lead to an underestimate of their 10-year risk of developing CVD. (2)",
     ms: [
-      "People may not know their BP / cholesterol / HDL and guess — or under-report smoking, drinking and diet",
+      "The person may not know their BP / cholesterol / HDL and guesses — or under-reports smoking, drinking and diet",
       "Risk factors the calculators ignore (e.g. diabetes, family history, inactivity) mean the true risk is higher"
     ],
-    answer: "<p>A person may guess values they don't know, such as blood pressure or cholesterol, or under-report smoking, alcohol and poor diet — giving falsely reassuring inputs. On top of that, neither calculator includes factors like diabetes, family history or inactivity, so the calculated risk understates the true risk.</p>",
+    answer: "<p>A person may <b>guess values they don't actually know</b> — blood pressure, cholesterol, HDL — or <b>under-report smoking, alcohol and diet</b>, giving falsely reassuring inputs. On top of that, <b>factors the calculators ignore (diabetes, family history, inactivity)</b> mean the <b>true risk is higher</b> than the calculated one.</p>",
     pitfalls: [
-      { t: "Points here are indicative (compiled from the Q8 mark-scheme themes).", s: "Topic tip" }
+      { t: "Points here are indicative — the official MS for this question is not readable in the public PDF (compiled from the Q8 mark-scheme themes).", s: "Topic tip" }
     ]
   },
   {
     id: "J23-8c2", topic: "1C", source: "WBI11 • June 2023 • Q8(c)(ii)", title: "Not suitable for everybody?", marks: 2, official: false,
     q: "(c)(ii) Suggest why these two risk calculators may not be suitable for everybody to use. (2)",
     ms: [
-      "Validated only for certain groups (e.g. age ranges / populations) — risk differs outside these",
+      "Validated only for certain groups / age ranges / populations — risk differs outside these",
       "Not suitable for people already diagnosed with CVD or diabetes, or on medication — different risk profile"
     ],
-    answer: "<p>The calculators are validated for particular populations and age ranges, so they may mislead children, the very elderly or unrepresented groups. They are also unsuitable for people who already have CVD or diabetes (or take related medication), whose risk follows a different pattern.</p>",
+    answer: "<p>The calculators are <b>validated only for particular populations and age ranges</b>, so they may mislead children, the very elderly or unrepresented groups. They are also <b>unsuitable for people who already have CVD or diabetes (or take related medication)</b>, whose risk follows a different pattern.</p>",
     pitfalls: [
-      { t: "Points here are indicative (compiled from the Q8 mark-scheme themes).", s: "Topic tip" }
+      { t: "Points here are indicative — the official MS for this question is not readable in the public PDF (compiled from the Q8 mark-scheme themes).", s: "Topic tip" }
     ]
   },
   {
-    id: "J23-8c3", topic: "1C", source: "WBI11 • June 2023 • Q8(c)(iii)", title: "Why a 10-year window?", marks: 1, official: true,
+    id: "J23-8c3", topic: "1C", source: "WBI11 • June 2023 • Q8(c)(iii)", title: "Why a 10-year window?", marks: 1, official: false,
     q: "(c)(iii) Suggest why these risk calculators estimate the 10-year risk of developing CVD. (1)",
     ms: [
-      "CVD takes a long time to develop / lifestyle and age (risk) change over time"
+      "CVD develops slowly over many years — a fixed 10-year window is a meaningful timeframe (and risk changes with age / lifestyle over time)"
     ],
-    answer: "<p>Because CVD develops <b>slowly over many years</b>, and a person's lifestyle — and hence risk — changes with age.</p>",
-    pitfalls: []
+    answer: "<p><b>CVD develops slowly over many years</b>, so expressing the risk over a <b>fixed 10-year window</b> is meaningful — and a person's risk <b>changes with age and lifestyle</b> over that time.</p>",
+    pitfalls: [
+      { t: "Point is indicative — the official MS for this question is not readable in the public PDF.", s: "Topic tip" }
+    ]
   },
 
   /* ============ JANUARY 2023 WBI11/01 (real past paper) ============ */
+  /* Mark scheme: wbi11-01-rms-20230302 (QP P71868A). */
   {
     id: "Ja23-4a", topic: "1B", source: "WBI11 • Jan 2023 • Q4(a)(ii)", title: "What makes Q an artery?", marks: 1, official: true,
     q: "(ii) Why is blood vessel Q classified as an artery?<br>A — it carries deoxygenated blood&nbsp;&nbsp;B — it carries oxygenated blood&nbsp;&nbsp;C — it carries blood away from the heart&nbsp;&nbsp;D — it carries blood back to the heart (1)",
     ms: [
-      "C — an artery is defined as a vessel carrying blood AWAY from the heart"
+      "C — an artery is a vessel that carries blood AWAY from the heart (oxygen content is irrelevant)"
     ],
-    answer: "<p><b>C.</b> Arteries carry blood <b>away from the heart</b> — oxygen content is irrelevant (the pulmonary artery carries deoxygenated blood).</p>",
+    answer: "<p><b>C</b> — an artery is defined by <b>direction of flow: it carries blood away from the heart</b>. Oxygen content is irrelevant — the <b>pulmonary artery</b> is an artery even though it carries <b>deoxygenated</b> blood, which is the trap in A and B.</p>",
     pitfalls: [
-      { t: "Don't be fooled by oxygenation — direction of flow defines arteries vs veins.", s: "Topic tip" }
+      { t: "Direction of flow — not oxygenation — defines arteries vs veins.", s: "Topic tip" }
     ]
   },
   {
     id: "Ja23-4b", topic: "1B", source: "WBI11 • Jan 2023 • Q4(b)(ii)", title: "Cardiac cycle length", marks: 1, official: true,
     q: "Group 2, day 4: mean heart rate = 111 beats min⁻¹. (ii) Calculate the mean length of the cardiac cycle. (1)",
     ms: [
-      "0.54 s (accept 0.5 / 0.541) — 60 ÷ 111"
+      "60 ÷ 111 = 0.54 s (accept 0.5 / 0.54 / 0.541)"
     ],
-    answer: "<p>Cycle length = 60 ÷ heart rate = 60 ÷ 111 = <b>0.54 s</b>.</p>",
+    answer: "<p>Cycle length = 60 ÷ heart rate = <b>60 ÷ 111 = 0.54 s</b> (0.5, 0.54 or 0.541 all accepted).</p>",
     pitfalls: [
-      { t: "Learn it: cycle length (s) = 60 ÷ HR. Give a sensible number of figures.", s: "Topic tip" }
+      { t: "Learn it: cycle length (s) = 60 ÷ HR. Give a sensible number of figures — not 0.540540…", s: "Topic tip" }
     ]
   },
   {
@@ -471,109 +486,120 @@ var TEST_FOCUS = {
     ms: [
       "C — low cholesterol, high antioxidant"
     ],
-    answer: "<p><b>C.</b> A heart-protective diet is <b>low in cholesterol and rich in antioxidants</b> (high cholesterol would raise risk; high antioxidants help reduce it).</p>",
-    pitfalls: []
+    answer: "<p><b>C</b> — a diet that lowers CVD risk must be <b>low in cholesterol and high in antioxidants</b>. A and B are wrong because <b>high cholesterol would increase the risk</b>; D is wrong because <b>high antioxidants help reduce the risk</b>.</p>",
+    pitfalls: [
+      { t: "Use the elimination logic in the mark scheme: high cholesterol = bad, high antioxidants = good.", s: "Mark scheme" }
+    ]
   },
   {
     id: "Ja23-5a2", topic: "1C", source: "WBI11 • Jan 2023 • Q5(a)(ii)", title: "Name two dietary risk factors", marks: 1, official: true,
     q: "(ii) Name two other dietary risk factors that could be changed in this diet. (1)",
     ms: [
-      "Any TWO of: salt • fibre • energy (content) • saturated fat • alcohol — BOTH needed for the mark"
+      "Any TWO of: salt • fibre • energy (content) • saturated fats • alcohol — BOTH correct answers needed for the 1 mark"
     ],
-    answer: "<p>Any two from: <b>salt, fibre, energy content, saturated fat, alcohol</b> (e.g. less salt and less saturated fat).</p>",
+    answer: "<p>Any two from: <b>salt, fibre, energy content, saturated fats, alcohol</b> (e.g. less salt and less saturated fat). <b>Both</b> names must be correct for the single mark.</p>",
     pitfalls: [
-      { t: "“Name two” for 1 mark means BOTH must be right — one correct answer scores zero (mark scheme).", s: "Mark scheme" }
+      { t: "“Name two” for 1 mark = BOTH must be right — one correct answer scores zero (mark scheme).", s: "Mark scheme" }
     ]
   },
   {
     id: "Ja23-5b1", topic: "1C", source: "WBI11 • Jan 2023 • Q5(b)(i)", title: "Why remove these women?", marks: 1, official: true,
     q: "Women with missing lifestyle information were removed from the study. (i) Suggest why. (1)",
     ms: [
-      "Otherwise the investigation would not be valid — lifestyle affects CVD risk"
+      "The investigation may not be valid — lifestyle can affect the risk of CVD"
     ],
-    answer: "<p>Because <b>lifestyle affects CVD risk</b>, incomplete lifestyle data would make the investigation invalid.</p>",
-    pitfalls: []
+    answer: "<p>Because <b>lifestyle can affect the risk of CVD</b>, keeping women with missing lifestyle data would mean the <b>investigation may not be valid</b>.</p>",
+    pitfalls: [
+      { t: "Tie every exclusion to VALIDITY — that's the mark.", s: "Topic tip" }
+    ]
   },
   {
     id: "Ja23-5b2", topic: "1C", source: "WBI11 • Jan 2023 • Q5(b)(ii)", title: "Unrealistic energy estimates", marks: 2, official: true,
     q: "Some women gave unrealistic estimates of daily energy intake. (ii) Give two reasons why. (2)",
     ms: [
-      "Didn't want to admit / were embarrassed about how much they ate",
-      "Hadn't kept a record of the food eaten",
-      "Didn't know the energy content of foods / guessed"
+      "They did not want to admit to how much energy they consumed (ACCEPT embarrassed; knew they consumed too little/much)",
+      "They had not kept a record of the food that they had eaten (ACCEPT did not know how much food they had eaten / information not available)",
+      "They did not know the energy content of the different foods (ACCEPT did not know how to do it; they guessed — only if the other two are missing)"
     ],
-    answer: "<p>They may have been <b>embarrassed</b> about how much they ate and under-reported it; and since they <b>hadn't kept food records</b> and <b>didn't know foods' energy contents</b>, their estimates were guesses.</p>",
+    answer: "<p>They may have <b>not wanted to admit — been embarrassed about — how much energy they consumed</b>, or <b>had not kept a record of the food they had eaten</b>, so their estimates were guesses because <b>they did not know the energy content of the different foods</b> (any two of the three reasons score).</p>",
     pitfalls: [
-      { t: "Self-reported diet data is unreliable — embarrassment + no records + no knowledge.", s: "Topic tip" }
+      { t: "Self-reported diet data is unreliable: embarrassment + no records + not knowing food energy values. “They lied” alone is not one of the mark points.", s: "Mark scheme" }
     ]
   },
   {
     id: "Ja23-5b3", topic: "1C", source: "WBI11 • Jan 2023 • Q5(b)(iii)", title: "Why exclude women with CVD?", marks: 2, official: true,
     q: "Women showing signs of CVD were removed from the study. (iii) Explain why. (2)",
     ms: [
-      "The study investigates the effect of diet on the DEVELOPMENT of CVD",
-      "These women were already developing it → data / conclusions would be invalid"
+      "Because the investigation was looking at the effect of this diet on the DEVELOPMENT of CVD",
+      "These women were already developing the disease",
+      "Therefore the investigation / data / conclusion would not be valid"
     ],
-    answer: "<p>The investigation studies how diet affects the <b>development</b> of CVD — women who already show signs of it would distort the results and make the conclusions <b>invalid</b>.</p>",
+    answer: "<p>Because the investigation was <b>looking at the effect of this diet on the DEVELOPMENT of CVD</b>, and <b>these women were already developing the disease</b>, so the <b>data / conclusions would not be valid</b> (any two of the three points score).</p>",
     pitfalls: [
-      { t: "Always tie exclusions back to validity of the conclusion.", s: "Topic tip" }
+      { t: "Always tie exclusions back to the validity of the CONCLUSION, not just “it would be unfair”.", s: "Topic tip" }
     ]
   },
   {
     id: "Ja23-5b4", topic: "1C", source: "WBI11 • Jan 2023 • Q5(b)(iv)", title: "Percentage removed", marks: 1, official: true,
     q: "161,808 women started; 5,884 + 32,594 were removed. (iv) Calculate the percentage of all the women removed. (1)",
     ms: [
-      "23.8% (accept 24 / 23.78)"
+      "(5,884 + 32,594) ÷ 161,808 × 100 = 23.8% (accept 24 / 23.8 / 23.78 / 23.780)"
     ],
-    answer: "<p>(5,884 + 32,594) ÷ 161,808 × 100 = 38,478 ÷ 161,808 × 100 = <b>23.8%</b>.</p>",
-    pitfalls: []
+    answer: "<p><b>(5,884 + 32,594) ÷ 161,808 × 100 = 38,478 ÷ 161,808 × 100 = 23.8%</b> (24, 23.8, 23.78 or 23.780 all accepted).</p>",
+    pitfalls: [
+      { t: "Divide by the ORIGINAL 161,808 — not the intermediate group — and multiply by 100 for a percentage.", s: "Topic tip" }
+    ]
   },
   {
     id: "Ja23-5c", topic: "1C", source: "WBI11 • Jan 2023 • Q5(c)", title: "Low saturated fat → less CVD", marks: 3, official: true,
     q: "(c) Explain why a diet that is low in saturated fat is likely to reduce the risk of CVD. (3)",
     ms: [
-      "Less cholesterol / LDL in the blood",
-      "Less plaque / atheroma / clot formation",
-      "Coronary artery stays open → blood keeps flowing to the heart muscle"
+      "Because this results in less cholesterol (in the diet / in the blood) — ACCEPT less LDL / lower LDL: HDL",
+      "Therefore less / no plaque, atheroma or blood clot",
+      "So less likely to block / narrow the coronary artery",
+      "Therefore blood will be able to continue flowing to the heart (cardiac) cells / tissue / muscle"
     ],
-    answer: "<p>Less saturated fat means <b>less cholesterol/LDL in the blood</b>, so <b>less plaque and atheroma</b> build up. The <b>coronary arteries stay open</b>, so blood — with its oxygen and glucose — keeps reaching the heart muscle, cutting CVD risk.</p>",
+    answer: "<p>Because a low-saturated-fat diet <b>results in less cholesterol in the blood</b> (less LDL / lower LDL:HDL). <b>Therefore less plaque, atheroma or blood clot forms</b>. <b>So the coronary arteries are less likely to be blocked or narrowed</b>. <b>Therefore blood can continue flowing to the heart muscle</b>, with its oxygen and glucose, and CVD risk is reduced (any three of the four points score).</p>",
     pitfalls: [
-      { t: "Name the coronary artery and finish the chain at blood flow to the heart.", s: "Topic tip" }
+      { t: "Name the CORONARY ARTERY and finish the chain at blood flow to the heart muscle — stopping at “less plaque” leaves marks behind.", s: "Topic tip" }
     ]
   },
   {
     id: "Ja23-7b", topic: "1B", source: "WBI11 • Jan 2023 • Q7(b)", title: "Yak lungs & heart", marks: 3, official: true,
     q: "Yaks live at high altitude (thin, low-oxygen air) and have large lungs and a large heart. (b) Explain why these adaptations help yaks survive at high altitudes. (3)",
     ms: [
-      "Large lungs → large air volume / more alveoli / larger surface area for gas exchange",
-      "Large heart pumps more blood (at higher pressure)",
-      "Cells supplied with sufficient oxygen (for aerobic respiration)"
+      "Because large lungs would have a large volume of air (in the alveoli / taken in)",
+      "Because there would be more alveoli / a larger surface area for gas exchange",
+      "Because the large heart could pump more blood (at higher pressure)",
+      "Therefore supplying cells with sufficient oxygen (for aerobic respiration)"
     ],
-    answer: "<p>Large lungs hold a <b>bigger air volume with more alveoli</b> — a larger surface area for oxygen diffusion. The large heart <b>pumps more blood</b> to the tissues, so cells still receive <b>enough oxygen for aerobic respiration</b> despite the thin air.</p>",
+    answer: "<p>Because <b>large lungs hold a large volume of air in the alveoli</b>, and because <b>there would be more alveoli — a larger surface area for gas exchange</b>. <b>The large heart could pump more blood (at higher pressure)</b>, <b>therefore supplying the cells with sufficient oxygen</b> for aerobic respiration despite the thin air (any three of the four points score).</p>",
     pitfalls: [
-      { t: "Link every adaptation FORWARD to oxygen delivery — structures alone don't explain survival.", s: "Topic tip" }
+      { t: "Link EVERY adaptation FORWARD to oxygen delivery — “large lungs” or “big heart” on their own are descriptions, not explanations.", s: "Topic tip" }
     ]
   },
   {
     id: "Ja23-7c3", topic: "1B", source: "WBI11 • Jan 2023 • Q7*(c)(iii)", title: "★ Yak blood at altitude", marks: 6, official: true,
-    q: "Yak blood vs human blood: yaks have ~10<sup>13</sup> RBCs per dm<sup>3</sup> (humans ~5×10<sup>6</sup>), smaller RBCs (43 fl vs 90 fl), more haemoglobin (136 g dm<sup>−3</sup> vs 12–18), and keep fetal haemoglobin for life. *(iii) Discuss why the blood of yaks enables these animals to live at high altitudes. Use all the information in this question. (6) — ★ question: structure logically (QWC).",
+    q: "Yak blood vs human blood (from the paper's table): yaks have 1.0×10<sup>13</sup> RBCs per dm<sup>3</sup> (humans 4.0–6.0×10<sup>6</sup>), smaller RBCs (43 fl vs 90 fl), more haemoglobin (136 g dm<sup>−3</sup> vs 12–18 as printed), and keep fetal haemoglobin for life. *(iii) Discuss why the blood of yaks enables these animals to live at high altitudes. Use all the information in this question. (6) — ★ question: structure logically (QWC).",
     ms: [
-      "Very high RBC concentration → they carry high levels of oxygen",
-      "…to the tissues for (aerobic) respiration, meeting the oxygen demands of the yaks",
-      "Small RBCs → high surface-area-to-volume ratio → oxygen diffuses into the cells faster",
-      "Each cell carries less oxygen, but the huge numbers compensate (small cells pack closer together)",
-      "High haemoglobin concentration → more oxygen per red cell (each Hb binds 4 O2)",
-      "Fetal haemoglobin has higher affinity → binds oxygen even at low partial pressures → higher % saturation"
+      "HIGH RBC CONCENTRATION → they carry high levels of oxygen",
+      "…to the tissues for (aerobic) respiration, so the oxygen demands of the yaks can be met",
+      "SMALL RBCs → surface area to volume ratio is high → oxygen can diffuse into the cells faster",
+      "Each RBC probably carries less oxygen, BUT this is compensated by the large number of cells — smaller cells pack closer together / more cells in a small volume of blood",
+      "HIGH Hb CONCENTRATION → high levels of oxygen can be carried, as each RBC can carry more oxygen (each Hb molecule can bind 4 oxygen molecules)",
+      "FETAL Hb has a higher affinity for oxygen → can bind oxygen even at low partial pressures → carry more oxygen / higher % saturation of Hb with oxygen"
     ],
-    answer: "<p>Yaks' enormous red-cell concentration carries <b>far more oxygen</b> to respiring tissues. Their small red cells give a <b>high surface-area-to-volume ratio</b> for rapid oxygen diffusion — each cell holds less, but sheer numbers (and tighter packing) more than compensate. Very high <b>haemoglobin concentration</b> means more oxygen per cell, since each Hb binds four O<sub>2</sub>. Finally, lifelong <b>fetal haemoglobin</b> has a higher oxygen affinity, so it still loads oxygen at the low partial pressures of high altitude, keeping saturation high.</p>",
-    levels: "Level 3 (5–6): extended discussion of 2–3 blood features + comments on the rest, all linked to altitude (6 = extended on three + comment on the remaining one). Level 2 (3–4): three features simply, or one in depth + another. Level 1 (1–2): one–two isolated features.",
+    answer: "<p><b>High red-cell concentration:</b> yaks' very high RBC concentration <b>carries high levels of oxygen to the tissues for aerobic respiration, so the oxygen demands of the yaks can be met</b> at altitude. <b>Small red cells:</b> the small size means the <b>surface area to volume ratio is high, so oxygen can diffuse into the cells faster</b> — each cell probably carries less oxygen, <b>but this is compensated by the huge number of cells, which pack closer together than larger ones</b>. <b>High haemoglobin concentration:</b> <b>high levels of oxygen can be carried because each red cell carries more oxygen — each haemoglobin molecule binds four oxygen molecules</b>. <b>Fetal haemoglobin:</b> it <b>has a higher affinity for oxygen, so it can bind oxygen even at the low partial pressures of high altitude — carrying more oxygen and keeping the percentage saturation of haemoglobin high</b>.</p>",
+    levels: "Level 1 (1–2): simple links made between characteristics of blood and altitude — 1 mark = one comment about one characteristic; 2 marks = one comment about two characteristics. Level 2 (3–4): extended links — 3 marks = one comment about three characteristics; 4 marks = extended comments about one characteristic + a comment about one other characteristic. Level 3 (5–6): clear discussion on all aspects of blood and altitude — 5 marks = extended comments about two characteristics + a comment on the other two; 6 marks = extended comments about three aspects + a comment on the other characteristic.",
     pitfalls: [
-      { t: "“Use ALL the information” — cover concentration, size, Hb AND fetal Hb for Level 3 (mark scheme).", s: "Mark scheme" },
-      { t: "Fetal Hb point = affinity + low partial pressure + saturation. All three!", s: "Topic tip" }
+      { t: "“Use ALL the information” — cover RBC concentration, RBC size, Hb concentration AND fetal Hb for Level 3 (mark scheme).", s: "Mark scheme" },
+      { t: "The fetal-Hb point needs ALL THREE: higher affinity + low partial pressure + higher saturation (mark scheme).", s: "Mark scheme" },
+      { t: "Don't skip the small-cell “but” — “each cell carries less oxygen but the numbers compensate” is itself a marking point.", s: "Mark scheme" }
     ]
   },
 
   /* ============ JANUARY 2024 WBI11/01 (real past paper — extra) ============ */
+  /* Mark scheme: wbi11-01-rms-20240307 (QP P75589A). */
   {
     id: "J24-1", topic: "1B", source: "WBI11 • Jan 2024 • Q1", title: "Oxygen transport: complete the description", marks: 5, official: true,
     q: "Red blood cells transport oxygen to the cells of the body. Read through the following description of how oxygen is transported from the lungs to respiring cells, and complete it with the most appropriate word or words.<br><br>" +
@@ -582,15 +608,15 @@ var TEST_FOCUS = {
       "The oxygenated blood returns to the heart in the blood vessel called the ____________________ and is pumped to the body by the part of the heart called the ____________________.<br>" +
       "In the tissues, the ability of this molecule to bind oxygen is affected by the higher concentration of carbon dioxide. This is called the ____________________ effect. (5)",
     ms: [
-      "Oxygen binds to haemoglobin inside red blood cells",
-      "partial pressure of oxygen is HIGH in the lungs",
-      "oxygenated blood returns to the heart in the pulmonary vein",
-      "blood is pumped to the body by the left ventricle",
-      "the Bohr effect"
+      "Blank 1: haemoglobin (ACCEPT haem / Hb / iron ion / Fe²⁺)",
+      "Blank 2: HIGH (ACCEPT higher / above / greater / more)",
+      "Blank 3: pulmonary vein (DO NOT ACCEPT artery / vena cava)",
+      "Blank 4: left ventricle (ACCEPT left ventricle wall / muscle)",
+      "Blank 5: Bohr (shift) (ACCEPT phonetic spellings — Boar, Bore, Bor, Boh)"
     ],
-    answer: "<p>Oxygen binds to <b>haemoglobin</b> inside red blood cells. It binds where the partial pressure of oxygen is <b>high</b> — in the lungs. The oxygenated blood returns to the heart in the <b>pulmonary vein</b> and is pumped to the body by the <b>left ventricle</b>. In the tissues, the higher CO<sub>2</sub> concentration lowers haemoglobin's affinity for oxygen — the <b>Bohr</b> effect.</p>",
+    answer: "<p>Blank 1 — <b>haemoglobin</b> (haem / Hb / iron ion / Fe²⁺ also accepted). Blank 2 — <b>high</b>: in the lungs the partial pressure of oxygen is high, so it binds there. Blank 3 — the <b>pulmonary vein</b> carries the oxygenated blood back to the heart (NOT an artery, NOT the vena cava). Blank 4 — the <b>left ventricle</b> (or its wall/muscle) pumps it out to the body. Blank 5 — the <b>Bohr</b> effect: higher CO<sub>2</sub> in the tissues lowers haemoglobin's affinity, so oxygen is released where it is needed.</p>",
     pitfalls: [
-      { t: "The mark scheme accepts “haem / Hb / iron ion / Fe²⁺” for blank 1 and “left ventricle wall/muscle” for blank 4 — but “artery” or “vena cava” for the vessel is not accepted.", s: "Mark scheme" },
+      { t: "“Artery” or “vena cava” for blank 3 is NOT accepted — the pulmonary VEIN is the oxygenated return (mark scheme).", s: "Mark scheme" },
       { t: "Say the lungs have a HIGH pO₂ — that gradient is what drives loading.", s: "Topic tip" }
     ]
   },
@@ -598,9 +624,9 @@ var TEST_FOCUS = {
     id: "J24-5a2", topic: "1C", source: "WBI11 • Jan 2024 • Q5(a)(ii)", title: "BMI from mass and height", marks: 1, official: true,
     q: "The BMI of a person can be calculated using the formula: BMI = mass in kg ÷ (height in m)². Which of the following is the BMI of a person who has a mass of 65 kg and a height of 165 cm?<br>A — 23&nbsp;&nbsp;B — 24&nbsp;&nbsp;C — 39&nbsp;&nbsp;D — 40 (1)",
     ms: [
-      "B — 24 (65 ÷ 1.65² = 23.9 ≈ 24 — convert cm → m first)"
+      "B — 24 (65 ÷ 1.65² = 23.9 ≈ 24; convert cm → m BEFORE squaring)"
     ],
-    answer: "<p><b>B.</b> 65 ÷ 1.65² = 65 ÷ 2.7225 = 23.9 ≈ <b>24</b>. (A, 23, is the value rounded DOWN; C/D come from dividing by height in the wrong units.)</p>",
+    answer: "<p><b>B.</b> 65 ÷ 1.65² = 65 ÷ 2.7225 = 23.9 ≈ <b>24</b>. A (23) is <b>this value rounded down</b>; C (39) comes from <b>dividing by the height (65 ÷ 1.65) instead of the height²</b>.</p>",
     pitfalls: [
       { t: "Convert 165 cm → 1.65 m BEFORE squaring — the unit slip is the whole trap.", s: "Topic tip" }
     ]
@@ -609,49 +635,71 @@ var TEST_FOCUS = {
     id: "J24-5b", topic: "1C", source: "WBI11 • Jan 2024 • Q5(b)", title: "Two ways to lose weight", marks: 1, official: true,
     q: "People who are overweight or obese are encouraged to lose weight. State two ways in which a person could lose weight. (1)",
     ms: [
-      "Decrease calorie / energy / fat / sugar / carbohydrate intake AND increase exercise / activity",
-      "Overall: use more energy than is consumed (calorie deficit)"
+      "Decrease {calorie / energy / fat / sugar / carbohydrate} intake AND increase {exercise / activity} — i.e. use more energy than is consumed (calorie deficit)"
     ],
-    answer: "<p><b>Reduce energy intake</b> (fewer calories/fat/sugar/carbs) <b>and increase exercise</b> — i.e. use more energy than consumed (a calorie deficit). Weight-reducing medication or a gastric band are NOT accepted.</p>",
+    answer: "<p><b>Reduce calorie / energy intake</b> (e.g. less fat, sugar or carbohydrate) <b>AND increase exercise / activity</b> — so the person <b>uses more energy than is consumed</b> (a calorie deficit). (Weight-reducing medication or a gastric band are also accepted.)</p>",
     pitfalls: [
-      { t: "The answer must be in the form of a CHANGE — “eat less and exercise more”, not just “diet”.", s: "Mark scheme" }
+      { t: "The answer must be in the form of a CHANGE — “eat less and exercise more”, not just “diet” or “exercise” (mark scheme NB).", s: "Mark scheme" },
+      { t: "“Regular / daily exercise” on its own is IGNORED — pair the intake reduction with the activity increase.", s: "Mark scheme" }
     ]
   },
   {
     id: "J24-8a", topic: "1C", source: "WBI11 • Jan 2024 • Q8(a)", title: "Unsat fatty acid side chain", marks: 2, official: true,
     q: "Tropical sprue is a disorder that limits the absorption of nutrients into the blood. Consumption of unsaturated lipids has been proposed as a cause of tropical sprue. The diagram shows part of an unsaturated lipid — a glycerol backbone joined via ester groups to a C=O group and a five-carbon chain (the fatty-acid side chain). Complete the structure to show one possible structure of a fatty acid side chain of an unsaturated lipid. (2)",
     ms: [
-      "At least one carbon–carbon double bond (C=C) drawn in the side chain",
-      "Rest of the diagram correct: C–C single bonds elsewhere + all H atoms added"
+      "At least one carbon–carbon DOUBLE bond (C=C) drawn in the side chain",
+      "Rest of the diagram correct — remaining C–C single bonds and all H atoms added (Lewis structure)"
     ],
-    answer: "<p>Draw one <b>C=C double bond</b> somewhere along the side chain (e.g. –CH₂–CH=CH–CH₂–CH₂– attached to the C=O), with the remaining carbons as C–C single bonds and every carbon completed with its hydrogens. A double bond between the first two carbons (next to the C=O) is NOT accepted.</p>",
+    answer: "<p><b>Mark 1:</b> draw <b>at least one C=C double bond</b> somewhere along the five-carbon chain — e.g. –CH₂–CH=CH–CH₂–CH₃-type chain attached to the C=O. <b>Mark 2:</b> keep the <b>rest of the diagram correct</b> — all other C–C bonds single and <b>every carbon completed with its H atoms</b>. (A double bond between C1 and C2, next to the C=O, is NOT accepted.)</p>",
     pitfalls: [
-      { t: "A C=C adjacent to the C=O group is rejected — put the double bond along the chain.", s: "Mark scheme" },
-      { t: "“Rest of diagram correct” includes the H atoms — a bare carbon skeleton loses mark 2.", s: "Mark scheme" }
+      { t: "A C=C between the first two carbons (adjacent to C=O) is rejected — put the double bond along the chain (mark scheme).", s: "Mark scheme" },
+      { t: "“Rest of diagram correct” includes the H ATOMS — a bare carbon skeleton loses mark 2 (mark scheme).", s: "Mark scheme" }
+    ]
+  },
+  {
+    id: "J24-8b1", topic: "1C", source: "WBI11 • Jan 2024 • Q8(b)(i)", title: "Mean rate of lesion increase", marks: 1, official: true,
+    q: "Primates fed cholesterol + saturated or unsaturated fatty acids were monitored for 60 months. Graph 1 — % of artery surface covered in lesions — saturated lipids: 16 months = 2%, 32 months = 18%, 60 months = 52%. (i) Calculate the mean rate of increase in the surface of arteries covered in lesions from 16 to 60 months in the primates given saturated lipids (graph 1). Answer ........ percentage per month. (1)",
+    ms: [
+      "(52 − 2) ÷ (60 − 16) = 50 ÷ 44 = 1.1 % per month (accept 1.1 / 1.14 / 1.136)"
+    ],
+    answer: "<p><b>(52 − 2) ÷ (60 − 16) = 50 ÷ 44 = 1.136 ≈ 1.1 % per month</b> (1.1, 1.14 or 1.136 all accepted).</p>",
+    pitfalls: [
+      { t: "Rate = CHANGE in value ÷ CHANGE in time — use 16→60 months (Δ44), not 0→60 (a bare 50÷60 loses the mark).", s: "Topic tip" }
+    ]
+  },
+  {
+    id: "J24-8b2", topic: "1C", source: "WBI11 • Jan 2024 • Q8(b)(ii)", title: "Ratio: sat vs unsat at 32 months", marks: 1, official: true,
+    q: "Graph 2 — % of primates with atherosclerosis — saturated lipids: 16 months = 18%, 32 months = 32%, 60 months = 56%; unsaturated lipids: 16 months = 12%, 32 months = 22%, 60 months = 20%. (ii) Calculate the ratio of primates with atherosclerosis given saturated lipids to those given unsaturated lipids, at 32 months (graph 2). (1)",
+    ms: [
+      "32 : 22 = 1.5 : 1 (accept 1.45 : 1)"
+    ],
+    answer: "<p>At 32 months: <b>32 : 22 = 1.45 : 1</b> (accepted as <b>1.5 : 1</b> or <b>1.45 : 1</b>).</p>",
+    pitfalls: [
+      { t: "Ratios must be expressed as “x : 1” — a single value like 1.45 alone can lose the mark (June 2023 ER, same rule).", s: "Examiner report" }
     ]
   },
   {
     id: "J24-8b3", topic: "1C", source: "WBI11 • Jan 2024 • Q8(b)(iii)", title: "Atheroma area: mm² → µm²", marks: 2, official: true,
-    q: "Primates fed a diet of cholesterol + saturated lipids developed atheromas. At 60 months the mean area of the atheromas was 0.026 mm² in males and 0.004 mm² in females. Calculate the difference in the area of the atheromas in males compared with females. Give your answer in µm². (2)",
+    q: "Graph 3 — mean area of atheroma at 60 months (mm²) — primates given saturated fats: males = 0.026, females = 0.004. (iii) Calculate the difference in the area of the atheromas in males compared with females, in primates given saturated fats (graph 3). Give your answer in µm². (2)",
     ms: [
       "0.026 − 0.004 = 0.022 mm²",
-      "0.022 mm² × 10⁶ = 22,000 µm² (2.2 × 10⁴ µm²)"
+      "0.022 mm² × 10⁶ = 22,000 µm² (accept 2.2 × 10⁴ µm²)"
     ],
-    answer: "<p>0.026 − 0.004 = <b>0.022 mm²</b>. Since 1 mm² = 10⁶ µm², 0.022 × 10⁶ = <b>22,000 µm²</b> (2.2 × 10⁴ µm²).</p>",
+    answer: "<p><b>Mark 1:</b> 0.026 − 0.004 = <b>0.022 mm²</b>. <b>Mark 2:</b> since 1 mm = 1,000 µm, 1 mm² = 10⁶ µm², so 0.022 × 10⁶ = <b>22,000 µm²</b> (2.2 × 10⁴ µm²).</p>",
     pitfalls: [
-      { t: "mm² → µm² is ×10⁶ (not ×100). A bald 22,000 scores 2; “22 of any magnitude” scores 1.", s: "Mark scheme" }
+      { t: "mm² → µm² is ×10⁶ (not ×100). A bald 22,000 still scores 2; “22 of any magnitude” or wrong standard-form format scores 1 (mark scheme).", s: "Mark scheme" }
     ]
   },
   {
     id: "J24-5d2", topic: "1C", source: "WBI11 • Jan 2024 • Q5(d)(ii)", title: "Gut bacteria & weight loss", marks: 2, official: true,
-    q: "The investigation found that people with greater weight loss had bacteria with increased rates of replication. Suggest why the rate of replication of the bacteria could affect weight loss. (2)",
+    q: "The investigation found that people with greater weight loss had bacteria with increased rates of replication. (ii) Suggest why the rate of replication of the bacteria could affect weight loss. (2)",
     ms: [
-      "Bacterial replication uses energy / glucose / sugar (in the digestive system)",
-      "Therefore less energy is available to the person for absorption / storage as fat"
+      "{Replication / the bacteria} uses {energy / glucose / sugar} (in the digestive system)",
+      "Therefore less energy is available {for absorption / to store as fat}"
     ],
-    answer: "<p>Faster bacterial replication <b>uses up energy/glucose</b> in the gut, so <b>less of the person's food energy is available for absorption or storage as fat</b> — aiding weight loss.</p>",
+    answer: "<p><b>Faster bacterial replication uses up energy (glucose / sugar) in the digestive system</b>. <b>Therefore less of the person's food energy is available for absorption or to be stored as fat</b> — so they lose more weight.</p>",
     pitfalls: [
-      { t: "Don't answer with “food” or “nutrients” — the mark is on ENERGY being used up by the bacteria.", s: "Mark scheme" }
+      { t: "The mark is on ENERGY being used by the bacteria — “food” or “nutrients” are IGNORED (mark scheme).", s: "Mark scheme" }
     ]
   }
   ]
