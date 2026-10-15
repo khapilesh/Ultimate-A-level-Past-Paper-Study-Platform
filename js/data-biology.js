@@ -1,6 +1,6 @@
 /* Edexcel IAL Biology (YBI11) — syllabus content & revision notes (current spec) */
 var SUBJECT_BIOLOGY = {
-id:"biology", name:"Biology", icon:"🧬", color:"#34d399", qual:"YBI11",
+id:"biology", name:"Biology", icon:"🧬", color:"#a3c66f", qual:"YBI11",
 desc:"Molecules, cells, transport, immunity, respiration, coordination & gene tech — WBI11 to WBI16.",
 hubs:[
  {name:"📄 Save My Exams — IAL Biology past papers", url:"https://www.savemyexams.com/international-a-level/biology/edexcel/past-papers/", desc:"Every unit, QP + MS, all sessions Jan / Jun / Oct."},

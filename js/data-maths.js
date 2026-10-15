@@ -1,6 +1,6 @@
 /* Edexcel IAL Mathematics (YMA01) — P1-P4, S1, M1 syllabus content & revision notes */
 var SUBJECT_MATHS = {
-id:"maths", name:"Mathematics", icon:"📐", color:"#fbbf24", qual:"YMA01",
+id:"maths", name:"Mathematics", icon:"📐", color:"#d5b36d", qual:"YMA01",
 desc:"Pure 1–4 plus Statistics 1 and Mechanics 1 — WMA11–WMA14, WST01, WME01. Six 75-mark papers.",
 hubs:[
  {name:"📄 Save My Exams — IAL Maths past papers", url:"https://www.savemyexams.com/international-a-level/maths/edexcel/past-papers/", desc:"P1–P4, S1, M1 — QP + MS for every session."},
