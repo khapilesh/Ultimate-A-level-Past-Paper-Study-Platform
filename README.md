@@ -8,6 +8,12 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 
 ## Features
 
+### 📚 Book-style study library
+- The main screen is a bookshelf: click a subject cover to open its unit contents and select a topic.
+- Notes are split into turnable pages while retaining every summary point, expanded section, walkthrough, formula, definition, worked example, pitfall, tip, retrieval prompt and flashcard.
+- Practice opens in page-turn mode by topic; answer drafts, hints, mark-scheme points, sample answers, examiner insights and the all-prompts/topic-set views remain available.
+- The light theme uses warm paper, sage and forest-green accents with a dark-mode option. No gradients are used.
+
 ### 📝 Topic-wise Exam Practice
 - **245 original exam-style questions plus 91 clearly labelled retry drills = 336 practice prompts** across all 24 units. Retry drills intentionally reuse one longer question per syllabus topic; they are not claimed as new or official past-paper items.
 - Questions are grouped into topic sets with selectable variants, difficulty and timing filters, hints, and a free-text draft area before reveal.
@@ -43,8 +49,9 @@ Or deploy the folder to GitHub Pages / Netlify / Vercel as-is.
 ## Project structure
 
 ```
-index.html          — app shell
-css/style.css       — flat-color design system (no gradients; dark/light sage-teal, green and warm-neutral themes with subdued blue accents)
+index.html          — main app shell; opens on the subject bookshelf
+css/style.css       — shared flat-color design system (no gradients)
+css/book-layout.css — permanent paper, bookshelf and paged-reader presentation
 js/
   data-physics.js    — Physics syllabus + notes
   data-chemistry.js  — Chemistry syllabus + notes
@@ -63,7 +70,8 @@ js/
   q-repeat.js        — one clearly labelled retry drill per syllabus topic
   examiner-insights.js — paraphrased, source-linked Pearson report notes
   tutor.js           — offline tutor engine + optional LLM mode
-  app.js             — routing, revise/papers/mock/AI/progress views
+  book-layout.js     — subject bookshelf, complete paged notes, and question flip reader
+  app.js             — routing, papers/mock/AI/progress views and interactions
 ```
 
 ## Content honesty and examiner-report sources

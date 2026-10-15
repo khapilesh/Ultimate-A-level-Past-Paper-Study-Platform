@@ -32,11 +32,18 @@ function subjectProgress(sid){
 }
 
 /* ---------- router ---------- */
-var view = { sid:"physics", uid:null, tab:0, tid:null, qmode:"topical", qtopics:[], qdiff:"all", qsearch:"", qview:"sets", variantFor:{}, attempts:{}, openPanels:{}, mock:null, timerH:null, left:0, flashIdx:0, flashFlip:false };
-function go(path, tab){ if(tab!=null) view.tab=tab; location.hash="#/"+path; }
+var view = { sid:"physics", uid:null, tab:0, tid:null, qmode:"topical", qtopics:[], qdiff:"all", qsearch:"", qview:"flip", qCursor:0, notePage:0, bookTurnDir:"", variantFor:{}, attempts:{}, openPanels:{}, mock:null, timerH:null, left:0, flashIdx:0, flashFlip:false };
+function go(path, tab){ if(tab!=null) view.tab=tab; if(tab===1){view.qview="flip";view.qCursor=0;} var target="#/"+path; if(location.hash===target) render(); else location.hash=target; }
 window.addEventListener("hashchange", render);
 document.addEventListener("click", function(e){ var sr=document.getElementById("searchResults"); if(sr&&!e.target.closest(".searchbox")) sr.style.display="none"; });
-document.addEventListener("keydown", function(e){ if(e.key==="/"&&document.activeElement.tagName!=="INPUT"){ e.preventDefault(); document.getElementById("globalSearch").focus(); } });
+document.addEventListener("keydown", function(e){
+  var tag=document.activeElement&&document.activeElement.tagName;
+  if(e.key==="/"&&tag!=="INPUT"&&tag!=="TEXTAREA"&&tag!=="SELECT"){e.preventDefault();document.getElementById("globalSearch").focus();return;}
+  if(tag==="INPUT"||tag==="TEXTAREA"||tag==="SELECT")return;
+  var route=(location.hash||"#/home").split("#/").pop().split("/");
+  if(route[0]==="subject"&&view.tab===0){if(e.key==="ArrowRight")bookNoteTurn(1);else if(e.key==="ArrowLeft")bookNoteTurn(-1);}
+  else if(route[0]==="subject"&&view.tab===1&&view.qmode==="topical"&&view.qview==="flip"){if(e.key==="ArrowRight")bookQuestionTurn(1);else if(e.key==="ArrowLeft")bookQuestionTurn(-1);}
+});
 function toggleTheme(){ var h=document.documentElement; h.dataset.theme=(h.dataset.theme==="dark")?"light":"dark"; localStorage.setItem("ial-theme",h.dataset.theme); }
 (function(){ var t=localStorage.getItem("ial-theme"); if(t) document.documentElement.dataset.theme=t; })();
 
@@ -45,10 +52,23 @@ function render(){
   var h=(location.hash||"#/home").replace(/^#\//,""), parts=h.split("/");
   document.querySelectorAll("#navLinks button").forEach(function(b){ b.classList.toggle("on", b.dataset.nav===parts[0]||(parts[0]==="subject"&&b.dataset.nav===parts[1])||(parts[0]==="topic"&&b.dataset.nav===parts[1])); });
   var app=document.getElementById("app");
-  if(parts[0]==="subject"&&SUBJECTS[parts[1]]){ view.sid=parts[1]; if(!unitOf(view.sid,view.uid)) view.uid=SUBJECTS[view.sid].units[0].id; if(!topicInUnit()) view.tid=null; app.innerHTML=vSubject(); afterSubject(); }
-  else if(parts[0]==="topic"&&SUBJECTS[parts[1]]){ view.sid=parts[1]; view.uid=parts[2]; view.tid=parts[3]; view.tab=0; app.innerHTML=vTopic(); window.scrollTo(0,0); }
-  else if(parts[0]==="progress"){ app.innerHTML=vProgress(); window.scrollTo(0,0); }
-  else { app.innerHTML=vHome(); window.scrollTo(0,0); }
+  if(parts[0]==="subject"&&SUBJECTS[parts[1]]){
+    if(view.sid!==parts[1]){view.uid=null;view.tid=null;view.qtopics=[];view.qdiff="all";view.qsearch="";view.qmode="topical";view.qCursor=0;view.notePage=0;}
+    view.sid=parts[1];
+    if(parts[2]&&unitOf(view.sid,parts[2])) view.uid=parts[2];
+    if(!unitOf(view.sid,view.uid)) view.uid=SUBJECTS[view.sid].units[0].id;
+    if(!topicInUnit()) view.tid=unitOf(view.sid,view.uid).topics[0].id;
+    app.innerHTML=vBookSubject(); afterSubject();
+  }
+  else if(parts[0]==="topic"&&SUBJECTS[parts[1]]){
+    if(view.sid!==parts[1]){view.qtopics=[];view.qCursor=0;view.qmode="topical";}
+    view.sid=parts[1];view.uid=unitOf(view.sid,parts[2])?parts[2]:SUBJECTS[view.sid].units[0].id;
+    view.tid=topicOf(view.sid,view.uid,parts[3])?parts[3]:unitOf(view.sid,view.uid).topics[0].id;
+    view.tab=0;view.notePage=0;app.innerHTML=vBookSubject();afterSubject();window.scrollTo(0,0);
+  }
+  else if(parts[0]==="guide"){app.innerHTML=bookStudyGuide();window.scrollTo(0,0);}
+  else if(parts[0]==="progress"){app.innerHTML=vProgress();window.scrollTo(0,0);}
+  else{app.innerHTML=vLibraryHome();window.scrollTo(0,0);}
   updateXP();
 }
 function topicInUnit(){ if(!view.tid) return false; return !!topicOf(view.sid,view.uid,view.tid); }
@@ -59,7 +79,7 @@ function vHome(){
   var cards=Object.keys(SUBJECTS).map(function(sid){
     var S=SUBJECTS[sid], pr=subjectProgress(sid);
     var units=S.units.map(function(u){return u.short;}).join(" • ");
-    return "<div class='subj-card' style='--ac:"+S.color+"' onclick=\"go('subject/"+sid+"')\">"+
+    return "<div class='subj-card' style='--ac:"+S.color+"' onclick=\"openStudyBook('"+sid+"')\">"+
       "<div class='ico'>"+S.icon+"</div><h3>"+S.name+"</h3><p>"+S.desc+"</p>"+
       "<div class='meta'><span class='tag hot'>"+S.qual+"</span><span class='tag'>"+S.units.length+" units</span><span class='tag'>"+pr.qt+" practice prompts</span></div>"+
       "<div class='pbar'><i style='width:"+pr.pct+"%'></i></div><div class='tiny muted' style='margin-top:6px'>"+pr.pct+"% complete • "+units+"</div></div>";
@@ -109,8 +129,8 @@ function vSubject(){
     "<div class='unit-chips'>"+units+"</div></div>"+
     "<div class='tabs' style='--ac:"+S.color+"'>"+tabs+"</div><div id='tabBody'>"+body+"</div>";
 }
-function setUnit(uid){ view.uid=uid; view.tid=null; view.qtopics=[]; view.qsearch=""; view.variantFor={}; view.mock=null; render(); }
-function setTab(i){ view.tab=i; render(); }
+function setUnit(uid){ view.uid=uid; view.tid=null; view.qtopics=[]; view.qsearch=""; view.variantFor={}; view.mock=null; view.notePage=0; view.qCursor=0; view.qview="flip"; view.qmode="topical"; render(); }
+function setTab(i){ view.tab=i; if(i===0)view.notePage=0; if(i===1){view.qview="flip";view.qCursor=0;view.qmode="topical";view.mock=null;if(!view.qtopics.length&&view.tid)view.qtopics=[view.tid];} render(); }
 function afterSubject(){ if(view.tab===2) initChat(); if(view.tab===1&&view.qmode==="mockrun") startTimer(); }
 
 /* ---------- REVISE ---------- */
@@ -169,12 +189,12 @@ function vRevise(){
 }
 function tcards(){ return ""; }
 function countQ(sid,uid,tid,includeRetries){ return unitQuestions(sid,uid).filter(function(q){return (includeRetries!==false||!q.repeat)&&(q.topics||[]).indexOf(tid)>=0;}).length; }
-function setTopic(tid){ view.tid=tid; view.flashIdx=0; view.flashFlip=false; render(); }
+function setTopic(tid){ view.tid=tid; view.notePage=0; view.flashIdx=0; view.flashFlip=false; if(view.tab===1){view.qtopics=[tid];view.qCursor=0;view.qview="flip";} render(); }
 function flipFlash(){ view.flashFlip=!view.flashFlip; render(); }
 function flashNav(d){ var n=(view._cards||[]).length; if(!n) return; view.flashIdx=(view.flashIdx+d+n)%n; view.flashFlip=false; render(); }
 function flashShuffle(){ var a=view._cards||[]; for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;} view.flashIdx=0; view.flashFlip=false; render(); }
 function toggleTopic(sid,tid){ var p=P(),k=sid+":"+tid; if(p.topics[k]){ delete p.topics[k]; toast("Marked as not done"); } else { p.topics[k]=Date.now(); p.xp+=20; toast("Nice! +20 XP 🎉"); } saveP(p); render(); }
-function practiceTopic(tid){ view.tab=1; view.qmode="topical"; view.qtopics=[tid]; render(); window.scrollTo(0,0); }
+function practiceTopic(tid){ view.tab=1; view.qmode="topical"; view.qtopics=[tid]; view.qview="flip"; view.qCursor=0; view.tid=tid; render(); window.scrollTo(0,0); }
 function askAbout(tid){ view.tab=2; render(); var t=topicOf(view.sid,view.uid,tid); setTimeout(function(){ sendChat("Explain "+(t?t.name:"this topic")); },300); }
 
 /* ---------- PAPERS ---------- */
@@ -186,7 +206,7 @@ function vPapers(){
   var body = view.qmode==="archive"? vArchive() : view.qmode==="mock"? vMockSetup() : view.qmode==="mockrun"? vMockRun() : view.qmode==="mockreview"? vMockReview() : vTopical();
   return "<div style='--ac:"+S.color+"'><div class='mode-switch'>"+modes+"</div>"+body+"</div>";
 }
-function setQmode(m){ view.qmode=m; if(m==="topical") view.mock=null; render(); }
+function setQmode(m){ view.qmode=m; if(m==="topical"){view.mock=null;view.qview="flip";view.qCursor=0;} render(); }
 
 /* topical question practice */
 function vTopical(){
@@ -202,7 +222,7 @@ function vTopical(){
   "<p class='question-guidance'>Choose a topic set, select a variant, draft your response, then reveal the credit points and worked sample answer. Use “All prompts” to browse every entry; each topic also has a clearly labelled retry drill.</p>"+
   "<div class='qfilters'><select onchange=\"view.qdiff=this.value;render()\"><option value='all'>All difficulties</option><option value='1'"+(view.qdiff==="1"?" selected":"")+">★ Easy</option><option value='2'"+(view.qdiff==="2"?" selected":"")+">★★ Medium</option><option value='3'"+(view.qdiff==="3"?" selected":"")+">★★★ Hard</option></select>"+
   "<input type='text' placeholder='Search questions…' value=\""+esc(view.qsearch)+"\" oninput=\"view.qsearch=this.value;renderQList()\">"+
-  "<div class='question-view-switch' role='group' aria-label='Question display mode'><button class='btn btn-xs "+(view.qview==="sets"?"btn-p":"btn-g")+"' onclick=\"setQuestionView('sets')\">▦ Topic sets</button><button class='btn btn-xs "+(view.qview==="all"?"btn-p":"btn-g")+"' onclick=\"setQuestionView('all')\">☷ All prompts</button></div>"+
+  "<div class='question-view-switch' role='group' aria-label='Question display mode'><button class='btn btn-xs "+(view.qview==="flip"?"btn-p":"btn-g")+"' onclick=\"setQuestionView('flip')\">📖 Flip pages</button><button class='btn btn-xs "+(view.qview==="sets"?"btn-p":"btn-g")+"' onclick=\"setQuestionView('sets')\">▦ Topic sets</button><button class='btn btn-xs "+(view.qview==="all"?"btn-p":"btn-g")+"' onclick=\"setQuestionView('all')\">☷ All prompts</button></div>"+
   "<span class='tiny muted' id='questionCount'>"+qs.length+" questions • "+retryCount+" retry drills • "+sel+"</span>"+
   (view.qtopics.length?"<button class='btn btn-g btn-xs' onclick='clearQfilters()'>Clear ✕</button>":"")+"</div>"+
   "<p class='report-disclaimer'>Examiner-report insights are paraphrased and linked to the cited Pearson report. Where a report note is general, it is labelled as cross-paper advice—not as commentary on this exact practice question.</p></div><div id='qlist'>"+list+"</div>";
@@ -216,13 +236,14 @@ function filteredQ(){
     return true;
   });
 }
-function setQuestionView(mode){view.qview=mode;render();}
+function setQuestionView(mode){view.qview=mode;view.qCursor=0;render();}
 function questionGroupTopic(q,U){
   var topic=(U.topics||[]).find(function(t){return (q.topics||[]).indexOf(t.id)>=0;});
   return topic?topic.id:((q.topics||[])[0]||"other");
 }
 function renderQuestionCollection(qs){
   if(!qs.length)return "";
+  if(view.qview==="flip")return renderBookQuestionPage(qs);
   if(view.qview==="all")return qs.map(function(q){return qCard(q);}).join("");
   var U=unitOf(view.sid,view.uid), groups={};
   qs.forEach(function(q){var tid=questionGroupTopic(q,U);(groups[tid]||(groups[tid]=[])).push(q);});
@@ -238,9 +259,15 @@ function renderQuestionCollection(qs){
   }).join("");
 }
 function setQuestionVariant(tid,qid){view.variantFor[tid]=qid;renderQList();}
-function renderQList(){var qs=filteredQ(),el=document.getElementById("qlist");if(el){var l=renderQuestionCollection(qs);el.innerHTML=l||"<div class='empty'>No matches.</div>";}var count=document.getElementById("questionCount");if(count){var retries=qs.filter(function(q){return q.repeat;}).length,unit=unitOf(view.sid,view.uid);var selected=view.qtopics.length?view.qtopics.length+" topic"+(view.qtopics.length===1?"":"s")+" selected":"all topics in "+unit.code;count.textContent=qs.length+" questions • "+retries+" retry drills • "+selected;}}
-function toggleQtopic(tid){var i=view.qtopics.indexOf(tid);if(i>=0)view.qtopics.splice(i,1);else view.qtopics.push(tid);render();}
-function clearQfilters(){view.qtopics=[];view.qdiff="all";view.qsearch="";render();}
+function renderQList(){
+  var qs=filteredQ(),el=document.getElementById("qlist");
+  if(view.qCursor>=qs.length)view.qCursor=Math.max(qs.length-1,0);
+  if(el){var l=renderQuestionCollection(qs);el.innerHTML=l||"<div class='empty'>No matches.</div>";}
+  var count=document.getElementById("questionCount");
+  if(count){var retries=qs.filter(function(q){return q.repeat;}).length,unit=unitOf(view.sid,view.uid);var selected=view.qtopics.length?view.qtopics.length+" topic"+(view.qtopics.length===1?"":"s")+" selected":"all topics in "+unit.code;count.textContent=qs.length+" questions • "+retries+" retry drills • "+selected;}
+}
+function toggleQtopic(tid){var i=view.qtopics.indexOf(tid);if(i>=0)view.qtopics.splice(i,1);else view.qtopics.push(tid);view.qCursor=0;render();}
+function clearQfilters(){view.qtopics=[];view.qdiff="all";view.qsearch="";view.qCursor=0;render();}
 function setAttempt(qid,value){view.attempts=view.attempts||{};view.attempts[qid]=value;var count=document.getElementById("attempt-count-"+qid);if(count){var words=value.trim()?value.trim().split(/\s+/).length:0;count.textContent=words+" word"+(words===1?"":"s")+" drafted";}}
 function clearAttempt(qid){view.attempts[qid]="";var field=document.getElementById("attempt-"+qid);if(field)field.value="";setAttempt(qid,"");}
 function topicForQuestion(q){var U=unitOf(view.sid,view.uid);var tid=questionGroupTopic(q,U);return topicOf(view.sid,view.uid,tid)||findTopicAnywhere(view.sid,tid);}
@@ -270,7 +297,7 @@ function findTopicAnywhere(sid,tid){var f=null;subj(sid).units.forEach(function(
 function toggleAns(id){view.openPanels=view.openPanels||{};view.openPanels[id]=!view.openPanels[id];var el=document.getElementById(id);if(el)el.classList.toggle("show",view.openPanels[id]);}
 function selfMark(qid,st,marks){var p=P();var first=!p.q[qid];p.q[qid]=st;if(first)p.xp+=(st==="got"?marks*2:3);saveP(p);toast(st==="got"?"Excellent! +"+marks*2+" XP 🌟":"Added to review list (+3 XP)");var c=document.getElementById("card-"+qid);if(c){c.classList.remove("got","missed");c.classList.add(st);}render();}
 function askQ(qid){var all=unitQuestions(view.sid,view.uid).concat(view.mock&&view.mock.qs?view.mock.qs:[]),q=all.find(function(x){return x.id===qid;});view.tab=2;render();setTimeout(function(){sendChat("Explain this question: "+(q?q.title+" — "+q.q.slice(0,300):qid));},300);}
-function TUTORQUIZ(sid,uid,tid){location.hash="#/subject/"+sid;view.sid=sid;view.uid=uid;view.tab=1;view.qmode="topical";view.qtopics=[tid];render();window.scrollTo(0,0);toast("Filtered to your topic — good luck! 🎯");}
+function TUTORQUIZ(sid,uid,tid){view.sid=sid;view.uid=uid;view.tid=tid;view.tab=1;view.qmode="topical";view.qtopics=[tid];view.qview="flip";view.qCursor=0;location.hash="#/subject/"+sid;render();window.scrollTo(0,0);toast("Filtered to your topic — good luck! 🎯");}
 
 /* archive */
 var SESSIONS=[["Jan",2019],["Jun",2019],["Oct",2019],["Jan",2020],["Jun",2020],["Oct",2020],["Jan",2021],["Jun",2021],["Oct",2021],["Jan",2022],["Jun",2022],["Oct",2022],["Jan",2023],["Jun",2023],["Oct",2023],["Jan",2024],["Jun",2024],["Oct",2024],["Jan",2025],["Jun",2025],["Oct",2025],["Jan",2026],["Jun",2026]];
@@ -377,7 +404,7 @@ function vProgress(){
     return "<div class='prog-card' style='--ac:"+S.color+"'><h4>"+S.icon+" "+S.name+"</h4><div class='tiny muted'>"+S.qual+"</div>"+
     "<svg class='ring' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='none' stroke='rgba(148,163,184,.15)' stroke-width='10'/><circle cx='50' cy='50' r='44' fill='none' stroke='"+S.color+"' stroke-width='10' stroke-linecap='round' stroke-dasharray='"+(C*pr.pct/100)+" "+C+"' transform='rotate(-90 50 50)'/><text x='50' y='56' text-anchor='middle' font-size='20' font-weight='800' fill='var(--text)'>"+pr.pct+"%</text></svg>"+
     "<div class='tiny muted' style='text-align:center'>📖 "+pr.done+"/"+pr.total+" topics • 📝 "+pr.qd+"/"+pr.qt+" questions</div>"+
-    "<div style='text-align:center;margin-top:10px'><button class='btn btn-g btn-s' onclick=\"go('subject/"+sid+"')\">Continue →</button></div></div>";
+    "<div style='text-align:center;margin-top:10px'><button class='btn btn-g btn-s' onclick=\"openStudyBook('"+sid+"')\">Continue →</button></div></div>";
   }).join("");
   var review=Object.keys(p.q).filter(function(k){return p.q[k]==="missed";}).length;
   return "<h2 class='sec-title'>📊 My Progress</h2><p class='sec-sub'>XP: <b>⚡ "+p.xp+"</b> • Streak: <b>🔥 "+(p.streak||1)+" day"+((p.streak||1)>1?"s":"")+"</b> • 🔁 "+review+" questions flagged for review</p>"+
@@ -395,12 +422,17 @@ function globalSearch(q){
     S.units.forEach(function(u){ u.topics.forEach(function(t){
       if((t.name+" "+(t.tags||"")).toLowerCase().indexOf(q)>=0) out.push({h:"📖 "+t.name+" <span class='tiny muted'>"+S.icon+" "+u.code+"</span>",go:"topic/"+sid+"/"+u.id+"/"+t.id});
     });
-    (QBANK[sid][u.id]||[]).forEach(function(x){ if((x.title+" "+x.q).toLowerCase().indexOf(q)>=0) out.push({h:"📝 "+esc(x.title)+" <span class='tiny muted'>"+x.ref+"</span>",go:"subject/"+sid,q:1,uid:u.id}); }); });
+    (QBANK[sid][u.id]||[]).forEach(function(x){ if((x.title+" "+x.q).toLowerCase().indexOf(q)>=0) out.push({h:"📝 "+esc(x.title)+" <span class='tiny muted'>"+x.ref+"</span>",go:"subject/"+sid,q:1,sid:sid,uid:u.id,tid:(x.topics||[])[0]}); }); });
   });
   box.innerHTML=out.slice(0,12).map(function(r,i){ return "<a onclick=\"searchGo("+i+")\">"+r.h+"</a>"; }).join("")||"<a>No matches — try fewer letters.</a>";
   box.style.display="block"; box._res=out.slice(0,12);
 }
-function searchGo(i){ var r=document.getElementById("searchResults")._res[i]; document.getElementById("searchResults").style.display="none"; document.getElementById("globalSearch").value=""; if(r.q){ view.tab=1; view.uid=r.uid; } go(r.go); }
+function searchGo(i){
+  var r=document.getElementById("searchResults")._res[i];
+  document.getElementById("searchResults").style.display="none";document.getElementById("globalSearch").value="";
+  if(r.q){view.sid=r.sid;view.uid=r.uid;view.tid=r.tid;view.tab=1;view.qmode="topical";view.qtopics=r.tid?[r.tid]:[];view.qdiff="all";view.qsearch="";view.qview="flip";view.qCursor=0;var target="#/subject/"+r.sid+"/"+r.uid;if(location.hash===target)render();else location.hash=target;}
+  else go(r.go);
+}
 
 /* boot */
 render();

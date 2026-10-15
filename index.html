@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,9 @@
 <meta name="description" content="A free study platform for Edexcel International A Level Physics, Chemistry, Biology and Mathematics, with topic-wise exam-style questions, worked sample answers, deep notes, examiner-report insights and timed mocks.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261015-revamp-v2">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:wght@500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=20261016-book-layout">
+<link rel="stylesheet" href="css/book-layout.css?v=20261016-book-layout">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
 </head>
 <body>
@@ -19,12 +20,13 @@
       <div>IAL MASTERY<small>EDEXCEL IAL • PCMB</small></div>
     </div>
     <nav class="nav-links" id="navLinks">
-      <button data-nav="home" onclick="go('home')">🏠 Home</button>
-      <button data-nav="physics" onclick="go('subject/physics')">⚛️ Physics</button>
-      <button data-nav="chemistry" onclick="go('subject/chemistry')">⚗️ Chemistry</button>
-      <button data-nav="biology" onclick="go('subject/biology')">🧬 Biology</button>
-      <button data-nav="maths" onclick="go('subject/maths')">📐 Maths</button>
-      <button data-nav="progress" onclick="go('progress')">📊 My Progress</button>
+      <button data-nav="home" onclick="go('home')">📚 Bookshelf</button>
+      <button data-nav="physics" onclick="openStudyBook('physics')">⚛️ Physics</button>
+      <button data-nav="chemistry" onclick="openStudyBook('chemistry')">⚗️ Chemistry</button>
+      <button data-nav="biology" onclick="openStudyBook('biology')">🧬 Biology</button>
+      <button data-nav="maths" onclick="openStudyBook('maths')">📐 Maths</button>
+      <button data-nav="guide" onclick="go('guide')">📖 Study guide</button>
+      <button data-nav="progress" onclick="go('progress')">📊 Progress</button>
     </nav>
     <div class="nav-right">
       <div class="searchbox">
@@ -56,29 +58,30 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="js/data-physics.js?v=20261015-revamp-v2"></script>
-<script src="js/data-chemistry.js?v=20261015-revamp-v2"></script>
-<script src="js/data-biology.js?v=20261015-revamp-v2"></script>
-<script src="js/data-maths.js?v=20261015-revamp-v2"></script>
-<script src="js/notes-physics.js?v=20261015-revamp-v2"></script>
-<script src="js/notes-chemistry.js?v=20261015-revamp-v2"></script>
-<script src="js/notes-biology.js?v=20261015-revamp-v2"></script>
-<script src="js/notes-maths.js?v=20261015-revamp-v2"></script>
-<script src="js/notes-walkthrough-physics.js?v=20261015-revamp-v2"></script>
-<script src="js/notes-walkthrough-chemistry.js?v=20261015-revamp-v2"></script>
-<script src="js/notes-walkthrough-biology.js?v=20261015-revamp-v2"></script>
-<script src="js/notes-walkthrough-maths.js?v=20261015-revamp-v2"></script>
-<script src="js/q-physics.js?v=20261015-revamp-v2"></script>
-<script src="js/q-chemistry.js?v=20261015-revamp-v2"></script>
-<script src="js/q-biology.js?v=20261015-revamp-v2"></script>
-<script src="js/q-maths.js?v=20261015-revamp-v2"></script>
-<script src="js/q-expanded-physics.js?v=20261015-revamp-v2"></script>
-<script src="js/q-expanded-chemistry.js?v=20261015-revamp-v2"></script>
-<script src="js/q-expanded-biology.js?v=20261015-revamp-v2"></script>
-<script src="js/q-expanded-maths.js?v=20261015-revamp-v2"></script>
-<script src="js/q-repeat.js?v=20261015-revamp-v2"></script>
-<script src="js/examiner-insights.js?v=20261015-revamp-v2"></script>
-<script src="js/tutor.js?v=20261015-revamp-v2"></script>
-<script src="js/app.js?v=20261015-revamp-v2"></script>
+<script src="js/data-physics.js?v=20261016-book-layout"></script>
+<script src="js/data-chemistry.js?v=20261016-book-layout"></script>
+<script src="js/data-biology.js?v=20261016-book-layout"></script>
+<script src="js/data-maths.js?v=20261016-book-layout"></script>
+<script src="js/notes-physics.js?v=20261016-book-layout"></script>
+<script src="js/notes-chemistry.js?v=20261016-book-layout"></script>
+<script src="js/notes-biology.js?v=20261016-book-layout"></script>
+<script src="js/notes-maths.js?v=20261016-book-layout"></script>
+<script src="js/notes-walkthrough-physics.js?v=20261016-book-layout"></script>
+<script src="js/notes-walkthrough-chemistry.js?v=20261016-book-layout"></script>
+<script src="js/notes-walkthrough-biology.js?v=20261016-book-layout"></script>
+<script src="js/notes-walkthrough-maths.js?v=20261016-book-layout"></script>
+<script src="js/q-physics.js?v=20261016-book-layout"></script>
+<script src="js/q-chemistry.js?v=20261016-book-layout"></script>
+<script src="js/q-biology.js?v=20261016-book-layout"></script>
+<script src="js/q-maths.js?v=20261016-book-layout"></script>
+<script src="js/q-expanded-physics.js?v=20261016-book-layout"></script>
+<script src="js/q-expanded-chemistry.js?v=20261016-book-layout"></script>
+<script src="js/q-expanded-biology.js?v=20261016-book-layout"></script>
+<script src="js/q-expanded-maths.js?v=20261016-book-layout"></script>
+<script src="js/q-repeat.js?v=20261016-book-layout"></script>
+<script src="js/examiner-insights.js?v=20261016-book-layout"></script>
+<script src="js/tutor.js?v=20261016-book-layout"></script>
+<script src="js/book-layout.js?v=20261016-book-layout"></script>
+<script src="js/app.js?v=20261016-book-layout"></script>
 </body>
 </html>
