@@ -1,6 +1,6 @@
 /* Edexcel IAL Chemistry (YCH11) — syllabus content & revision notes (current spec) */
 var SUBJECT_CHEMISTRY = {
-id:"chemistry", name:"Chemistry", icon:"⚗️", color:"#a78bfa", qual:"YCH11",
+id:"chemistry", name:"Chemistry", icon:"⚗️", color:"#65b887", qual:"YCH11",
 desc:"Structure, bonding, energetics, kinetics, equilibria, organic & transition metals — WCH11 to WCH16.",
 hubs:[
  {name:"📄 Save My Exams — IAL Chemistry past papers", url:"https://www.savemyexams.com/international-a-level/chemistry/edexcel/past-papers/", desc:"Every unit, QP + MS, all sessions Jan / Jun / Oct."},

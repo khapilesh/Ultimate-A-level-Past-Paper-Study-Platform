@@ -1,6 +1,6 @@
 /* Edexcel IAL Physics (YPH11) — syllabus content & revision notes (current spec, Issue 3) */
 var SUBJECT_PHYSICS = {
-id:"physics", name:"Physics", icon:"⚛️", color:"#22d3ee", qual:"YPH11",
+id:"physics", name:"Physics", icon:"⚛️", color:"#76a99b", qual:"YPH11",
 desc:"Mechanics, materials, waves, electricity, fields, thermodynamics, oscillations & cosmology — WPH11 to WPH16.",
 hubs:[
  {name:"📄 Save My Exams — IAL Physics past papers", url:"https://www.savemyexams.com/international-a-level/physics/edexcel/past-papers/", desc:"Every unit, QP + MS, Jan / Jun / Oct sessions. The fastest full-paper archive."},

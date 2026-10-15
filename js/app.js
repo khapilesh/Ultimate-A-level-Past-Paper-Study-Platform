@@ -32,7 +32,7 @@ function subjectProgress(sid){
 }
 
 /* ---------- router ---------- */
-var view = { sid:"physics", uid:null, tab:0, tid:null, qmode:"topical", qtopics:[], qdiff:"all", qsearch:"", mock:null, timerH:null, left:0, flashIdx:0, flashFlip:false };
+var view = { sid:"physics", uid:null, tab:0, tid:null, qmode:"topical", qtopics:[], qdiff:"all", qsearch:"", qview:"sets", variantFor:{}, attempts:{}, openPanels:{}, mock:null, timerH:null, left:0, flashIdx:0, flashFlip:false };
 function go(path, tab){ if(tab!=null) view.tab=tab; location.hash="#/"+path; }
 window.addEventListener("hashchange", render);
 document.addEventListener("click", function(e){ var sr=document.getElementById("searchResults"); if(sr&&!e.target.closest(".searchbox")) sr.style.display="none"; });
@@ -61,21 +61,21 @@ function vHome(){
     var units=S.units.map(function(u){return u.short;}).join(" • ");
     return "<div class='subj-card' style='--ac:"+S.color+"' onclick=\"go('subject/"+sid+"')\">"+
       "<div class='ico'>"+S.icon+"</div><h3>"+S.name+"</h3><p>"+S.desc+"</p>"+
-      "<div class='meta'><span class='tag hot'>"+S.qual+"</span><span class='tag'>"+S.units.length+" units</span><span class='tag'>"+pr.qt+" topical Qs</span></div>"+
+      "<div class='meta'><span class='tag hot'>"+S.qual+"</span><span class='tag'>"+S.units.length+" units</span><span class='tag'>"+pr.qt+" practice prompts</span></div>"+
       "<div class='pbar'><i style='width:"+pr.pct+"%'></i></div><div class='tiny muted' style='margin-top:6px'>"+pr.pct+"% complete • "+units+"</div></div>";
   }).join("");
   return ""+
   "<section class='hero'><div class='kicker'>🎓 EDEXCEL INTERNATIONAL A LEVEL • 2026</div>"+
   "<h1>Master <span class='grad'>Physics, Chemistry,<br>Biology & Maths</span> — One Platform</h1>"+
-  "<p class='sub'>Topic-wise past-paper questions with mark schemes, crystal-clear revision notes for <b>every syllabus topic</b>, a timed mock-exam builder, and an AI tutor — all tuned to the current Edexcel IAL specs.</p>"+
-  "<div class='hero-cta'><button class='btn btn-p' onclick=\"go('subject/physics',1)\">📝 Start past-paper practice</button><button class='btn btn-g' onclick=\"go('subject/chemistry',0)\">📖 Revise a topic</button></div>"+
-  "<div class='hero-stats'><div class='hstat'><b>"+c.questions+"+</b><span>TOPICAL QUESTIONS</span></div><div class='hstat'><b>"+c.topics+"</b><span>SYLLABUS TOPICS</span></div><div class='hstat'><b>24</b><span>UNITS COVERED</span></div><div class='hstat'><b>🔥 "+(p.streak||1)+"</b><span>DAY STREAK</span></div></div></section>"+
+  "<p class='sub'>Topic-wise original exam-style question sets with mark-scheme points, full-credit sample answers and cited examiner-report insights; deeper guided notes for <b>every syllabus topic</b>; timed mocks and an AI tutor.</p>"+
+  "<div class='hero-cta'><button class='btn btn-p' onclick=\"go('subject/physics',1)\">📝 Start exam-style practice</button><button class='btn btn-g' onclick=\"go('subject/chemistry',0)\">📖 Revise a topic</button></div>"+
+  "<div class='hero-stats'><div class='hstat'><b>"+c.questions+"+</b><span>PRACTICE PROMPTS</span></div><div class='hstat'><b>"+c.topics+"</b><span>SYLLABUS TOPICS</span></div><div class='hstat'><b>24</b><span>UNITS COVERED</span></div><div class='hstat'><b>🔥 "+(p.streak||1)+"</b><span>DAY STREAK</span></div></div></section>"+
   "<h2 class='sec-title'>Choose your subject</h2><p class='sec-sub'>Each subject has <b>Revise</b> • <b>Past Paper Questions</b> • <b>Ask AI</b> tabs. Progress saves automatically.</p>"+
   "<div class='subj-grid'>"+cards+"</div>"+
   "<h2 class='sec-title'>Why this works</h2><p class='sec-sub'>Built around how A* students actually revise.</p>"+
   "<div class='feat-grid'>"+
-  "<div class='feat'><div class='n'>📝</div><h4>Past papers, topic-wise (priority #1)</h4><p>Every unit's questions tagged by topic — tick <b>multiple topics</b> for mixed sets, exactly like real papers.</p><ul><li>Exam-style Qs modelled on real WPH/WCH/WBI/WMA papers</li><li>Full mark-scheme answers + hints + difficulty ratings</li><li>Timed <b>Mock Builder</b> with score tracking</li><li>Full archive index: every session 2019–2026 + official QP/MS links</li></ul></div>"+
-  "<div class='feat'><div class='n'>📖</div><h4>Revision notes that respect your time</h4><p>Every syllabus topic distilled into point-form notes.</p><ul><li>Key points, formulae, definitions, worked examples</li><li>⚠️ classic mistakes + ⭐ examiner tips per topic</li><li>🔮 out-of-syllabus enrichment (clearly labelled)</li><li>Flashcards + topic checklists with progress</li></ul></div>"+
+  "<div class='feat'><div class='n'>📝</div><h4>Topic-wise exam practice</h4><p>Questions are grouped into topic sets with selectable variants — tick <b>multiple topics</b> for mixed practice.</p><ul><li>Original exam-style prompts modelled on WPH/WCH/WBI/WMA papers</li><li>Mark-scheme checkpoints, full-credit samples and examiner-report insights</li><li>Clearly labelled retry drills support spaced practice</li><li>Timed <b>Mock Builder</b> with score tracking</li></ul></div>"+
+  "<div class='feat'><div class='n'>📖</div><h4>Detailed notes with guided explanations</h4><p>Each syllabus topic combines quick revision with a deeper step-by-step walkthrough.</p><ul><li>Focused sections, formulae, definitions and worked examples</li><li>Expandable explanations connect mechanisms and applications</li><li>⚠️ classic mistakes + ⭐ exam tips per topic</li><li>Flashcards, retrieval prompts and completion tracking</li></ul></div>"+
   "<div class='feat'><div class='n'>🤖</div><h4>Ask AI tutor</h4><p>Stuck? Ask in plain English — the built-in tutor explains, defines, quizzes and links you to practice.</p><ul><li>Knows the whole syllabus offline — no account needed</li><li><i>Explain… / Quiz me on… / Formula for…</i></li><li>Optional: plug in your own API key for full AI chat</li></ul></div>"+
   "</div>"+
   "<h2 class='sec-title'>Know your targets — Physics A thresholds (June 2025)</h2><p class='sec-sub'>Real unit thresholds so you can aim precisely. Thresholds vary slightly each session — check the linked hubs for your series.</p>"+
@@ -88,7 +88,8 @@ function vHome(){
   "<tr><td>U6 Practical II</td><td>WPH16</td><td>50</td><td>43</td><td>86%</td></tr></table></div>"+
   "<h2 class='sec-title'>Quick answers</h2><div class='faq'>"+
   "<details><summary>Which papers are covered?</summary><p>Physics WPH11–WPH16, Chemistry WCH11–WCH16, Biology WBI11–WBI16, and Maths P1–P4 (WMA11–WMA14), S1 (WST01), M1 (WME01) — current Edexcel IAL specification, in-syllabus content only (anything extra is labelled out-of-syllabus).</p></details>"+
-  "<details><summary>Are these real past-paper questions?</summary><p>The topical bank contains original exam-style questions written to match real past-paper style, each labelled with the paper/question it is modelled on — with full mark-scheme answers. The Archive tab indexes every real session (2019–2026) with links to official question papers and mark schemes.</p></details>"+
+  "<details><summary>Are these real past-paper questions?</summary><p>The topical bank contains original exam-style questions modelled on the current specification; it is not a reproduction of official past-paper questions. Topic sets include clearly labelled repeat drills. Use the Archive tab and linked hubs to find official question papers and mark schemes.</p></details>"+
+  "<details><summary>Where do examiner-report insights come from?</summary><p>Question cards link to representative Pearson Edexcel examiner reports. Notes are paraphrased and labelled topic-specific only when the report passage matches; otherwise they are clearly marked as general cross-paper advice. Topic pitfalls elsewhere are study guidance, not quotations or claims about a specific report.</p></details>"+
   "<details><summary>Does the AI need internet or an account?</summary><p>No. The built-in tutor works fully offline from the syllabus database. Optionally, you can add your own OpenAI-compatible API key for full conversational AI — your key never leaves your browser except to your chosen provider.</p></details>"+
   "<details><summary>Is my progress saved?</summary><p>Yes — topics completed, question self-marks, XP and streaks are stored privately in your browser (localStorage). Nothing is uploaded anywhere.</p></details>"+
   "</div>";
@@ -108,19 +109,41 @@ function vSubject(){
     "<div class='unit-chips'>"+units+"</div></div>"+
     "<div class='tabs' style='--ac:"+S.color+"'>"+tabs+"</div><div id='tabBody'>"+body+"</div>";
 }
-function setUnit(uid){ view.uid=uid; view.tid=null; view.qtopics=[]; view.qsearch=""; view.mock=null; render(); }
+function setUnit(uid){ view.uid=uid; view.tid=null; view.qtopics=[]; view.qsearch=""; view.variantFor={}; view.mock=null; render(); }
 function setTab(i){ view.tab=i; render(); }
 function afterSubject(){ if(view.tab===2) initChat(); if(view.tab===1&&view.qmode==="mockrun") startTimer(); }
 
 /* ---------- REVISE ---------- */
+function jumpToDeepNote(id){ var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); }
+function vDetailedNotes(t,n){
+  var sections=n.sections||[];
+  if(!sections.length) return "";
+  var jumps=sections.map(function(s,i){
+    return "<button class='deep-jump' type='button' onclick=\"jumpToDeepNote('deep-"+t.id+"-"+i+"')\"><span>"+(i+1)+"</span> "+esc(s.title)+"</button>";
+  }).join("");
+  var body=sections.map(function(s,i){
+    var points=(s.points||[]).map(function(p){return "<li>"+p+"</li>";}).join("");
+    return "<article class='deep-section' id='deep-"+t.id+"-"+i+"'><div class='deep-section-head'><span class='deep-num'>"+(i+1<10?"0":"")+(i+1)+"</span><h5>"+esc(s.title)+"</h5></div>"+
+      (s.intro?"<p class='deep-intro'>"+esc(s.intro)+"</p>":"")+
+      (points?"<ul>"+points+"</ul>":"")+"</article>";
+  }).join("");
+  var walkthrough=n.walkthrough||[];
+  var walkBody=walkthrough.map(function(part){return "<article class='walkthrough-part'><h5>"+esc(part.title)+"</h5><p>"+esc(part.text)+"</p></article>";}).join("");
+  var walk=walkthrough.length?"<details class='walkthrough'><summary><span>🧑‍🏫 Read the full explanatory walkthrough</span><small>"+walkthrough.length+" deeper steps • expand when ready</small></summary><div class='walkthrough-body'>"+walkBody+"</div></details>":"";
+  return "<section class='nsec deep-notes'><h4>📘 Detailed topic notes <span class='pill'>"+sections.length+" focused sections</span></h4>"+
+    "<p class='deep-guide'>Expanded explanations organised around the chapter headings in your book. Use the shortcuts to jump to a subtopic; open the guided walkthrough for the underlying mechanisms and connections.</p>"+
+    "<nav class='deep-jumps' aria-label='Detailed notes subtopics'>"+jumps+"</nav><div class='deep-sections'>"+body+"</div>"+walk+"</section>";
+}
 function vRevise(){
   var S=subj(view.sid), U=unitOf(view.sid,view.uid), p=P();
   if(!view.tid) view.tid=U.topics[0].id;
   var list=U.topics.map(function(t){
     var done=p.topics[view.sid+":"+t.id];
-    return "<button class='topic-item"+(t.id===view.tid?" on":"")+(done?" done":"")+"' onclick=\"setTopic('"+t.id+"')\"><span class='dot'>"+(done?"✓":"•")+"</span><span><b>"+esc(t.name)+"</b><small>"+countQ(view.sid,view.uid,t.id)+" practice Qs</small></span></button>";
+    return "<button class='topic-item"+(t.id===view.tid?" on":"")+(done?" done":"")+"' onclick=\"setTopic('"+t.id+"')\"><span class='dot'>"+(done?"✓":"•")+"</span><span><b>"+esc(t.name)+"</b><small>"+countQ(view.sid,view.uid,t.id)+" practice Qs"+((t.notes.sections&&t.notes.sections.length)?" • "+t.notes.sections.length+" study sections":"")+((t.notes.walkthrough&&t.notes.walkthrough.length)?" • "+t.notes.walkthrough.length+" guided explanations":"")+"</small></span></button>";
   }).join("");
   var t=topicOf(view.sid,view.uid,view.tid), n=t.notes;
+  var detailed=vDetailedNotes(t,n);
+  var recall=n.reviewPrompt?"<div class='nsec deep-review'><h4>🧠 Retrieval check <span class='pill'>close your notes first</span></h4><p>"+esc(n.reviewPrompt)+"</p><small>Try answering from memory, then revisit the relevant section to correct any gaps.</small></div>":"";
   var pts=(n.points||[]).map(function(x){return "<li>"+x+"</li>";}).join("");
   var forms=(n.formulas||[]).map(function(f){return "<div class='formula'><div class='eq'>"+f.e+"</div><div class='what'>"+f.w+"</div></div>";}).join("");
   var defs=(n.defs||[]).map(function(d){return "<div class='def'><b>"+d.t+":</b> "+d.d+"</div>";}).join("");
@@ -135,17 +158,17 @@ function vRevise(){
   if(view.flashIdx>=cards.length) view.flashIdx=0;
   var fc=cards.length? "<div class='nsec'><h4>🃏 Flashcards <span class='pill'>"+cards.length+" cards</span></h4><div class='flash'><div class='flash-inner' onclick='flipFlash()'>"+(view.flashFlip?cards[view.flashIdx].b:cards[view.flashIdx].f)+"<small>"+(view.flashFlip?"Answer — tap to flip back":"Tap to reveal • Card "+(view.flashIdx+1)+" of "+cards.length)+"</small></div></div><div style='display:flex;gap:8px'><button class='btn btn-g btn-s' onclick='flashNav(-1)'>← Prev</button><button class='btn btn-g btn-s' onclick='flashNav(1)'>Next →</button><button class='btn btn-g btn-s' onclick='flashShuffle()'>🔀 Shuffle</button></div></div>":"";
   return "<div class='rev-layout' style='--ac:"+S.color+"'><div class='topic-list'><div class='tiny muted' style='padding:4px 10px 10px'>"+U.code+" • "+U.topics.length+" topics • "+unitQuestions(view.sid,view.uid).length+" Qs</div>"+list+"</div>"+
-  "<div class='notes'><div class='breadcrumb'>"+S.name+" / "+U.code+" / <b>"+esc(t.name)+"</b></div><h3>"+esc(t.name)+"</h3><p class='lede'>"+(n.lede||"")+"</p>"+
-  "<div class='nsec'><h4>📌 Key points <span class='pill'>learn these</span></h4><ul class='tick'>"+pts+"</ul></div>"+
+  "<div class='notes'><div class='breadcrumb'>"+S.name+" / "+U.code+" / <b>"+esc(t.name)+"</b></div><h3>"+esc(t.name)+"</h3><p class='lede'>"+(n.lede||"")+"</p>"+detailed+
+  "<div class='nsec'><h4>📌 Quick revision summary <span class='pill'>learn these</span></h4><ul class='tick'>"+pts+"</ul></div>"+
   (forms?"<div class='nsec'><h4>📐 Formulae <span class='pill'>memorise</span></h4><div class='formula-grid'>"+forms+"</div></div>":"")+
   (defs?"<div class='nsec'><h4>📚 Definitions <span class='pill'>word-perfect</span></h4><div class='def-grid'>"+defs+"</div></div>":"")+
-  worked+mist+tcards()+tips+oos+
+  worked+mist+tcards()+tips+oos+recall+
   "<div class='done-row'><button class='btn "+(done?"btn-g":"btn-p")+"' onclick=\"toggleTopic('"+view.sid+"','"+t.id+"')\">"+(done?"✓ Completed — tap to undo":"+ Mark topic complete (+20 XP)")+"</button>"+
   "<button class='btn btn-g' onclick=\"practiceTopic('"+t.id+"')\">📝 Practise this topic</button>"+
   "<button class='btn btn-g' onclick=\"askAbout('"+t.id+"')\">🤖 Ask AI about this</button></div></div></div>";
 }
 function tcards(){ return ""; }
-function countQ(sid,uid,tid){ return unitQuestions(sid,uid).filter(function(q){return (q.topics||[]).indexOf(tid)>=0;}).length; }
+function countQ(sid,uid,tid,includeRetries){ return unitQuestions(sid,uid).filter(function(q){return (includeRetries!==false||!q.repeat)&&(q.topics||[]).indexOf(tid)>=0;}).length; }
 function setTopic(tid){ view.tid=tid; view.flashIdx=0; view.flashFlip=false; render(); }
 function flipFlash(){ view.flashFlip=!view.flashFlip; render(); }
 function flashNav(d){ var n=(view._cards||[]).length; if(!n) return; view.flashIdx=(view.flashIdx+d+n)%n; view.flashFlip=false; render(); }
@@ -165,48 +188,89 @@ function vPapers(){
 }
 function setQmode(m){ view.qmode=m; if(m==="topical") view.mock=null; render(); }
 
-/* topical */
+/* topical question practice */
 function vTopical(){
-  var S=subj(view.sid), U=unitOf(view.sid,view.uid);
+  var S=subj(view.sid), U=unitOf(view.sid,view.uid), qs=filteredQ();
   var chips=U.topics.map(function(t){
     var on=view.qtopics.indexOf(t.id)>=0;
     return "<button class='tchip"+(on?" on":"")+"' onclick=\"toggleQtopic('"+t.id+"')\">"+(on?"✓ ":"")+esc(t.name)+"</button>";
   }).join("");
-  var list=filteredQ().map(qCard).join("") || "<div class='empty'>No questions match — try fewer filters.<br><br><button class='btn btn-g btn-s' onclick='clearQfilters()'>Clear filters</button></div>";
+  var list=renderQuestionCollection(qs) || "<div class='empty'>No questions match — try fewer filters.<br><br><button class='btn btn-g btn-s' onclick='clearQfilters()'>Clear filters</button></div>";
   var sel=view.qtopics.length? view.qtopics.length+" topic"+(view.qtopics.length>1?"s":"")+" selected" : "all topics in "+U.code;
-  return "<div class='q-toolbar'><h4>🎯 Filter by topic <span class='tiny muted'>(tick several for mixed-topic practice — like the real paper)</span></h4>"+chips+
+  var retryCount=qs.filter(function(q){return q.repeat;}).length;
+  return "<div class='q-toolbar'><h4>🎯 Filter by topic <span class='tiny muted'>(select several for mixed-topic practice)</span></h4>"+chips+
+  "<p class='question-guidance'>Choose a topic set, select a variant, draft your response, then reveal the credit points and worked sample answer. Use “All prompts” to browse every entry; each topic also has a clearly labelled retry drill.</p>"+
   "<div class='qfilters'><select onchange=\"view.qdiff=this.value;render()\"><option value='all'>All difficulties</option><option value='1'"+(view.qdiff==="1"?" selected":"")+">★ Easy</option><option value='2'"+(view.qdiff==="2"?" selected":"")+">★★ Medium</option><option value='3'"+(view.qdiff==="3"?" selected":"")+">★★★ Hard</option></select>"+
   "<input type='text' placeholder='Search questions…' value=\""+esc(view.qsearch)+"\" oninput=\"view.qsearch=this.value;renderQList()\">"+
-  "<span class='tiny muted'>"+filteredQ().length+" questions • "+sel+"</span>"+
-  (view.qtopics.length?"<button class='btn btn-g btn-xs' onclick='clearQfilters()'>Clear ✕</button>":"")+"</div></div><div id='qlist'>"+list+"</div>";
+  "<div class='question-view-switch' role='group' aria-label='Question display mode'><button class='btn btn-xs "+(view.qview==="sets"?"btn-p":"btn-g")+"' onclick=\"setQuestionView('sets')\">▦ Topic sets</button><button class='btn btn-xs "+(view.qview==="all"?"btn-p":"btn-g")+"' onclick=\"setQuestionView('all')\">☷ All prompts</button></div>"+
+  "<span class='tiny muted' id='questionCount'>"+qs.length+" questions • "+retryCount+" retry drills • "+sel+"</span>"+
+  (view.qtopics.length?"<button class='btn btn-g btn-xs' onclick='clearQfilters()'>Clear ✕</button>":"")+"</div>"+
+  "<p class='report-disclaimer'>Examiner-report insights are paraphrased and linked to the cited Pearson report. Where a report note is general, it is labelled as cross-paper advice—not as commentary on this exact practice question.</p></div><div id='qlist'>"+list+"</div>";
 }
 function filteredQ(){
   var all=unitQuestions(view.sid,view.uid);
   return all.filter(function(q){
-    if(view.qtopics.length && !q.topics.some(function(t){return view.qtopics.indexOf(t)>=0;})) return false;
+    if(view.qtopics.length && !(q.topics||[]).some(function(t){return view.qtopics.indexOf(t)>=0;})) return false;
     if(view.qdiff!=="all" && String(q.diff)!==String(view.qdiff)) return false;
     if(view.qsearch && (q.title+" "+q.q+" "+q.ref).toLowerCase().indexOf(view.qsearch.toLowerCase())<0) return false;
     return true;
   });
 }
-function renderQList(){ var el=document.getElementById("qlist"); if(el){ var l=filteredQ().map(qCard).join(""); el.innerHTML=l||"<div class='empty'>No matches.</div>"; } }
-function toggleQtopic(tid){ var i=view.qtopics.indexOf(tid); if(i>=0) view.qtopics.splice(i,1); else view.qtopics.push(tid); render(); }
-function clearQfilters(){ view.qtopics=[]; view.qdiff="all"; view.qsearch=""; render(); }
-function qCard(q){
-  var p=P(), st=p.q[q.id], cls=st?(" "+st):"";
-  var tnames=(q.topics||[]).map(function(tid){ var t=topicOf(view.sid,view.uid,tid)||findTopicAnywhere(view.sid,tid); return t?esc(t.name):tid; }).join(" • ");
-  return "<div class='qcard"+cls+"' id='card-"+q.id+"'><div class='qhead'><span class='qref'>"+esc(q.ref)+"</span><span class='qmarks'>"+q.marks+" marks</span><span class='qdiff d"+q.diff+"'>"+("★".repeat(q.diff))+"</span><span class='qref'>⏱ "+esc(q.time)+"</span>"+(st?"<span class='qref'>"+(st==="got"?"✅ got it":"🔁 reviewing")+"</span>":"")+"</div>"+
-  "<div class='qtitle'>"+esc(q.title)+"</div><div class='tiny muted' style='margin-bottom:8px'>"+tnames+"</div><div class='qbody'>"+esc(q.q)+"</div>"+
-  "<div class='hintbox' id='hint-"+q.id+"'>💡 "+esc(q.hint||"")+"</div>"+
-  "<div class='ansbox' id='ans-"+q.id+"'><h5>✅ MARK SCHEME ("+q.marks+" MARKS)</h5><ol>"+q.ans.map(function(a){return "<li>"+a+"</li>";}).join("")+"</ol>"+
-  "<div style='margin-top:12px;display:flex;gap:8px;flex-wrap:wrap'><span class='tiny muted'>Be honest — did you earn full marks?</span><button class='btn btn-g btn-xs' onclick=\"selfMark('"+q.id+"','got',"+q.marks+")\">✅ I got it</button><button class='btn btn-g btn-xs' onclick=\"selfMark('"+q.id+"','missed',"+q.marks+")\">🔁 Need review</button></div></div>"+
-  "<div class='qactions'><button class='btn btn-g btn-s' onclick=\"toggleAns('hint-"+q.id+"')\">💡 Hint</button><button class='btn btn-g btn-s' onclick=\"toggleAns('ans-"+q.id+"')\">✅ Show mark scheme</button><button class='btn btn-g btn-s' onclick=\"askQ('"+q.id+"')\">🤖 Explain this</button></div></div>";
+function setQuestionView(mode){view.qview=mode;render();}
+function questionGroupTopic(q,U){
+  var topic=(U.topics||[]).find(function(t){return (q.topics||[]).indexOf(t.id)>=0;});
+  return topic?topic.id:((q.topics||[])[0]||"other");
 }
-function findTopicAnywhere(sid,tid){ var f=null; subj(sid).units.forEach(function(u){ u.topics.forEach(function(t){ if(t.id===tid) f=t; }); }); return f; }
-function toggleAns(id){ document.getElementById(id).classList.toggle("show"); }
-function selfMark(qid,st,marks){ var p=P(); var first=!p.q[qid]; p.q[qid]=st; if(first) p.xp+= (st==="got"? marks*2 : 3); saveP(p); toast(st==="got"? "Excellent! +"+marks*2+" XP 🌟" : "Added to review list (+3 XP)"); var c=document.getElementById("card-"+qid); if(c){ c.classList.remove("got","missed"); c.classList.add(st); } render(); }
-function askQ(qid){ var all=unitQuestions(view.sid,view.uid).concat(view.mock&&view.mock.qs?view.mock.qs:[]), q=all.find(function(x){return x.id===qid;}); view.tab=2; render(); setTimeout(function(){ sendChat("Explain this question: "+(q?q.title+" — "+q.q.slice(0,300):qid)); },300); }
-function TUTORQUIZ(sid,uid,tid){ location.hash="#/subject/"+sid; view.sid=sid; view.uid=uid; view.tab=1; view.qmode="topical"; view.qtopics=[tid]; render(); window.scrollTo(0,0); toast("Filtered to your topic — good luck! 🎯"); }
+function renderQuestionCollection(qs){
+  if(!qs.length)return "";
+  if(view.qview==="all")return qs.map(function(q){return qCard(q);}).join("");
+  var U=unitOf(view.sid,view.uid), groups={};
+  qs.forEach(function(q){var tid=questionGroupTopic(q,U);(groups[tid]||(groups[tid]=[])).push(q);});
+  return U.topics.filter(function(t){return groups[t.id]&&groups[t.id].length;}).map(function(topic){
+    var variants=groups[topic.id], chosenId=view.variantFor[topic.id];
+    var active=variants.find(function(q){return q.id===chosenId;})||variants[0];
+    var tabs=variants.map(function(q,i){
+      var status=P().q[q.id], statusIcon=status==="got"?"✓":status==="missed"?"↻":"";
+      return "<button class='variant-btn"+(q.id===active.id?" on":"")+(q.repeat?" retry":"")+"' aria-pressed='"+(q.id===active.id)+"' onclick=\"setQuestionVariant('"+topic.id+"','"+q.id+"')\"><b>"+(q.repeat?"↻ Retry":"Variant "+(i+1))+"</b>"+(statusIcon?"<small>"+statusIcon+" "+(status==="got"?"mastered":"review")+"</small>":"")+(q.repeat?"<small>repeat drill</small>":"")+"</button>";
+    }).join("");
+    var retryN=variants.filter(function(q){return q.repeat;}).length;
+    return "<section class='question-family'><div class='question-family-head'><div><span class='family-kicker'>TOPIC QUESTION SET</span><h4>"+esc(topic.name)+"</h4></div><span class='family-count'>"+variants.length+" prompt"+(variants.length===1?"":"s")+(retryN?" • "+retryN+" retry":"")+"</span></div><div class='variant-strip' role='group' aria-label='Question variants for "+esc(topic.name)+"'>"+tabs+"</div>"+qCard(active)+"</section>";
+  }).join("");
+}
+function setQuestionVariant(tid,qid){view.variantFor[tid]=qid;renderQList();}
+function renderQList(){var qs=filteredQ(),el=document.getElementById("qlist");if(el){var l=renderQuestionCollection(qs);el.innerHTML=l||"<div class='empty'>No matches.</div>";}var count=document.getElementById("questionCount");if(count){var retries=qs.filter(function(q){return q.repeat;}).length,unit=unitOf(view.sid,view.uid);var selected=view.qtopics.length?view.qtopics.length+" topic"+(view.qtopics.length===1?"":"s")+" selected":"all topics in "+unit.code;count.textContent=qs.length+" questions • "+retries+" retry drills • "+selected;}}
+function toggleQtopic(tid){var i=view.qtopics.indexOf(tid);if(i>=0)view.qtopics.splice(i,1);else view.qtopics.push(tid);render();}
+function clearQfilters(){view.qtopics=[];view.qdiff="all";view.qsearch="";render();}
+function setAttempt(qid,value){view.attempts=view.attempts||{};view.attempts[qid]=value;var count=document.getElementById("attempt-count-"+qid);if(count){var words=value.trim()?value.trim().split(/\s+/).length:0;count.textContent=words+" word"+(words===1?"":"s")+" drafted";}}
+function clearAttempt(qid){view.attempts[qid]="";var field=document.getElementById("attempt-"+qid);if(field)field.value="";setAttempt(qid,"");}
+function topicForQuestion(q){var U=unitOf(view.sid,view.uid);var tid=questionGroupTopic(q,U);return topicOf(view.sid,view.uid,tid)||findTopicAnywhere(view.sid,tid);}
+function qCard(q){
+  var p=P(),st=p.q[q.id],cls=st?(" "+st):"",topic=topicForQuestion(q);
+  var tnames=(q.topics||[]).map(function(tid){var t=topicOf(view.sid,view.uid,tid)||findTopicAnywhere(view.sid,tid);return t?esc(t.name):esc(tid);}).join(" • ");
+  var points=q.markSchemePoints||q.ans||[];
+  var markPoints=points.map(function(a,i){return "<li><span class='credit-label'>Credit point "+(i+1)+"</span><span>"+a+"</span></li>";}).join("");
+  var sample=q.sampleAnswer?"<p>"+q.sampleAnswer+"</p>":(q.ans||[]).map(function(a){return "<p>"+a+"</p>";}).join("");
+  var mistakes=topic&&topic.notes&&topic.notes.mistakes?topic.notes.mistakes:[];
+  var insight=typeof examinerInsight==="function"?examinerInsight(view.sid,topic?topic.id:(q.topics||[])[0]):null;
+  var pitfallHtml="<details class='examiner-insight'><summary>⚠ Common pitfalls &amp; examiner-report insight</summary><div class='insight-grid'><section><h6>Topic pitfalls to check</h6>"+
+    (mistakes.length?"<ul>"+mistakes.map(function(x){return "<li>"+x+"</li>";}).join("")+"</ul>":"<p>No topic-specific pitfalls are recorded yet.</p>")+"</section>"+
+    (insight?"<section class='report-note'><h6>"+(insight.specific?"Topic-specific report note":"Cross-paper report advice")+"</h6><p>"+esc(insight.text)+"</p><p class='report-source'><a href='"+esc(insight.url)+"' target='_blank' rel='noopener'>"+esc(insight.label)+" · "+esc(insight.code)+" ↗</a></p>"+(!insight.specific?"<small>This is general advice from the linked unit report, not a claim that the report analysed this exact topic or generated question.</small>":"<small>Paraphrased from the cited topic-relevant examiner-report passage.</small>")+"</section>":"<section><h6>Report source</h6><p>No verified report is linked to this subject yet.</p></section>")+"</div></details>";
+  var draft=(view.attempts&&view.attempts[q.id])||"";
+  var retryBadge=q.repeat?"<span class='repeat-badge'>↻ Repeat drill</span>":"";
+  return "<div class='qcard"+cls+"' id='card-"+q.id+"'><div class='qhead'><span class='qref'>"+esc(q.ref)+"</span><span class='qmarks'>"+q.marks+" marks</span><span class='qdiff d"+q.diff+"'>"+("★".repeat(q.diff))+"</span><span class='qref'>⏱ "+esc(q.time)+"</span>"+retryBadge+(st?"<span class='qref'>"+(st==="got"?"✅ got it":"🔁 reviewing")+"</span>":"")+"</div>"+
+  "<div class='qtitle'>"+esc(q.title)+"</div><div class='tiny muted' style='margin-bottom:8px'>"+tnames+"</div><div class='qbody'>"+esc(q.q)+"</div>"+
+  "<details class='answer-attempt'><summary>✍️ Draft your answer before revealing marks</summary><div class='attempt-panel'><label for='attempt-"+q.id+"'>Write or outline the response</label><textarea id='attempt-"+q.id+"' rows='4' placeholder='Show your reasoning, working, units and conclusion…' oninput=\"setAttempt('"+q.id+"',this.value)\">"+esc(draft)+"</textarea><div class='attempt-footer'><span class='tiny muted' id='attempt-count-"+q.id+"'>"+(draft.trim()?draft.trim().split(/\s+/).length:0)+" words drafted</span><button class='btn btn-g btn-xs' type='button' onclick=\"clearAttempt('"+q.id+"')\">Clear draft</button></div></div></details>"+
+  "<div class='hintbox"+((view.openPanels&&view.openPanels["hint-"+q.id])?" show":"")+"' id='hint-"+q.id+"'>💡 "+esc(q.hint||"")+"</div>"+
+  "<div class='ansbox"+((view.openPanels&&view.openPanels["ans-"+q.id])?" show":"")+"' id='ans-"+q.id+"'><h5>✅ MARK-SCHEME CHECKPOINTS · "+q.marks+" marks available</h5><p class='answer-intro'>Compare your attempt with these credit-bearing points. Mark allocation can be dependent or combined, so the checkpoints do not imply one mark each.</p><ol class='mark-points'>"+markPoints+"</ol>"+
+  "<div class='sample-answer'><h6>🧾 Full-credit sample answer</h6>"+sample+"<small>The model follows the listed scoring points in order; calculation steps, reasoning, units and context are retained where supplied.</small></div>"+pitfallHtml+
+  "<div class='self-mark-row'><span class='tiny muted'>After comparing, how did you do?</span><button class='btn btn-g btn-xs' onclick=\"selfMark('"+q.id+"','got',"+q.marks+")\">✅ I earned full marks</button><button class='btn btn-g btn-xs' onclick=\"selfMark('"+q.id+"','missed',"+q.marks+")\">🔁 Add to review</button></div></div>"+
+  "<div class='qactions'><button class='btn btn-g btn-s' onclick=\"toggleAns('hint-"+q.id+"')\">💡 Hint</button><button class='btn btn-p btn-s' onclick=\"toggleAns('ans-"+q.id+"')\">✅ Reveal mark scheme + sample</button><button class='btn btn-g btn-s' onclick=\"askQ('"+q.id+"')\">🤖 Explain this</button></div></div>";
+}
+function findTopicAnywhere(sid,tid){var f=null;subj(sid).units.forEach(function(u){u.topics.forEach(function(t){if(t.id===tid)f=t;});});return f;}
+function toggleAns(id){view.openPanels=view.openPanels||{};view.openPanels[id]=!view.openPanels[id];var el=document.getElementById(id);if(el)el.classList.toggle("show",view.openPanels[id]);}
+function selfMark(qid,st,marks){var p=P();var first=!p.q[qid];p.q[qid]=st;if(first)p.xp+=(st==="got"?marks*2:3);saveP(p);toast(st==="got"?"Excellent! +"+marks*2+" XP 🌟":"Added to review list (+3 XP)");var c=document.getElementById("card-"+qid);if(c){c.classList.remove("got","missed");c.classList.add(st);}render();}
+function askQ(qid){var all=unitQuestions(view.sid,view.uid).concat(view.mock&&view.mock.qs?view.mock.qs:[]),q=all.find(function(x){return x.id===qid;});view.tab=2;render();setTimeout(function(){sendChat("Explain this question: "+(q?q.title+" — "+q.q.slice(0,300):qid));},300);}
+function TUTORQUIZ(sid,uid,tid){location.hash="#/subject/"+sid;view.sid=sid;view.uid=uid;view.tab=1;view.qmode="topical";view.qtopics=[tid];render();window.scrollTo(0,0);toast("Filtered to your topic — good luck! 🎯");}
 
 /* archive */
 var SESSIONS=[["Jan",2019],["Jun",2019],["Oct",2019],["Jan",2020],["Jun",2020],["Oct",2020],["Jan",2021],["Jun",2021],["Oct",2021],["Jan",2022],["Jun",2022],["Oct",2022],["Jan",2023],["Jun",2023],["Oct",2023],["Jan",2024],["Jun",2024],["Oct",2024],["Jan",2025],["Jun",2025],["Oct",2025],["Jan",2026],["Jun",2026]];
@@ -230,10 +294,10 @@ function vArchive(){
 function vMockSetup(){
   var S=subj(view.sid), U=unitOf(view.sid,view.uid);
   var boxes=U.topics.map(function(t){
-    var c=countQ(view.sid,view.uid,t.id);
-    return "<label style='display:flex;gap:10px;align-items:center;font-weight:600;color:var(--text);margin:8px 0'><input type='checkbox' class='mockTopic' value='"+t.id+"' "+(view.qtopics.indexOf(t.id)>=0?"checked":"")+" style='width:18px;height:18px'> "+esc(t.name)+" <span class='tiny muted'>("+c+" Qs)</span></label>";
+    var c=countQ(view.sid,view.uid,t.id,false);
+    return "<label style='display:flex;gap:10px;align-items:center;font-weight:600;color:var(--text);margin:8px 0'><input type='checkbox' class='mockTopic' value='"+t.id+"' "+(view.qtopics.indexOf(t.id)>=0?"checked":"")+" style='width:18px;height:18px'> "+esc(t.name)+" <span class='tiny muted'>("+c+" base Qs)</span></label>";
   }).join("");
-  return "<div class='mock-setup'><h3>⏱️ Build your mock — "+U.code+"</h3><p class='small muted'>Pick any <b>combination of topics</b>, set the time, and sit it like the real thing. Answers stay hidden until you finish.</p>"+
+  return "<div class='mock-setup'><h3>⏱️ Build your mock — "+U.code+"</h3><p class='small muted'>Pick any <b>combination of topics</b>, set the time, and sit it like the real thing. Answers stay hidden until you finish; mocks sample base prompts and skip the separate retry drills.</p>"+
   "<label>1️⃣ Topics (tick at least one)</label>"+boxes+
   "<div style='display:flex;gap:18px;flex-wrap:wrap'><div><label>2️⃣ Number of questions</label><select id='mockN'><option>4</option><option selected>6</option><option>8</option><option>10</option></select></div>"+
   "<div><label>3️⃣ Time allowed (minutes)</label><input type='number' id='mockT' value='30' min='5' max='120' style='width:110px'></div></div>"+
@@ -242,7 +306,7 @@ function vMockSetup(){
 function startMock(){
   var tids=[].map.call(document.querySelectorAll(".mockTopic:checked"),function(c){return c.value;});
   if(!tids.length){ toast("Tick at least one topic!"); return; }
-  var pool=unitQuestions(view.sid,view.uid).filter(function(q){ return q.topics.some(function(t){return tids.indexOf(t)>=0;}); });
+  var pool=unitQuestions(view.sid,view.uid).filter(function(q){ return !q.repeat&&(q.topics||[]).some(function(t){return tids.indexOf(t)>=0;}); });
   if(!pool.length){ toast("No questions for those topics"); return; }
   var n=Math.min(parseInt(document.getElementById("mockN").value)||6, pool.length);
   pool=pool.slice().sort(function(){return Math.random()-0.5;}).slice(0,n);
