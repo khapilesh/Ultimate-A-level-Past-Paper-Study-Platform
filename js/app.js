@@ -50,6 +50,7 @@ function toggleTheme(){ var h=document.documentElement; h.dataset.theme=(h.datas
 function render(){
   stopTimer();
   var h=(location.hash||"#/home").replace(/^#\//,""), parts=h.split("/");
+  if(parts[0]!=="games"&&typeof stopProjectileGameAnimation==="function")stopProjectileGameAnimation();
   document.querySelectorAll("#navLinks button").forEach(function(b){ b.classList.toggle("on", b.dataset.nav===parts[0]||(parts[0]==="subject"&&b.dataset.nav===parts[1])||(parts[0]==="topic"&&b.dataset.nav===parts[1])); });
   var app=document.getElementById("app");
   if(parts[0]==="subject"&&SUBJECTS[parts[1]]){
@@ -68,6 +69,7 @@ function render(){
   }
   else if(parts[0]==="guide"){app.innerHTML=bookStudyGuide();window.scrollTo(0,0);}
   else if(parts[0]==="progress"){app.innerHTML=vProgress();window.scrollTo(0,0);}
+  else if(parts[0]==="games"){app.innerHTML=vGames();afterGames();window.scrollTo(0,0);}
   else{app.innerHTML=vLibraryHome();window.scrollTo(0,0);}
   updateXP();
 }

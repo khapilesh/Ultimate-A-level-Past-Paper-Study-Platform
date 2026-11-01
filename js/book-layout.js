@@ -22,7 +22,7 @@ function vLibraryHome(){
   }).join("");
   return "<section class='library-home'><div class='library-welcome'><div class='library-copy'><div class='book-eyebrow'>EDEXCEL INTERNATIONAL A LEVEL · YOUR STUDY LIBRARY</div>"+
     "<h1>Choose a subject.<br><em>Open a book.</em></h1><p>Browse a real contents page, settle into a topic, then turn through detailed notes or exam-style practice at your own pace.</p>"+
-    "<div class='library-actions'><button class='btn btn-p' onclick=\"openStudyBook('physics')\">Open your first book <span>→</span></button><button class='btn btn-g' onclick=\"go('guide')\">Study guide &amp; resources</button></div></div>"+
+    "<div class='library-actions'><button class='btn btn-p' onclick=\"openStudyBook('physics')\">Open your first book <span>→</span></button><button class='btn btn-g' onclick=\"go('guide')\">Study guide &amp; resources</button><button class='btn btn-g' onclick=\"go('games')\">🎮 Play physics games</button></div></div>"+
     "<aside class='library-note'><span class='library-note-top'>A NOTE FOR YOUR NEXT SESSION <span>✳</span></span><p>Small chapters.<br>Clear explanations.<br>One page at a time.</p><small>YOUR DESK · "+c.topics+" CHAPTERS</small></aside></div>"+
     "<div class='shelf-heading'><h2>Your subjects</h2><span>Click a cover to open its contents</span></div><div class='library-shelf'>"+books+"</div>"+
     "<div class='library-bottom-row'><article><span>01</span><div><b>Read in chapters</b><p>Pick a topic from the contents page and move through one idea at a time.</p></div></article>"+
