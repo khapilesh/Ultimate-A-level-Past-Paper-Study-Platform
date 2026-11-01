@@ -29,7 +29,7 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 
 ### 🎮 Learn by playing
 - **Projectile-motion challenge**: choose a launch angle for a fixed-mass, fixed-speed ball, or choose its speed when the angle is fixed, and try to land it in a target hole.
-- A live trajectory preview updates with the slider; shots animate, misses show the distance error, and worked solutions connect range, flight time and maximum height to the equations.
+- Players calculate on paper and enter a numeric answer; the pre-shot course map hides the trajectory and landing marker. After a shot, the path animates, misses show the distance error, and a collapsed worked solution explains range, flight time and maximum height.
 - The first game assumes level ground and no air resistance, so it explicitly demonstrates why mass cancels from the ideal trajectory. Hits, streaks and game XP are saved locally.
 
 ### 🤖 Ask AI tutor
