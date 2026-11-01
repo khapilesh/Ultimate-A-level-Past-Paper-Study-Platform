@@ -27,6 +27,11 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 - Every topic now includes a two-part explanatory walkthrough that connects mechanisms, calculations and applications.
 - 🃏 Flashcards per topic, topic checklists and progress tracking
 
+### 🎮 Learn by playing
+- **Projectile-motion challenge**: choose a launch angle for a fixed-mass, fixed-speed ball, or choose its speed when the angle is fixed, and try to land it in a target hole.
+- A live trajectory preview updates with the slider; shots animate, misses show the distance error, and worked solutions connect range, flight time and maximum height to the equations.
+- The first game assumes level ground and no air resistance, so it explicitly demonstrates why mass cancels from the ideal trajectory. Hits, streaks and game XP are saved locally.
+
 ### 🤖 Ask AI tutor
 - Built-in **offline tutor** that knows the whole syllabus: explain topics, define terms, give formulae, set quizzes, share exam tips
 - Optional **full-AI mode**: paste your own OpenAI-compatible API key (stored only in your browser) for free-form chat
@@ -52,6 +57,7 @@ Or deploy the folder to GitHub Pages / Netlify / Vercel as-is.
 index.html          — main app shell; opens on the subject bookshelf
 css/style.css       — shared flat-color design system (no gradients)
 css/book-layout.css — permanent paper, bookshelf and paged-reader presentation
+css/games.css       — responsive warm-paper layout for physics mini-games
 js/
   data-physics.js    — Physics syllabus + notes
   data-chemistry.js  — Chemistry syllabus + notes
@@ -71,7 +77,8 @@ js/
   examiner-insights.js — paraphrased, source-linked Pearson report notes
   tutor.js           — offline tutor engine + optional LLM mode
   book-layout.js     — subject bookshelf, complete paged notes, and question flip reader
-  app.js             — routing, papers/mock/AI/progress views and interactions
+  games.js           — projectile-motion challenges, trajectory canvas and local game stats
+  app.js             — routing, papers/mock/AI/progress/games views and interactions
 ```
 
 ## Content honesty and examiner-report sources

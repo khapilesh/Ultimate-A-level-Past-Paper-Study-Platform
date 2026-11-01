@@ -1,0 +1,109 @@
+/* Warm-paper physics games: flat colours, clear controls, and dark-mode support. */
+.games-hub{max-width:1270px;margin:0 auto;padding:28px 0 50px;color:var(--book-ink)}
+.games-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 22px}
+.games-back-link{display:block;margin-bottom:8px;padding:0;border:0;background:none;color:var(--muted2);cursor:pointer;font:9px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.games-back-link:hover{color:var(--book-sage)}
+.games-heading h1{margin:8px 0 6px;color:var(--book-forest);font:600 clamp(2rem,4vw,3.1rem)/1.08 'Playfair Display',Georgia,serif;letter-spacing:-.035em}
+.games-heading p{max-width:660px;color:var(--muted);font-size:.94rem}
+.games-record{display:grid;grid-template-columns:repeat(3,minmax(78px,1fr));gap:4px;min-width:300px;padding:10px;border:1px solid var(--book-border);background:var(--book-paper);box-shadow:var(--book-shadow)}
+.games-record>div{padding:6px 8px;text-align:center;border-right:1px solid var(--book-border)}
+.games-record>div:last-child{border:0}
+.games-record b,.games-record span{display:block}
+.games-record b{color:var(--book-forest);font:600 21px 'Playfair Display',Georgia,serif}
+.games-record span{color:var(--muted2);font:8px var(--mono);letter-spacing:.08em}
+.game-mode-switch{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:12px;padding:7px;border:1px solid var(--book-border);background:var(--book-desk)}
+.game-mode-button,.game-new-round{min-height:38px;padding:8px 13px;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--book-ink-soft);font:600 11px var(--font);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.game-mode-button:hover,.game-new-round:hover{background:var(--book-paper);color:var(--book-forest)}
+.game-mode-button.active{background:var(--book-forest);color:var(--book-paper);border-color:var(--book-forest)}
+.game-new-round{margin-left:auto;border-color:var(--book-border-strong);background:var(--book-paper);color:var(--book-forest)}
+.projectile-game-layout{display:grid;grid-template-columns:minmax(290px,.82fr) minmax(0,1.35fr);gap:13px;align-items:stretch}
+.projectile-control-card,.projectile-visual-card{min-width:0;border:1px solid var(--book-border);background:var(--book-paper);box-shadow:var(--book-shadow)}
+.projectile-control-card{padding:19px 20px 17px;border-top:3px solid var(--book-sage)}
+.game-round-label{color:var(--book-sage);font:9px var(--mono);letter-spacing:.13em}
+.projectile-control-card h2{margin:4px 0 4px;color:var(--book-forest);font:600 23px/1.2 'Playfair Display',Georgia,serif}
+.game-instruction{min-height:42px;color:var(--book-ink-soft);font-size:12px;line-height:1.65}
+.game-givens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:14px 0 17px}
+.game-givens>div{min-width:0;padding:9px 8px;border:1px solid var(--book-border);background:var(--book-paper-alt)}
+.game-givens span,.game-givens b{display:block}
+.game-givens span{color:var(--muted2);font:8px var(--mono);letter-spacing:.06em}
+.game-givens b{margin-top:4px;color:var(--book-forest);font:600 clamp(12px,1.45vw,16px) 'Playfair Display',Georgia,serif;white-space:nowrap}
+.game-slider-wrap{padding:14px 13px 10px;border:1px solid var(--book-border);background:var(--book-paper)}
+.game-slider-heading{display:flex;align-items:baseline;gap:6px;margin-bottom:9px}
+.game-slider-heading label{margin-right:auto;color:var(--book-ink-soft);font-size:11px;font-weight:700}
+.game-slider-heading output{color:var(--book-forest);font:600 24px 'Playfair Display',Georgia,serif}
+.game-slider-heading span{color:var(--book-sage);font:600 11px var(--mono)}
+#projectileGuess{display:block;width:100%;height:18px;margin:2px 0 5px;accent-color:var(--book-sage);cursor:pointer}
+#projectileGuess:disabled{cursor:wait;opacity:.6}
+.game-slider-scale{display:flex;justify-content:space-between;color:var(--muted2);font:8px var(--mono)}
+.game-equation-hint{display:flex;gap:10px;margin:12px 0;padding:9px 10px;border-left:2px solid var(--book-warm);background:var(--book-paper-alt)}
+.game-equation-hint>span{flex:none;margin-top:2px;color:var(--book-warm);font:9px var(--mono);letter-spacing:.1em}
+.game-equation-hint p{color:var(--book-ink-soft);font-size:10px;line-height:1.55}
+.game-equation-hint b{color:var(--book-forest);font-family:var(--mono);font-size:10px}
+.game-control-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:13px}
+.game-control-actions .btn{min-height:38px;padding:9px 14px;border-radius:5px;font-size:11px}
+.game-control-actions>span{color:var(--muted2);font:9px var(--mono)}
+.projectile-visual-card{display:flex;flex-direction:column;padding:15px 16px 12px}
+.projectile-visual-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
+.projectile-visual-heading>div span,.projectile-visual-heading>div b{display:block}
+.projectile-visual-heading>div span{color:var(--muted2);font:8px var(--mono);letter-spacing:.12em}
+.projectile-visual-heading>div b{margin-top:3px;color:var(--book-ink);font-size:11px}
+.projectile-live-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 7px;border:1px solid var(--book-border);color:var(--book-sage);font:8px var(--mono);letter-spacing:.07em;white-space:nowrap}
+.projectile-live-tag i{width:6px;height:6px;border-radius:50%;background:var(--book-sage)}
+.projectile-canvas-frame{overflow:hidden;border:1px solid var(--book-border);background:var(--book-paper)}
+#projectileCanvas{display:block;width:100%;height:300px}
+.projectile-caption{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;padding-top:9px;color:var(--muted2);font:8px var(--mono)}
+.projectile-caption span{display:inline-flex;align-items:center;gap:5px}
+.legend-path{width:14px;border-top:2px dashed var(--book-sage)}
+.legend-target{width:11px;height:7px;border-radius:50%;background:var(--book-warm)}
+.projectile-outcome-wrap{margin-top:12px}
+.game-outcome{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--book-border);background:var(--book-paper);box-shadow:var(--book-shadow)}
+.game-outcome.idle{border-left:3px solid var(--book-sage)}
+.game-outcome.success{border-left:3px solid #628368}
+.game-outcome.miss{border-left:3px solid var(--book-warm)}
+.game-outcome-icon{flex:none;font-size:21px;line-height:1.3}
+.game-outcome-copy{min-width:0;flex:1}
+.game-outcome b{color:var(--book-forest);font-size:12px}
+.game-outcome p{margin-top:3px;color:var(--book-ink-soft);font-size:10px;line-height:1.6}
+.game-solution{margin-top:10px;padding-top:8px;border-top:1px solid var(--book-border)}
+.game-solution summary{color:var(--book-sage);font-size:10px;font-weight:800;cursor:pointer}
+.game-solution p{margin:5px 0 0}
+.game-solution p b{font-size:10px}
+.game-xp-note,.game-retry-note{margin-top:7px;color:var(--muted2);font-size:9px}
+.projectile-learning{margin-top:14px;border:1px solid var(--book-border);background:var(--book-paper-alt)}
+.projectile-learning summary{padding:12px 14px;color:var(--book-forest);font-size:11px;font-weight:800;cursor:pointer}
+.projectile-learning>div{padding:0 14px 13px;color:var(--book-ink-soft);font-size:11px;line-height:1.7}
+.projectile-learning p+p{margin-top:7px}
+.projectile-learning b{color:var(--book-forest);font-family:var(--mono);font-size:10px}
+@media(max-width:940px){
+  .projectile-game-layout{grid-template-columns:minmax(260px,.9fr) minmax(0,1.1fr)}
+  .game-givens{grid-template-columns:1fr}
+  .game-givens>div{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .game-givens b{margin:0}
+}
+@media(max-width:740px){
+  .games-heading{align-items:flex-start;flex-direction:column}
+  .games-record{width:100%;min-width:0}
+  .projectile-game-layout{grid-template-columns:1fr}
+  .game-givens{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .game-givens>div{display:block}
+  .game-givens b{margin-top:4px}
+}
+@media(max-width:480px){
+  .games-hub{padding-top:18px}
+  .games-record{gap:0;padding:7px 3px}
+  .games-record>div{padding:5px 3px}
+  .games-record b{font-size:18px}
+  .games-record span{font-size:7px;letter-spacing:.035em}
+  .game-mode-switch{gap:4px;padding:5px}
+  .game-mode-button,.game-new-round{padding:7px 8px;font-size:10px}
+  .game-new-round{margin-left:0}
+  .projectile-control-card{padding:15px 13px}
+  .game-givens{gap:4px}
+  .game-givens>div{padding:7px 5px}
+  .game-givens span{font-size:7px;letter-spacing:0}
+  .game-givens b{font-size:12px}
+  .projectile-visual-card{padding:12px 10px 10px}
+  #projectileCanvas{height:260px}
+  .projectile-caption{font-size:7px}
+}
+@media(prefers-reduced-motion:reduce){.game-mode-button,.game-new-round{transition:none}}
