@@ -22,11 +22,24 @@
 .game-round-label{color:var(--book-sage);font:9px var(--mono);letter-spacing:.13em}
 .projectile-control-card h2{margin:4px 0 4px;color:var(--book-forest);font:600 23px/1.2 'Playfair Display',Georgia,serif}
 .game-instruction{min-height:42px;color:var(--book-ink-soft);font-size:12px;line-height:1.65}
-.game-givens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:14px 0 17px}
+.game-givens{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:14px 0 14px}
 .game-givens>div{min-width:0;padding:9px 8px;border:1px solid var(--book-border);background:var(--book-paper-alt)}
 .game-givens span,.game-givens b{display:block}
 .game-givens span{color:var(--muted2);font:8px var(--mono);letter-spacing:.06em}
 .game-givens b{margin-top:4px;color:var(--book-forest);font:600 clamp(12px,1.45vw,16px) 'Playfair Display',Georgia,serif;white-space:nowrap}
+.suvat-data-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:12px 0 6px}
+.suvat-data-heading span{color:var(--book-warm);font:8px var(--mono);letter-spacing:.11em}
+.suvat-data-heading b{color:var(--muted2);font:8px var(--mono);text-align:right}
+.suvat-data-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:14px}
+.suvat-axis-card{min-width:0;padding:9px;border:1px solid var(--book-border);background:var(--book-paper-alt)}
+.suvat-axis-heading{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:7px}
+.suvat-axis-heading b{color:var(--book-forest);font:600 10px 'Playfair Display',Georgia,serif}
+.suvat-axis-heading span{color:var(--muted2);font:7px var(--mono);white-space:nowrap}
+.suvat-axis-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.suvat-axis-values>div{min-width:0;padding:5px 4px;border:1px solid var(--book-border);background:var(--book-paper)}
+.suvat-axis-values span,.suvat-axis-values b{display:block}
+.suvat-axis-values span{color:var(--muted2);font:8px var(--mono)}
+.suvat-axis-values b{margin-top:2px;color:var(--book-ink);font:600 9px var(--mono);white-space:nowrap}
 .game-answer-wrap{padding:14px 13px 11px;border:1px solid var(--book-border);background:var(--book-paper)}
 .game-answer-heading{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
 .game-answer-heading label{margin-right:auto;color:var(--book-ink-soft);font-size:11px;font-weight:700}
@@ -78,6 +91,7 @@
 @media(max-width:940px){
   .projectile-game-layout{grid-template-columns:minmax(260px,.9fr) minmax(0,1.1fr)}
   .game-givens{grid-template-columns:1fr}
+  .suvat-data-grid{grid-template-columns:1fr}
   .game-givens>div{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .game-givens b{margin:0}
 }
@@ -85,7 +99,7 @@
   .games-heading{align-items:flex-start;flex-direction:column}
   .games-record{width:100%;min-width:0}
   .projectile-game-layout{grid-template-columns:1fr}
-  .game-givens{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .game-givens{grid-template-columns:repeat(2,minmax(0,1fr))}
   .game-givens>div{display:block}
   .game-givens b{margin-top:4px}
 }
