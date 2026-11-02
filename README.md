@@ -29,7 +29,7 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 
 ### 🎮 Learn by playing
 - **Projectile-motion challenge**: choose a launch angle for a fixed-mass, fixed-speed ball, or choose its speed when the angle is fixed, and try to land it in a target hole.
-- Players calculate on paper and enter a numeric answer; the pre-shot course map hides the trajectory and landing marker. After a shot, the path animates, misses show the distance error, and a collapsed worked solution explains range, flight time and maximum height.
+- Players calculate on paper and enter a numeric answer; the pre-shot course map hides the trajectory and landing marker. Each round gives three known variables for vertical and horizontal motion; solve the initial components with syllabus SUVAT equations, then find the angle or speed. After a shot, the path animates and a collapsed worked solution checks the SUVAT steps.
 - The first game assumes level ground and no air resistance, so it explicitly demonstrates why mass cancels from the ideal trajectory. Hits, streaks and game XP are saved locally.
 
 ### 🤖 Ask AI tutor
