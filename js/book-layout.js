@@ -22,7 +22,7 @@ function vLibraryHome(){
   }).join("");
   return "<section class='library-home'><div class='library-welcome'><div class='library-copy'><div class='book-eyebrow'>EDEXCEL INTERNATIONAL A LEVEL · YOUR STUDY LIBRARY</div>"+
     "<h1>Choose a subject.<br><em>Open a book.</em></h1><p>Browse a real contents page, settle into a topic, then turn through detailed notes or exam-style practice at your own pace.</p>"+
-    "<div class='library-actions'><button class='btn btn-p' onclick=\"openStudyBook('physics')\">Open your first book <span>→</span></button><button class='btn btn-g' onclick=\"go('guide')\">Study guide &amp; resources</button><button class='btn btn-g' onclick=\"go('games')\">🎮 Play physics games</button></div></div>"+
+    "<div class='library-actions'><button class='btn btn-p' onclick=\"openStudyBook('physics')\">Open your first book <span>→</span></button><button class='btn btn-g' onclick=\"go('guide')\">Study guide &amp; resources</button><button class='btn btn-g' onclick=\"go('games')\">🎮 Play science games</button></div></div>"+
     "<aside class='library-note'><span class='library-note-top'>A NOTE FOR YOUR NEXT SESSION <span>✳</span></span><p>Small chapters.<br>Clear explanations.<br>One page at a time.</p><small>YOUR DESK · "+c.topics+" CHAPTERS</small></aside></div>"+
     "<div class='shelf-heading'><h2>Your subjects</h2><span>Click a cover to open its contents</span></div><div class='library-shelf'>"+books+"</div>"+
     "<div class='library-bottom-row'><article><span>01</span><div><b>Read in chapters</b><p>Pick a topic from the contents page and move through one idea at a time.</p></div></article>"+
@@ -84,8 +84,9 @@ function renderBookNotes(T){
   if(view.notePage>=pages.length) view.notePage=0;
   var index=view.notePage||0, page=pages[index], done=P().topics[view.sid+":"+T.id], content=renderBookNotePage(page,T,n);
   var direction=view.bookTurnDir||"";
+  var gameAction=(view.sid==="physics"||view.sid==="chemistry"||view.sid==="biology")?"<button class='btn btn-g btn-s' onclick=\"topicArcadeStart('"+view.sid+"','"+view.uid+"','"+T.id+"')\">🎮 Play this topic</button>":"";
   var html="<div class='book-note-reader'><div class='book-note-page-head'><div><span class='book-page-kicker'>"+bookPageLabel(page,index)+"</span><h2 class='book-note-title'>"+esc(T.name)+"</h2></div><span class='book-page-folio-large'>"+String(index+1).padStart(2,"0")+"</span></div>"+
-    "<article class='book-note-page "+direction+"'>"+content+"</article><div class='book-note-actions'><button class='btn "+(done?"btn-g":"btn-p")+" btn-s' onclick=\"toggleTopic('"+view.sid+"','"+T.id+"')\">"+(done?"✓ Topic complete":"Mark topic complete · +20 XP")+"</button><button class='btn btn-g btn-s' onclick=\"practiceTopic('"+T.id+"')\">✎ Practise this topic</button><button class='btn btn-g btn-s' onclick=\"askAbout('"+T.id+"')\">Ask AI about it</button></div>"+
+    "<article class='book-note-page "+direction+"'>"+content+"</article><div class='book-note-actions'><button class='btn "+(done?"btn-g":"btn-p")+" btn-s' onclick=\"toggleTopic('"+view.sid+"','"+T.id+"')\">"+(done?"✓ Topic complete":"Mark topic complete · +20 XP")+"</button><button class='btn btn-g btn-s' onclick=\"practiceTopic('"+T.id+"')\">✎ Practise this topic</button>"+gameAction+"<button class='btn btn-g btn-s' onclick=\"askAbout('"+T.id+"')\">Ask AI about it</button></div>"+
     "<div class='book-turn-controls'><button class='book-turn-button' onclick='bookNoteTurn(-1)'"+(index===0?" disabled":"")+">← Previous page</button><div class='book-turn-status'><b>PAGE "+String(index+1).padStart(2,"0")+" OF "+String(pages.length).padStart(2,"0")+"</b><span><i style='width:"+Math.round((index+1)/pages.length*100)+"%'></i></span></div><button class='book-turn-button' onclick='bookNoteTurn(1)'"+(index===pages.length-1?" disabled":"")+">Next page →</button></div></div>";
   view.bookTurnDir="";
   return html;

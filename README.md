@@ -28,9 +28,10 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 - 🃏 Flashcards per topic, topic checklists and progress tracking
 
 ### 🎮 Learn by playing
-- **Projectile-motion challenge**: choose a launch angle for a fixed-mass, fixed-speed ball, or choose its speed when the angle is fixed, and try to land it in a target hole.
-- Players calculate on paper and enter a numeric answer; the pre-shot course map hides the trajectory and landing marker. Each round gives three known variables for vertical and horizontal motion; solve the initial components with syllabus SUVAT equations, then find the angle or speed. After a shot, the path animates and a collapsed worked solution checks the SUVAT steps.
-- The first game assumes level ground and no air resistance, so it explicitly demonstrates why mass cancels from the ideal trajectory. Hits, streaks and game XP are saved locally.
+- **Science Study Arcade: 58 original topic games**—one mapped challenge for every Physics topic (19), Chemistry topic (22) and Biology topic (17) in the platform. Browse by subject and unit, or launch a mixed-science challenge.
+- Play three formats: paper-first numeric problems with checked units and worked steps; multiple-choice reasoning puzzles with plausible distractors; and accessible step-ordering challenges for mechanisms, pathways and practical methods. Hints are optional, worked solutions stay collapsed until an attempt, and per-topic mastery, streaks and XP save locally.
+- **Featured projectile-motion challenge**: choose a launch angle for a fixed-speed ball, or choose its speed when the angle is fixed, and try to land it in the target hole. Each round gives three known values for vertical and horizontal motion; solve the components with syllabus SUVAT equations. The pre-shot map hides the trajectory until firing, and the worked solution is collapsed.
+- The projectile game assumes level ground and no air resistance, so it also demonstrates why mass cancels from the ideal trajectory. Existing hits, streaks and game XP are retained.
 
 ### 🤖 Ask AI tutor
 - Built-in **offline tutor** that knows the whole syllabus: explain topics, define terms, give formulae, set quizzes, share exam tips
@@ -49,6 +50,8 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
+Run the built-in arcade coverage and interaction smoke test with `node tests/topic-games.test.js`.
+
 Or deploy the folder to GitHub Pages / Netlify / Vercel as-is.
 
 ## Project structure
@@ -57,7 +60,7 @@ Or deploy the folder to GitHub Pages / Netlify / Vercel as-is.
 index.html          — main app shell; opens on the subject bookshelf
 css/style.css       — shared flat-color design system (no gradients)
 css/book-layout.css — permanent paper, bookshelf and paged-reader presentation
-css/games.css       — responsive warm-paper layout for physics mini-games
+css/games.css       — responsive warm-paper layout for projectile and topic mini-games
 js/
   data-physics.js    — Physics syllabus + notes
   data-chemistry.js  — Chemistry syllabus + notes
@@ -77,7 +80,8 @@ js/
   examiner-insights.js — paraphrased, source-linked Pearson report notes
   tutor.js           — offline tutor engine + optional LLM mode
   book-layout.js     — subject bookshelf, complete paged notes, and question flip reader
-  games.js           — projectile-motion challenges, trajectory canvas and local game stats
+  topic-games.js     — original hand-calculation, reasoning and process challenges mapped to every Physics/Chemistry/Biology topic
+  games.js           — science-game arcade, projectile canvas, accessible controls and local game stats
   app.js             — routing, papers/mock/AI/progress/games views and interactions
 ```
 

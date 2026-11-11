@@ -60,14 +60,15 @@ function projectileNewChallenge(){
   projectileGame.challenge=challenge;projectileGame.value="";projectileGame.result=null;projectileGame.scored=false;
   var stats=projectileReadStats();stats.rounds++;projectileSaveStats(stats);
 }
+function isProjectileRoute(){return /^#\/games\/projectile(?:\/|$)/.test(location.hash||"");}
 function setProjectileMode(mode){
   if(mode!=="angle"&&mode!=="speed")return;
   projectileGame.mode=mode;projectileNewChallenge();
-  if(document.getElementById("app")&&location.hash==="#/games")render();
+  if(document.getElementById("app")&&isProjectileRoute())render();
 }
 function newProjectileChallenge(){
   projectileNewChallenge();
-  if(document.getElementById("app")&&location.hash==="#/games")render();
+  if(document.getElementById("app")&&isProjectileRoute())render();
 }
 function projectileSyncUI(){
   var answerField=document.getElementById("projectileGuess"),unit=document.getElementById("projectileGuessUnit");
@@ -77,7 +78,7 @@ function projectileSyncUI(){
   var outcome=document.getElementById("projectileOutcome");if(outcome)outcome.innerHTML=projectileResultMarkup();
   drawProjectileGame(projectileGame.result?1:null);
 }
-function afterGames(){projectileEnsureChallenge();projectileSyncUI();}
+function afterGames(){if(isProjectileRoute()){projectileEnsureChallenge();projectileSyncUI();}}
 function projectileGuessChanged(value){
   if(value===""||value==null){projectileGame.value="";drawProjectileGame(null);return;}
   var num=Number(value);if(!isFinite(num))return;
@@ -179,7 +180,7 @@ function drawProjectileGame(progress){
 function projectileSuvatAxisCard(title,sLabel,sValue,aLabel,aValue,timeValue){
   return "<section class='suvat-axis-card'><div class='suvat-axis-heading'><b>"+title+"</b><span>3 known values</span></div><div class='suvat-axis-values'><div><span>"+sLabel+"</span><b>"+sValue+"</b></div><div><span>"+aLabel+"</span><b>"+aValue+"</b></div><div><span>t</span><b>"+timeValue.toFixed(3)+" s</b></div></div></section>";
 }
-function vGames(){
+function vProjectileGame(){
   projectileEnsureChallenge();
   var c=projectileGame.challenge,stats=projectileReadStats(),angleMode=projectileGame.mode==="angle";
   var modeLabel=angleMode?"Find the angle":"Find the launch speed";
@@ -192,7 +193,7 @@ function vGames(){
     projectileSuvatAxisCard("Horizontal motion (x)","sₓ",c.target.toFixed(2)+" m","aₓ","0.00 m/s²",c.time)+"</div>";
   var hint=angleMode?"Use s = ut + ½at² in each direction to find uᵧ and uₓ, then θ = tan⁻¹(uᵧ/uₓ).":"Use s = ut + ½at² to find uᵧ and uₓ, then combine the perpendicular components: u = √(uₓ² + uᵧ²).";
   var solution=projectileResultMarkup();
-  return "<section class='games-hub'><header class='games-heading'><div><button class='games-back-link' onclick=\"go('home')\">← Bookshelf</button><div class='book-eyebrow'>IAL MASTERY · PHYSICS MINI-GAME</div><h1>🎯 Land it in the hole</h1><p>Calculate the launch setting from vertical and horizontal SUVAT data; the flight path stays hidden until your shot.</p></div><div class='games-record' aria-label='Game record'><div><b>"+stats.hits+"</b><span>HOLES HIT</span></div><div><b>"+stats.streak+"</b><span>CURRENT STREAK</span></div><div><b>"+stats.bestStreak+"</b><span>BEST STREAK</span></div></div></header>"+
+  return "<section class='games-hub'><header class='games-heading'><div><button class='games-back-link' onclick=\"go('games')\">← Study Arcade</button><div class='book-eyebrow'>IAL MASTERY · PHYSICS MINI-GAME</div><h1>🎯 Land it in the hole</h1><p>Calculate the launch setting from vertical and horizontal SUVAT data; the flight path stays hidden until your shot.</p></div><div class='games-record' aria-label='Game record'><div><b>"+stats.hits+"</b><span>HOLES HIT</span></div><div><b>"+stats.streak+"</b><span>CURRENT STREAK</span></div><div><b>"+stats.bestStreak+"</b><span>BEST STREAK</span></div></div></header>"+
   "<div class='game-mode-switch' role='group' aria-label='Projectile challenge mode'><button class='game-mode-button"+(angleMode?" active":"")+"' onclick=\"setProjectileMode('angle')\" aria-pressed='"+angleMode+"'>⌖ Find the angle</button><button class='game-mode-button"+(!angleMode?" active":"")+"' onclick=\"setProjectileMode('speed')\" aria-pressed='"+(!angleMode)+"'>↗ Find the speed</button><button class='game-new-round' onclick='newProjectileChallenge()'>↻ New challenge</button></div>"+
   "<div class='projectile-game-layout'><section class='projectile-control-card'><div class='game-round-label'>CHALLENGE "+String(stats.rounds).padStart(2,"0")+" · "+(angleMode?"ANGLE MODE":"SPEED MODE")+"</div><h2>"+modeLabel+"</h2><p class='game-instruction'>"+given+" Land within <b>±0.25 m</b> of the hole center.</p>"+
   "<div class='game-givens'><div><span>BALL MASS</span><b>"+c.mass.toFixed(1)+" kg</b></div><div><span>"+fixedLabel.toUpperCase()+"</span><b>"+fixedValue+"</b></div></div>"+motionData+
@@ -202,4 +203,133 @@ function vGames(){
   "<section class='projectile-visual-card'><div class='projectile-visual-heading'><div><span>COURSE MAP</span><b>The flight path stays hidden until you fire</b></div><span class='projectile-live-tag'><i></i> CALCULATION MODE</span></div><div class='projectile-canvas-frame'><canvas id='projectileCanvas' width='800' height='300' role='img' aria-label='Course map showing the launch point and target hole; no trajectory is shown before a shot'>Course map showing the launch point, ground scale and target hole. The flight path is hidden until after you fire.</canvas></div><div class='projectile-caption'><span><i class='legend-launch'></i> launch point</span><span><i class='legend-target'></i> target hole</span><span>Work out the path on paper</span></div></section></div>"+
   "<div id='projectileOutcome' class='projectile-outcome-wrap'>"+solution+"</div>"+
   "<details class='projectile-learning'><summary>Why does the ball’s mass not change the answer?</summary><div><p>This level assumes no air resistance and a level landing. Gravity pulls down with force <b>F = mg</b>; using <b>F = ma</b> gives <b>aᵧ = −g</b>, so mass cancels.</p><p>Use only the syllabus motion equations: <b>sᵧ = uᵧt + ½aᵧt²</b> vertically and <b>sₓ = uₓt + ½aₓt²</b> horizontally. Here <b>sᵧ = 0</b>, <b>aᵧ = −g</b> and <b>aₓ = 0</b>; solve the initial components, then use them to find angle or speed.</p><p>At maximum height, <b>vᵧ = 0</b>; use <b>vᵧ² = uᵧ² + 2aᵧsᵧ</b> to find the height.</p></div></details></section>";
+}
+
+/* Topic Arcade: one hand-calculation, reasoning or process game for every science topic. */
+var topicArcadeFilter={sid:"physics",uid:"all"};
+var topicGameSessions={};
+function topicArcadeStats(){
+  var all={};try{all=JSON.parse(localStorage.getItem("ial-games")||"{}");}catch(e){all={};}
+  var s=all.topicArcade||{};
+  return {completed:s.completed||{},attempts:Number(s.attempts)||0,correct:Number(s.correct)||0,streak:Number(s.streak)||0,bestStreak:Number(s.bestStreak)||0};
+}
+function topicArcadeSave(stats){
+  var all={};try{all=JSON.parse(localStorage.getItem("ial-games")||"{}");}catch(e){all={};}
+  all.topicArcade=stats;try{localStorage.setItem("ial-games",JSON.stringify(all));}catch(e){}
+}
+function topicArcadeKey(sid,tid){return sid+":"+tid;}
+function topicArcadeTopics(sid){
+  var rows=[],S=SUBJECTS[sid];if(!S)return rows;
+  S.units.forEach(function(u){u.topics.forEach(function(t){rows.push({sid:sid,uid:u.id,unit:u,topic:t,game:TOPIC_GAME_CATALOG[sid]&&TOPIC_GAME_CATALOG[sid][t.id]});});});
+  return rows;
+}
+function topicArcadeCoverage(){
+  var total=0,mapped=0,missing=[];
+  ["physics","chemistry","biology"].forEach(function(sid){topicArcadeTopics(sid).forEach(function(row){total++;if(row.game)mapped++;else missing.push(sid+"/"+row.unit.id+"/"+row.topic.id);});});
+  return {total:total,mapped:mapped,missing:missing};
+}
+function topicArcadeMode(game){return game.kind==="calculate"?"CALCULATE":game.kind==="think"?"THINK IT THROUGH":"PUT IN ORDER";}
+function topicArcadeCountDone(stats){return Object.keys(stats.completed).filter(function(key){return !!stats.completed[key];}).length;}
+function topicArcadeSetSubject(sid){if(!TOPIC_GAME_CATALOG[sid])return;topicArcadeFilter.sid=sid;topicArcadeFilter.uid="all";render();}
+function topicArcadeSetUnit(uid){topicArcadeFilter.uid=uid||"all";render();}
+function topicArcadeStart(sid,uid,tid){
+  topicArcadeFilter.sid=sid;topicArcadeFilter.uid=uid;
+  go("games/"+sid+"/"+uid+"/"+tid);
+}
+function topicArcadeStartRandom(){
+  var rows=[];["physics","chemistry","biology"].forEach(function(sid){rows=rows.concat(topicArcadeTopics(sid).filter(function(row){return !!row.game;}));});
+  if(!rows.length)return;
+  var row=rows[Math.floor(Math.random()*rows.length)];topicArcadeStart(row.sid,row.uid,row.topic.id);
+}
+function topicArcadeNext(sid,uid,tid){
+  var rows=topicArcadeTopics(sid),index=rows.findIndex(function(row){return row.uid===uid&&row.topic.id===tid;}),next=rows[index+1]||rows[0];
+  if(next)topicArcadeStart(next.sid,next.uid,next.topic.id);else go("games");
+}
+function topicArcadeNewSession(game){
+  var order=[];
+  if(game.kind==="sequence"){for(var i=0;i<game.steps.length;i++)order.push(i);order.reverse();}
+  return {value:"",selected:-1,order:order,checked:false,solved:false,attempts:0,reward:0};
+}
+function topicArcadeSession(key,game){if(!topicGameSessions[key])topicGameSessions[key]=topicArcadeNewSession(game);return topicGameSessions[key];}
+function topicArcadeInput(value,sid,tid){var state=topicGameSessions[topicArcadeKey(sid,tid)];if(state&&!state.solved){state.value=value;state.checked=false;}}
+function topicArcadeChoose(index,sid,tid){var state=topicGameSessions[topicArcadeKey(sid,tid)];if(state&&!state.solved){state.selected=index;state.checked=false;render();}}
+function topicArcadeMove(index,delta,sid,tid){
+  var state=topicGameSessions[topicArcadeKey(sid,tid)];if(!state||state.solved)return;
+  var next=index+delta;if(next<0||next>=state.order.length)return;
+  var temp=state.order[index];state.order[index]=state.order[next];state.order[next]=temp;state.checked=false;render();
+}
+function topicArcadeReset(sid,tid){
+  var game=TOPIC_GAME_CATALOG[sid]&&TOPIC_GAME_CATALOG[sid][tid];if(!game)return;
+  topicGameSessions[topicArcadeKey(sid,tid)]=topicArcadeNewSession(game);render();
+}
+function topicArcadeCheck(sid,uid,tid){
+  var key=topicArcadeKey(sid,tid),game=TOPIC_GAME_CATALOG[sid]&&TOPIC_GAME_CATALOG[sid][tid],state=game&&topicArcadeSession(key,game);
+  if(!game||!state||state.solved)return;
+  var correct=false;
+  if(game.kind==="calculate"){
+    if(state.value===""||state.value==null){if(typeof toast==="function")toast("Work it out first, then enter a number.");return;}
+    var value=Number(state.value);if(!isFinite(value)){if(typeof toast==="function")toast("Enter a valid number before checking.");return;}
+    correct=Math.abs(value-game.answer)<=game.tolerance;
+  }else if(game.kind==="think"){
+    if(state.selected<0){if(typeof toast==="function")toast("Choose the option you think is best.");return;}
+    correct=state.selected===game.correct;
+  }else{
+    if(!state.order.length){if(typeof toast==="function")toast("This ordering challenge has no steps yet.");return;}
+    correct=state.order.every(function(value,index){return value===index;});
+  }
+  state.attempts++;state.checked=true;
+  var stats=topicArcadeStats();stats.attempts++;
+  if(correct){
+    state.solved=true;stats.correct++;var first=!stats.completed[key];stats.completed[key]=true;stats.streak++;stats.bestStreak=Math.max(stats.bestStreak,stats.streak);state.reward=first?10:2;
+    if(typeof addXP==="function")addXP(state.reward);
+    if(typeof toast==="function")toast(first?"Topic challenge cleared! +10 XP":"Good practice! +2 XP");
+  }else stats.streak=0;
+  topicArcadeSave(stats);render();
+}
+function topicArcadeSolutionMarkup(game){
+  var html="<details class='topic-game-solution'><summary>Open the worked solution</summary>";
+  if(game.kind==="sequence"){
+    html+="<p><b>Correct order</b></p><ol>"+game.steps.map(function(step){return "<li>"+esc(step)+"</li>";}).join("")+"</ol>";
+  }
+  html+="<ol>"+(game.solution||[]).map(function(step){return "<li>"+esc(step)+"</li>";}).join("")+"</ol>";
+  if(game.kind==="calculate")html+="<p><b>Check value:</b> "+esc(game.display)+(game.unit?" "+esc(game.unit):"")+".</p>";
+  return html+"</details>";
+}
+function topicArcadeAnswerMarkup(game,state,sid,tid){
+  if(game.kind==="calculate")return "<label class='topic-game-answer-label' for='topicGameAnswer'>Work it out on paper, then enter your result"+(game.unit?" ("+esc(game.unit)+")":"")+".</label><div class='topic-game-number'><input id='topicGameAnswer' type='number' step='any' inputmode='decimal' placeholder='Calculate first' value='"+esc(state.value)+"' oninput=\"topicArcadeInput(this.value,'"+sid+"','"+tid+"')\""+(state.solved?" disabled":"")+" aria-describedby='topicGamePrompt'><span>"+esc(game.unit||"unitless")+"</span></div>";
+  if(game.kind==="think")return "<p class='topic-game-order-prompt'>Before choosing, write a one-line reason on paper and try to rule out a tempting distractor.</p><div class='topic-game-options' role='group' aria-label='Answer options'>"+game.options.map(function(option,index){return "<button type='button' class='topic-game-option"+(state.selected===index?" selected":"")+"' onclick=\"topicArcadeChoose("+index+",'"+sid+"','"+tid+"')\" aria-pressed='"+(state.selected===index)+"'"+(state.solved?" disabled":"")+"><span>"+String.fromCharCode(65+index)+"</span><b>"+esc(option)+"</b></button>";}).join("")+"</div>";
+  return "<p class='topic-game-order-prompt'>Use the ↑ and ↓ controls to put the steps into the correct order.</p><ol class='topic-game-order-list'>"+state.order.map(function(stepIndex,index){return "<li><span class='topic-order-number'>"+String(index+1).padStart(2,"0")+"</span><span class='topic-order-text'>"+esc(game.steps[stepIndex])+"</span><span class='topic-order-controls'><button type='button' onclick=\"topicArcadeMove("+index+",-1,'"+sid+"','"+tid+"')\" aria-label='Move step "+(index+1)+" up'"+(index===0||state.solved?" disabled":"")+">↑</button><button type='button' onclick=\"topicArcadeMove("+index+",1,'"+sid+"','"+tid+"')\" aria-label='Move step "+(index+1)+" down'"+(index===state.order.length-1||state.solved?" disabled":"")+">↓</button></span></li>";}).join("")+"</ol>";
+}
+function vTopicArcadeGame(sid,uid,tid){
+  var S=SUBJECTS[sid],U=unitOf(sid,uid),T=topicOf(sid,uid,tid),game=TOPIC_GAME_CATALOG[sid]&&TOPIC_GAME_CATALOG[sid][tid];
+  if(!S||!U||!T||!game)return vTopicArcadeHub();
+  var key=topicArcadeKey(sid,tid),state=topicArcadeSession(key,game),stats=topicArcadeStats(),done=!!stats.completed[key];
+  var feedback="";
+  if(state.checked)feedback=state.solved?"<div class='topic-game-feedback success' role='status' aria-live='polite'><b>Challenge cleared.</b><span>"+(done&&state.reward===2?"You already mastered this topic — +2 XP for the extra practice.":"Correct — first clear earns +10 XP.")+"</span></div>":"<div class='topic-game-feedback retry' role='status' aria-live='polite'><b>Not quite yet.</b><span>Recheck the quantities, mechanism or sequence and try again. Your worked solution is still collapsed below.</span></div>";
+  var solution=state.checked?topicArcadeSolutionMarkup(game):"";
+  var hint="<details class='topic-game-hint'><summary>Need a nudge?</summary><p>"+esc(game.hint)+"</p></details>";
+  var actions=state.solved?"<div class='topic-game-actions'><button class='btn btn-p' onclick=\"topicArcadeNext('"+sid+"','"+uid+"','"+tid+"')\">Next topic challenge →</button><button class='btn btn-g' onclick=\"topicArcadeReset('"+sid+"','"+tid+"')\">↻ Replay for fluency</button><button class='btn btn-g' onclick=\"go('games')\">All topic games</button></div>":"<div class='topic-game-actions'><button class='btn btn-p' onclick=\"topicArcadeCheck('"+sid+"','"+uid+"','"+tid+"')\">Check my answer</button><button class='btn btn-g' onclick=\"go('games')\">Choose another topic</button></div>";
+  return "<section class='games-hub'><header class='games-heading topic-game-heading'><div><button class='games-back-link' onclick=\"go('games')\">← Study Arcade</button><div class='book-eyebrow'>"+esc(U.code)+" · "+esc(S.name.toUpperCase())+" TOPIC GAME</div><h1>"+esc(T.name)+"</h1><p>"+esc(game.title)+" · "+(game.kind==="calculate"?"Calculate by hand before entering a value.":game.kind==="think"?"Choose the explanation that survives careful checking.":"Put the process into a scientifically correct order.")+"</p></div><div class='games-record' aria-label='Topic game progress'><div><b>"+(done?"✓":"○")+"</b><span>"+(done?"MASTERED":"IN PROGRESS")+"</span></div><div><b>"+state.attempts+"</b><span>ATTEMPTS</span></div><div><b>"+stats.streak+"</b><span>ARCADE STREAK</span></div></div></header>"+
+  "<div class='topic-game-shell'><div class='topic-game-meta'><span>"+esc(U.code)+" · "+esc(U.title)+"</span><b>"+topicArcadeMode(game)+"</b></div><h2>"+esc(game.title)+"</h2><p class='topic-game-prompt' id='topicGamePrompt'>"+esc(game.prompt)+"</p>"+hint+
+  "<div class='topic-game-input-area'>"+topicArcadeAnswerMarkup(game,state,sid,tid)+"</div>"+actions+feedback+solution+
+  "<p class='topic-game-provenance'>Original topic-aligned practice · not an official past-paper question.</p></div></section>";
+}
+function vTopicArcadeHub(){
+  var coverage=topicArcadeCoverage(),stats=topicArcadeStats(),sid=topicArcadeFilter.sid,S=SUBJECTS[sid]||SUBJECTS.physics;
+  var units=S.units,selectedUnit=topicArcadeFilter.uid||"all",rows=topicArcadeTopics(sid).filter(function(row){return selectedUnit==="all"||row.uid===selectedUnit;});
+  var subjects=["physics","chemistry","biology"].map(function(id){var total=topicArcadeTopics(id).length,label=SUBJECTS[id].name;return "<button class='arcade-subject-tab"+(id===sid?" active":"")+"' onclick=\"topicArcadeSetSubject('"+id+"')\" aria-pressed='"+(id===sid)+"'>"+esc(SUBJECTS[id].icon)+" "+esc(label)+" <span>"+total+"</span></button>";}).join("");
+  var unitOptions="<option value='all'"+(selectedUnit==="all"?" selected":"")+">All "+esc(S.name)+" units</option>"+units.map(function(unit){return "<option value='"+unit.id+"'"+(selectedUnit===unit.id?" selected":"")+">"+esc(unit.code+" · "+unit.title)+"</option>";}).join("");
+  var cards=rows.map(function(row){var g=row.game,done=!!stats.completed[topicArcadeKey(sid,row.topic.id)];return "<article class='arcade-topic-card"+(done?" mastered":"")+"'><div class='arcade-topic-card-top'><span>"+esc(row.unit.code)+" · "+topicArcadeMode(g)+"</span><b>"+(done?"✓ MASTERED":"+10 XP")+"</b></div><h3>"+esc(row.topic.name)+"</h3><p>"+esc(g.title)+"</p><button type='button' onclick=\"topicArcadeStart('"+sid+"','"+row.unit.id+"','"+row.topic.id+"')\">"+(done?"Replay challenge":"Start challenge")+" →</button></article>";}).join("");
+  var projectile=sid==="physics"?"<article class='arcade-feature-card'><span>🎯 PHYSICS FEATURE GAME</span><div><b>Land it in the hole</b><p>Use vertical and horizontal SUVAT data to calculate the launch angle or speed. The path stays hidden until you fire.</p></div><button class='btn btn-p btn-s' onclick=\"go('games/projectile')\">Play projectile challenge →</button></article>":"";
+  var missing=coverage.missing.length?"<p class='arcade-coverage-warning'>"+coverage.missing.length+" topic(s) need a game mapping; please report this so coverage can be completed.</p>":"";
+  return "<section class='games-hub'><header class='games-heading'><div><button class='games-back-link' onclick=\"go('home')\">← Bookshelf</button><div class='book-eyebrow'>IAL MASTERY · CALCULATE · REASON · EXPLAIN</div><h1>Science Study Arcade</h1><p>Original paper-first calculation, reasoning and process challenges mapped to every Physics, Chemistry and Biology topic.</p></div><div class='games-record' aria-label='Science arcade progress'><div><b>"+topicArcadeCountDone(stats)+"/"+coverage.total+"</b><span>TOPICS MASTERED</span></div><div><b>"+stats.streak+"</b><span>CURRENT STREAK</span></div><div><b>"+stats.attempts+"</b><span>CHALLENGES TRIED</span></div></div></header>"+
+  "<div class='arcade-overview'><div><span>SYLLABUS COVERAGE</span><b>"+coverage.mapped+" / "+coverage.total+" topic games</b><i><em style='width:"+(coverage.total?Math.round(coverage.mapped/coverage.total*100):0)+"%'></em></i></div><button class='btn btn-g btn-s' onclick='topicArcadeStartRandom()'>🎲 Mixed-science challenge</button></div>"+missing+
+  "<div class='arcade-subject-tabs' role='group' aria-label='Science subject games'>"+subjects+"</div><div class='arcade-toolbar'><label>Filter by unit<select onchange='topicArcadeSetUnit(this.value)'>"+unitOptions+"</select></label><span>"+rows.length+" topic challenges in this view</span></div>"+projectile+
+  "<div class='arcade-topic-grid'>"+(cards||"<p class='arcade-empty'>No topic challenges are available for this filter.</p>")+"</div><p class='arcade-footer-note'>Work on paper first when there are numbers to calculate. Hints are optional; worked solutions unlock after you check an answer. Progress stays in this browser.</p></section>";
+}
+function vGames(){
+  var parts=(location.hash||"#/games").replace(/^#\//,"").split("/");
+  if(parts[1]==="projectile")return vProjectileGame();
+  if(parts.length>=4&&SUBJECTS[parts[1]]&&TOPIC_GAME_CATALOG[parts[1]]&&TOPIC_GAME_CATALOG[parts[1]][parts[3]])return vTopicArcadeGame(parts[1],parts[2],parts[3]);
+  return vTopicArcadeHub();
 }
