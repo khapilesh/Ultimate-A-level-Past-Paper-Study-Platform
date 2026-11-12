@@ -4,6 +4,7 @@ const vm = require("node:vm");
 
 const storage = Object.create(null);
 const elements = Object.create(null);
+const lineDashCalls = [];
 const rafCallbacks = new Map();
 let rafId = 0;
 function classList() {
@@ -19,6 +20,9 @@ function classList() {
 const context = new Proxy(
   {
     setTransform() {},
+    setLineDash(segments) {
+      lineDashCalls.push(segments);
+    },
     getImageData() {
       return { data: [] };
     },
@@ -142,13 +146,27 @@ assert.match(
 assert.match(element("app").innerHTML, /Play the motion lab/);
 assert.match(element("app").innerHTML, /Play the collision lab/);
 assert.match(element("app").innerHTML, /Play the cell mission/);
+assert.match(element("app").innerHTML, /Play the bonding studio/);
 assert.match(element("app").innerHTML, /58 \/ 58 topic challenges/);
 
 location.hash = "#/games/lab/physics";
+lineDashCalls.length = 0;
 sandbox.render();
 assert.match(element("app").innerHTML, /Trajectory Tuner/);
 assert.match(element("app").innerHTML, /id='labPhysicsCanvas'/);
 assert.match(element("app").innerHTML, /type='range'/);
+assert.match(element("app").innerHTML, /Estimate before launch/);
+assert.match(element("app").innerHTML, /id='labFlightTime'>—/);
+assert.doesNotMatch(
+  element("app").innerHTML,
+  /dotted|LIVE TRAJECTORY PREVIEW|Projected landing/,
+  "the Physics lab shows no answer-revealing path or projected landing before launch",
+);
+assert.equal(
+  lineDashCalls.length,
+  0,
+  "the Physics canvas draws no dotted guide lines",
+);
 const physics = sandbox.scienceLabStates.physics;
 const oldRange = sandbox.scienceLabPhysicsRange(
   physics.angle,
@@ -169,7 +187,14 @@ physics.target = sandbox.scienceLabPhysicsRange(
 ).range;
 sandbox.scienceLabPhysicsLaunch();
 assert.equal(physics.animating, true, "launch starts a visible ball animation");
+assert.equal(
+  lineDashCalls.length,
+  0,
+  "the launched Physics path is solid, never dotted",
+);
 sandbox.scienceLabPhysicsFinish();
+assert.match(element("labPhysicsLive").innerHTML, /Actual landing/);
+assert.notEqual(element("labFlightTime").textContent, "—");
 assert.equal(
   physics.roundComplete,
   true,
@@ -210,6 +235,104 @@ chemistry.products = 5;
 sandbox.scienceLabChemFinish();
 assert.equal(chemistry.finished, true);
 assert.equal(sandbox.scienceLabReadStats().chemistry.wins, 1);
+
+location.hash = "#/topic/chemistry/U1/U1T3";
+sandbox.render();
+assert.match(element("app").innerHTML, /Bonding &amp; Structure/);
+assert.match(element("app").innerHTML, /Play Bonding Studio/);
+location.hash = "#/games/lab/bonding";
+sandbox.render();
+assert.match(element("app").innerHTML, /Bonding Studio/);
+assert.match(element("app").innerHTML, /Sodium chloride/);
+assert.match(element("app").innerHTML, /id='bonding-electron-0-0'/);
+assert.match(element("app").innerHTML, /id='bonding-transfer-target-1'/);
+const bonding = sandbox.scienceLabBondingState;
+assert.equal(bonding.atoms[0].electrons.length, 1);
+assert.equal(bonding.atoms[1].electrons.length, 7);
+sandbox.scienceLabBondingSelectElectron(1, 0);
+sandbox.scienceLabBondingTransferTo(0);
+assert.equal(
+  bonding.transfers,
+  0,
+  "a transfer in the wrong direction is rejected",
+);
+sandbox.scienceLabBondingCheckBuild();
+assert.equal(
+  bonding.phase,
+  "build",
+  "an incomplete model cannot be checked as complete",
+);
+sandbox.scienceLabBondingSelectElectron(0, 0);
+sandbox.scienceLabBondingTransferTo(1);
+assert.equal(bonding.atoms[0].electrons.length, 0);
+assert.equal(bonding.atoms[1].electrons.length, 8);
+assert.match(element("app").innerHTML, /Na<sup>1\+<\/sup>/);
+assert.match(element("app").innerHTML, /Cl<sup>1−<\/sup>/);
+sandbox.scienceLabBondingCheckBuild();
+assert.equal(bonding.phase, "reason");
+sandbox.scienceLabBondingSelectAnswer(0);
+sandbox.scienceLabBondingCheckReason();
+assert.equal(
+  bonding.solved,
+  false,
+  "a wrong explanation can be retried without exposing the answer",
+);
+sandbox.scienceLabBondingSelectAnswer(
+  sandbox.scienceLabBondingChallenge().answer,
+);
+sandbox.scienceLabBondingCheckReason();
+assert.equal(bonding.solved, true);
+assert.equal(sandbox.scienceLabReadStats().bonding.wins, 1);
+
+sandbox.scienceLabBondingNext();
+assert.equal(bonding.level, 1);
+assert.equal(bonding.atoms[0].symbol, "Mg");
+for (let i = 0; i < 2; i++) {
+  sandbox.scienceLabBondingSelectElectron(0, 0);
+  sandbox.scienceLabBondingTransferTo(1);
+}
+assert.equal(bonding.atoms[0].electrons.length, 0);
+assert.equal(bonding.atoms[1].electrons.length, 8);
+sandbox.scienceLabBondingCheckBuild();
+sandbox.scienceLabBondingSelectAnswer(
+  sandbox.scienceLabBondingChallenge().answer,
+);
+sandbox.scienceLabBondingCheckReason();
+assert.equal(bonding.solved, true);
+sandbox.scienceLabBondingNext();
+assert.equal(bonding.level, 2);
+assert.deepEqual(Array.from(bonding.bondProgress), [0, 0]);
+sandbox.scienceLabBondingAddPair(0);
+sandbox.scienceLabBondingAddPair(1);
+assert.deepEqual(Array.from(bonding.bondProgress), [1, 1]);
+sandbox.scienceLabBondingCheckBuild();
+assert.equal(bonding.phase, "reason");
+assert.doesNotMatch(element("app").innerHTML, /bonding-geometry-preview/);
+sandbox.scienceLabBondingSelectAnswer(
+  sandbox.scienceLabBondingChallenge().answer,
+);
+sandbox.scienceLabBondingCheckReason();
+assert.equal(bonding.solved, true);
+assert.match(element("app").innerHTML, /Bent molecular shape/);
+sandbox.scienceLabBondingNext();
+assert.equal(bonding.level, 3);
+for (let i = 0; i < 2; i++) {
+  sandbox.scienceLabBondingAddPair(0);
+  sandbox.scienceLabBondingAddPair(1);
+}
+assert.deepEqual(Array.from(bonding.bondProgress), [2, 2]);
+sandbox.scienceLabBondingCheckBuild();
+assert.doesNotMatch(element("app").innerHTML, /bonding-geometry-preview/);
+sandbox.scienceLabBondingSelectAnswer(
+  sandbox.scienceLabBondingChallenge().answer,
+);
+sandbox.scienceLabBondingCheckReason();
+assert.equal(bonding.solved, true);
+assert.match(element("app").innerHTML, /Linear molecular shape/);
+sandbox.scienceLabBondingNext();
+assert.equal(bonding.phase, "complete");
+assert.match(element("app").innerHTML, /All four structures built/);
+assert.equal(sandbox.scienceLabReadStats().bonding.wins, 4);
 
 location.hash = "#/games/lab/biology";
 sandbox.render();
@@ -278,11 +401,11 @@ assert.match(
 console.log(
   "INTERACTIVE_LABS_TESTS_OK",
   JSON.stringify({
-    labs: ["physics", "chemistry", "biology"],
+    labs: ["physics", "chemistry", "biology", "bonding"],
     controls:
-      "live angle/speed, temperature/concentration/catalyst, mission/route/molecule selection",
+      "hidden-before-launch angle/speed, temperature/concentration/catalyst, membrane transport, ionic transfer, covalent pairs",
     visuals:
-      "canvas trajectory, particle collisions/products, animated membrane transport",
+      "post-launch solid trajectory, particle collisions/products, animated membrane transport, dot-and-cross structures",
     projectileChallenge: "preserved",
   }),
 );

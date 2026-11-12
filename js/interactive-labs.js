@@ -1,11 +1,11 @@
-/* Three playable, visual science labs. These are small first-round prototypes; the 58-topic question arcade remains available below them. */
+/* Three cross-subject visual labs plus the Chemistry Bonding Studio. The 58-topic practice arcade remains available alongside them. */
 var SCIENCE_LAB_SUBJECTS = {
   physics: {
     label: "PHYSICS",
     title: "Trajectory Tuner",
     icon: "⚛️",
     intro:
-      "Turn the aim and power controls. The flight arc moves with you; fire when you think the ball will land on the target.",
+      "Set the launch angle and power. The course stays visible, but the flight path and landing are revealed only after you launch.",
     goal: "Land the ball on the target zone.",
   },
   chemistry: {
@@ -117,6 +117,131 @@ var SCIENCE_LAB_ROUTE_OPTIONS = [
     icon: "⚡",
   },
 ];
+var SCIENCE_LAB_BONDING_CHALLENGES = [
+  {
+    id: "nacl",
+    kind: "ionic",
+    name: "Sodium chloride",
+    formula: "NaCl",
+    prompt:
+      "Form the ions by transferring sodium's single outer electron to chlorine.",
+    atoms: [
+      { symbol: "Na", name: "Sodium", valence: 1, shells: "2, 8, 1" },
+      { symbol: "Cl", name: "Chlorine", valence: 7, shells: "2, 8, 7" },
+    ],
+    transfers: [{ from: 0, to: 1 }],
+    question:
+      "Why does solid sodium chloride not conduct electricity, although molten sodium chloride does?",
+    options: [
+      "Electrons flow through the solid lattice but stop moving when the salt melts.",
+      "The covalent molecules become polar only when the solid is heated.",
+      "The ions are fixed in the solid lattice; when molten, the ions can move and carry charge.",
+      "Solid sodium chloride has no charged particles; melting creates ions from neutral atoms.",
+    ],
+    answer: 2,
+    hint: "Conductivity needs charged particles that are free to move.",
+    explanation:
+      "Sodium chloride is a giant ionic lattice. Its ions are fixed in the solid, but become mobile when molten (or dissolved in water), so the liquid conducts.",
+  },
+  {
+    id: "mgo",
+    kind: "ionic",
+    name: "Magnesium oxide",
+    formula: "MgO",
+    prompt:
+      "Transfer magnesium's two outer electrons to oxygen. Build Mg²⁺ and O²⁻.",
+    atoms: [
+      { symbol: "Mg", name: "Magnesium", valence: 2, shells: "2, 8, 2" },
+      { symbol: "O", name: "Oxygen", valence: 6, shells: "2, 6" },
+    ],
+    transfers: [
+      { from: 0, to: 1 },
+      { from: 0, to: 1 },
+    ],
+    question:
+      "Which statement best explains why magnesium oxide has a high melting point?",
+    options: [
+      "Weak attractions between separate MgO molecules require little energy to overcome.",
+      "Strong electrostatic attractions act in all directions between Mg²⁺ and O²⁻ ions in a giant lattice.",
+      "The ions are uncharged, so the solid is held together by temporary dipoles only.",
+      "Each magnesium ion is joined to oxygen only by one localised covalent bond.",
+    ],
+    answer: 1,
+    hint: "Think about the charges on the ions and how many attractions must be overcome.",
+    explanation:
+      "Magnesium oxide has a giant ionic lattice. Strong electrostatic attractions between oppositely charged Mg²⁺ and O²⁻ ions act throughout the lattice, so considerable energy is needed to separate them.",
+  },
+  {
+    id: "water",
+    kind: "covalent",
+    name: "Water",
+    formula: "H₂O",
+    prompt:
+      "Share one electron pair in each O–H bond. Oxygen also keeps two lone pairs.",
+    atoms: [
+      { symbol: "H", name: "Hydrogen 1", valence: 1, shells: "1" },
+      { symbol: "O", name: "Oxygen", valence: 6, shells: "2, 6" },
+      { symbol: "H", name: "Hydrogen 2", valence: 1, shells: "1" },
+    ],
+    bonds: [
+      { a: 0, b: 1, pairs: 1 },
+      { a: 1, b: 2, pairs: 1 },
+    ],
+    question:
+      "The oxygen atom in water has two bonding pairs and two lone pairs. What shape and bond angle does this produce?",
+    options: [
+      "Linear, 180°; all four electron pairs repel equally and point apart.",
+      "Tetrahedral, 109.5°; there are four bonding pairs around oxygen.",
+      "Trigonal planar, 120°; oxygen has three bonding pairs and no lone pairs.",
+      "Bent, about 104.5°; lone pairs repel more strongly than bonding pairs.",
+    ],
+    answer: 3,
+    hint: "Count the electron pairs around oxygen, then account for the stronger repulsion from lone pairs.",
+    explanation:
+      "Water is bent with an H–O–H angle of about 104.5°. Its two lone pairs repel more strongly than the two bonding pairs, compressing the bond angle from the tetrahedral value.",
+  },
+  {
+    id: "carbon-dioxide",
+    kind: "covalent",
+    name: "Carbon dioxide",
+    formula: "CO₂",
+    prompt:
+      "Build a double bond between carbon and each oxygen by adding two shared pairs to each C–O link.",
+    atoms: [
+      { symbol: "O", name: "Oxygen 1", valence: 6, shells: "2, 6" },
+      { symbol: "C", name: "Carbon", valence: 4, shells: "2, 4" },
+      { symbol: "O", name: "Oxygen 2", valence: 6, shells: "2, 6" },
+    ],
+    bonds: [
+      { a: 0, b: 1, pairs: 2 },
+      { a: 1, b: 2, pairs: 2 },
+    ],
+    question:
+      "Each C=O bond is polar. Why is the carbon dioxide molecule non-polar overall?",
+    options: [
+      "The C=O bonds are non-polar because carbon and oxygen have the same electronegativity.",
+      "The molecule is bent, so both bond dipoles point towards the same side.",
+      "It is linear and symmetrical, so the two equal bond dipoles point in opposite directions and cancel.",
+      "Carbon dioxide has no covalent bonds, so it cannot have a dipole.",
+    ],
+    answer: 2,
+    hint: "A polar bond does not guarantee a polar molecule; consider the shape and whether dipoles cancel.",
+    explanation:
+      "Carbon dioxide is linear and symmetrical. The two polar C=O bond dipoles are equal and opposite, so they cancel and the molecule has no overall dipole.",
+  },
+];
+var scienceLabBondingState = {
+  level: 0,
+  atoms: [],
+  transfers: 0,
+  bondProgress: [],
+  selectedElectron: null,
+  selectedAnswer: -1,
+  phase: "build",
+  solved: false,
+  message: "",
+  rewarded: false,
+};
 var scienceLabStates = {
   physics: {
     angle: 45,
@@ -181,6 +306,7 @@ function scienceLabReadStats() {
     physics: s.physics || { attempts: 0, wins: 0 },
     chemistry: s.chemistry || { attempts: 0, wins: 0 },
     biology: s.biology || { attempts: 0, wins: 0 },
+    bonding: s.bonding || { attempts: 0, wins: 0 },
     awarded: s.awarded || {},
   };
 }
@@ -309,12 +435,15 @@ function scienceLabHeaderMarkup(id) {
 }
 function scienceLabShowcase() {
   var cards = [
-    "<article class='interactive-lab-card lab-card-physics'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#dbe8df'/><circle cx='306' cy='34' r='18' fill='#e5b964'/><path d='M0 119H360V155H0Z' fill='#789579'/><path d='M35 117 Q105 10 181 72 T300 117' fill='none' stroke='#2c5843' stroke-width='4' stroke-dasharray='7 7'/><circle cx='35' cy='117' r='10' fill='#263e32'/><ellipse cx='300' cy='119' rx='15' ry='6' fill='#72583c'/><path d='M300 118V75' stroke='#b7613d' stroke-width='3'/><path d='M300 75h24l-10 9h-14' fill='#d79b59'/><circle cx='174' cy='72' r='8' fill='#d9813f'/><path d='M32 133h4m16 0h4m16 0h4m16 0h4m16 0h4' stroke='#f5f0e5' stroke-width='2'/></svg><span class='lab-art-tag'>AIM · POWER · LAUNCH</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>⚛️ PHYSICS · MOTION</div><h3>Hit the landing zone</h3><p>Move the angle and speed sliders. Watch the arc update, then fire and see exactly where the ball lands.</p><button type='button' onclick=\"go('games/lab/physics')\">Play the motion lab <span>→</span></button></div></article>",
+    "<article class='interactive-lab-card lab-card-physics'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#dbe8df'/><circle cx='306' cy='34' r='18' fill='#e5b964'/><path d='M0 119H360V155H0Z' fill='#789579'/><circle cx='35' cy='117' r='10' fill='#263e32'/><ellipse cx='300' cy='119' rx='15' ry='6' fill='#72583c'/><path d='M300 118V75' stroke='#b7613d' stroke-width='3'/><path d='M300 75h24l-10 9h-14' fill='#d79b59'/><path d='M32 133h4m16 0h4m16 0h4m16 0h4m16 0h4' stroke='#f5f0e5' stroke-width='2'/></svg><span class='lab-art-tag'>AIM · POWER · LAUNCH</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>⚛️ PHYSICS · MOTION</div><h3>Hit the landing zone</h3><p>Set angle and speed, estimate the landing point on paper, then launch to reveal the flight path and result.</p><button type='button' onclick=\"go('games/lab/physics')\">Play the motion lab <span>→</span></button></div></article>",
     "<article class='interactive-lab-card lab-card-chemistry'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#f0e8d8'/><path d='M110 25h142M136 25v18l-36 82q-6 13 10 13h143q16 0 10-13l-36-82V25' fill='#fffdf7' stroke='#687b65' stroke-width='4' stroke-linejoin='round'/><path d='M119 102q42-15 81 0t68 0l10 24H109Z' fill='#dce9dd'/><circle cx='138' cy='81' r='12' fill='#517b8b'/><circle cx='177' cy='111' r='12' fill='#c37c3c'/><circle cx='217' cy='78' r='12' fill='#517b8b'/><circle cx='243' cy='110' r='12' fill='#c37c3c'/><text x='138' y='85' text-anchor='middle' font-size='10' font-family='sans-serif' fill='white'>A</text><text x='243' y='114' text-anchor='middle' font-size='10' font-family='sans-serif' fill='white'>B</text><path d='M160 72h44' stroke='#52634c' stroke-width='3'/><path d='m197 65 9 7-9 7' fill='none' stroke='#52634c' stroke-width='3'/><circle cx='300' cy='42' r='8' fill='#d79b59'/><circle cx='326' cy='59' r='6' fill='#71866b'/><circle cx='291' cy='75' r='5' fill='#bd7c3c'/></svg><span class='lab-art-tag'>ADJUST · RUN · OBSERVE</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>⚗️ CHEMISTRY · REACTIONS</div><h3>Make the collisions count</h3><p>Change temperature, concentration or catalyst. Watch particles collide and see which ones react.</p><button type='button' onclick=\"go('games/lab/chemistry')\">Play the collision lab <span>→</span></button></div></article>",
     "<article class='interactive-lab-card lab-card-biology'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#e1eadf'/><path d='M0 0h157v155H0Z' fill='#e9efe4'/><path d='M202 0h158v155H202Z' fill='#d4e2d2'/><path d='M161 0v155M199 0v155' stroke='#688565' stroke-width='7'/><path d='M180 0v155' stroke='#dac48d' stroke-width='5' stroke-dasharray='6 7'/><rect x='163' y='53' width='34' height='39' rx='15' fill='#365c4a'/><rect x='172' y='58' width='16' height='28' rx='8' fill='#eff2dd'/><circle cx='70' cy='51' r='10' fill='#527f8c'/><text x='70' y='55' text-anchor='middle' font-size='9' font-family='sans-serif' fill='white'>O₂</text><circle cx='118' cy='98' r='10' fill='#bd7c3c'/><text x='118' y='102' text-anchor='middle' font-size='9' font-family='sans-serif' fill='white'>G</text><path d='M85 50h67m-9-7 9 7-9 7' stroke='#45654f' stroke-width='3' fill='none'/><circle cx='243' cy='77' r='29' fill='#a9c49f'/><circle cx='243' cy='77' r='13' fill='#708f77'/><circle cx='307' cy='43' r='8' fill='#72749a'/></svg><span class='lab-art-tag'>CHOOSE · MOVE · DELIVER</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>🧬 BIOLOGY · CELL TRANSPORT</div><h3>Run the membrane mission</h3><p>Pick oxygen, glucose or potassium. Choose a route and move each molecule through the membrane.</p><button type='button' onclick=\"go('games/lab/biology')\">Play the cell mission <span>→</span></button></div></article>",
   ];
+  cards.push(
+    "<article class='interactive-lab-card lab-card-bonding'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#f0e8d8'/><circle cx='180' cy='78' r='50' fill='none' stroke='#839780' stroke-width='3'/><circle cx='180' cy='78' r='27' fill='#dbe7d8' stroke='#58745b' stroke-width='3'/><text x='180' y='85' text-anchor='middle' font-size='24' font-family='Georgia,serif' fill='#2e5540'>O</text><circle cx='180' cy='28' r='7' fill='#bd7c3c'/><circle cx='143' cy='113' r='7' fill='#bd7c3c'/><circle cx='217' cy='113' r='7' fill='#517b8b'/><circle cx='143' cy='43' r='7' fill='#517b8b'/><circle cx='217' cy='43' r='7' fill='#517b8b'/><path d='M72 78h45m-10-8 10 8-10 8' fill='none' stroke='#557254' stroke-width='3'/><circle cx='60' cy='78' r='15' fill='#f8f3e7' stroke='#b47d48' stroke-width='3'/><text x='60' y='83' text-anchor='middle' font-size='14' font-family='Georgia,serif' fill='#594534'>H</text><text x='287' y='70' text-anchor='middle' font-size='11' font-family='sans-serif' fill='#5f715d'>MOVE</text><text x='287' y='88' text-anchor='middle' font-size='11' font-family='sans-serif' fill='#5f715d'>OR SHARE</text></svg><span class='lab-art-tag'>MOVE · SHARE · EXPLAIN</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>⚗️ CHEMISTRY · BONDING</div><h3>Build a stable structure</h3><p>Move or share outer electrons to build four bonding models, then use each structure to explain a property or molecular shape.</p><button type='button' onclick=\"go('games/lab/bonding')\">Play the bonding studio <span>→</span></button></div></article>",
+  );
   return (
-    "<section class='lab-showcase' aria-labelledby='lab-showcase-title'><div class='lab-showcase-heading'><div><span>THREE PLAYABLE LABS · FIRST PROTOTYPE ROUND</span><h2 id='lab-showcase-title'>Controls in your hands. Science on screen.</h2><p>Adjust something. See what changes. Make a choice. These are the first visual game prototypes—bring a student and watch where they get stuck.</p></div><span class='lab-showcase-stamp'>PLAY<br>TEST<br>IMPROVE</span></div><div class='interactive-lab-grid'>" +
+    "<section class='lab-showcase' aria-labelledby='lab-showcase-title'><div class='lab-showcase-heading'><div><span>THREE LABS + ONE TOPIC GAME · FIRST PROTOTYPE ROUND</span><h2 id='lab-showcase-title'>Controls in your hands. Science on screen.</h2><p>Adjust something. See what changes. Make a choice. These are the first visual game prototypes—bring a student and watch where they get stuck.</p></div><span class='lab-showcase-stamp'>PLAY<br>TEST<br>IMPROVE</span></div><div class='interactive-lab-grid'>" +
     cards.join("") +
     "</div></section>"
   );
@@ -344,18 +473,20 @@ function scienceLabPhysicsAdjust(kind, value) {
   else if (kind === "speed") s.speed = n;
   s.flight = null;
   s.result = null;
-  s.message =
-    "Adjust the controls until the projected landing is on the target.";
+  s.message = "Controls set. Estimate the landing point, then launch to check.";
   scienceLabPhysicsSync();
   scienceLabDrawPhysics();
 }
 function scienceLabPhysicsReadout() {
-  var s = scienceLabStates.physics,
-    r = scienceLabPhysicsRange(s.angle, s.speed),
-    gap = r.range - s.target;
+  var s = scienceLabStates.physics;
+  if (s.animating)
+    return "<b>Ball in flight</b><span>The path and landing are revealed as the shot plays.</span>";
+  if (!s.result)
+    return "<b>Estimate before launch</b><span>Use the controls and target to make your prediction. No path or landing point is shown yet.</span>";
+  var gap = s.result.range - s.target;
   return (
-    "Projected landing <b>" +
-    r.range.toFixed(1) +
+    "Actual landing <b>" +
+    s.result.range.toFixed(1) +
     " m</b><span>Target " +
     s.target.toFixed(1) +
     " m · " +
@@ -371,8 +502,14 @@ function scienceLabPhysicsSync() {
     stats = scienceLabReadStats().physics;
   scienceLabSetText("labAngleValue", Math.round(s.angle) + "°");
   scienceLabSetText("labSpeedValue", s.speed.toFixed(1) + " m/s");
-  scienceLabSetText("labFlightTime", r.time.toFixed(2) + " s");
-  scienceLabSetText("labFlightHeight", r.height.toFixed(1) + " m");
+  scienceLabSetText(
+    "labFlightTime",
+    s.result ? s.result.time.toFixed(2) + " s" : "—",
+  );
+  scienceLabSetText(
+    "labFlightHeight",
+    s.result ? s.result.height.toFixed(1) + " m" : "—",
+  );
   var live = document.getElementById("labPhysicsLive");
   if (live) live.innerHTML = scienceLabPhysicsReadout();
   scienceLabSetText("labPhysicsStatus", s.message);
@@ -390,7 +527,9 @@ function scienceLabPhysicsSync() {
       ? "TARGET HIT"
       : s.animating
         ? "BALL IN FLIGHT"
-        : "LIVE TRAJECTORY";
+        : s.result
+          ? "SHOT COMPLETE"
+          : "READY TO LAUNCH";
   return r;
 }
 function scienceLabDrawPhysics() {
@@ -477,29 +616,25 @@ function scienceLabDrawPhysics() {
   var flight = s.flight,
     angle = flight ? flight.angle : s.angle,
     speed = flight ? flight.speed : s.speed,
-    calc = scienceLabPhysicsRange(angle, speed),
-    samples = 54;
-  c.setLineDash(flight ? [5, 0] : [5, 6]);
-  c.strokeStyle = flight
-    ? s.result && s.result.hit
-      ? "#2d754a"
-      : "#9d7045"
-    : "#294f3d";
-  c.lineWidth = flight ? 3 : 2.5;
-  c.beginPath();
-  for (var i = 0; i <= samples; i++) {
-    var t = (calc.time * i) / samples,
-      px = left + speed * Math.cos((angle * Math.PI) / 180) * t * xScale,
-      py =
-        ground -
-        (speed * Math.sin((angle * Math.PI) / 180) * t -
-          0.5 * PROJECTILE_G * t * t) *
-          yScale;
-    if (i === 0) c.moveTo(px, py);
-    else c.lineTo(px, py);
+    calc = flight ? scienceLabPhysicsRange(angle, speed) : null;
+  if (flight) {
+    var samples = 54;
+    c.strokeStyle = s.result && s.result.hit ? "#2d754a" : "#9d7045";
+    c.lineWidth = 3;
+    c.beginPath();
+    for (var i = 0; i <= samples; i++) {
+      var t = (calc.time * i) / samples,
+        px = left + speed * Math.cos((angle * Math.PI) / 180) * t * xScale,
+        py =
+          ground -
+          (speed * Math.sin((angle * Math.PI) / 180) * t -
+            0.5 * PROJECTILE_G * t * t) *
+            yScale;
+      if (i === 0) c.moveTo(px, py);
+      else c.lineTo(px, py);
+    }
+    c.stroke();
   }
-  c.stroke();
-  c.setLineDash([]);
   var ballX = left,
     ballY = ground - 11;
   if (flight) {
@@ -521,20 +656,16 @@ function scienceLabDrawPhysics() {
   c.textAlign = "left";
   c.font = scienceLabCanvasFont(g, 12, "700", "'DM Mono',monospace");
   c.fillStyle = "#294b3a";
-  c.fillText(flight ? "SHOT PATH" : "LIVE TRAJECTORY PREVIEW", 24, 24);
+  c.fillText(flight ? "LAUNCHED PATH" : "COURSE MAP · PATH HIDDEN", 24, 24);
   c.font = scienceLabCanvasFont(g, 10, "", "'DM Sans',sans-serif");
   c.fillStyle = "#475b4d";
-  c.fillText("Aim + power control the ideal path · no air resistance", 24, 43);
-  if (s.result) {
-    c.strokeStyle = s.result.hit ? "#31734b" : "#a36842";
-    c.lineWidth = 2;
-    c.setLineDash([4, 4]);
-    c.beginPath();
-    c.moveTo(left + s.result.range * xScale, ground - 8);
-    c.lineTo(left + s.result.range * xScale, ground - 65);
-    c.stroke();
-    c.setLineDash([]);
-  }
+  c.fillText(
+    flight
+      ? "Ideal projectile model · no air resistance"
+      : "Estimate on paper, then launch to reveal the flight",
+    24,
+    43,
+  );
 }
 function scienceLabPhysicsFinish() {
   var s = scienceLabStates.physics;
@@ -547,6 +678,8 @@ function scienceLabPhysicsFinish() {
   s.result = {
     hit: hit,
     range: data.range,
+    time: data.time,
+    height: data.height,
     target: s.target,
     gap: data.range - s.target,
   };
@@ -586,13 +719,14 @@ function scienceLabPhysicsLaunch() {
     speed: s.speed,
     range: r.range,
     time: r.time,
+    height: r.height,
     hit: hit,
   };
   s.result = null;
   s.progress = 0;
   s.animating = true;
   s.frameStart = null;
-  s.message = "Ball in flight — watch the landing marker.";
+  s.message = "Ball in flight — watch the launched path unfold.";
   scienceLabPhysicsSync();
   if (typeof requestAnimationFrame === "function")
     s.frameId = requestAnimationFrame(scienceLabPhysicsFrame);
@@ -625,13 +759,13 @@ function scienceLabPhysicsMarkup() {
   return (
     "<section class='games-hub science-lab-page'>" +
     scienceLabHeaderMarkup("physics") +
-    "<div class='lab-play-layout'><section class='lab-stage-card'><div class='lab-stage-heading'><div><span>THE FLIGHT COURSE</span><b>Move the controls and watch the arc</b></div><span class='lab-live-badge' id='labPhysicsBadge'>LIVE TRAJECTORY</span></div><div class='lab-canvas-frame physics-frame'><canvas id='labPhysicsCanvas' width='920' height='400' role='img' aria-label='Live projectile course. The dotted flight path changes as you adjust angle and speed; a flag marks the target.'>Live projectile course: adjust the angle and launch-speed controls to change the arc and projected landing point.</canvas></div><div class='lab-live-readout' id='labPhysicsLive'>" +
+    "<div class='lab-play-layout'><section class='lab-stage-card'><div class='lab-stage-heading'><div><span>THE FLIGHT COURSE</span><b>Estimate first, then reveal the shot</b></div><span class='lab-live-badge' id='labPhysicsBadge'>READY TO LAUNCH</span></div><div class='lab-canvas-frame physics-frame'><canvas id='labPhysicsCanvas' width='920' height='400' role='img' aria-label='Projectile course with a launch point and target. The flight path and landing point stay hidden until launch.'>Projectile course showing the launch point and target. Use the angle and speed controls to plan a shot; launch to reveal its path and landing.</canvas></div><div class='lab-live-readout' id='labPhysicsLive'>" +
     scienceLabPhysicsReadout() +
     "</div><div class='lab-status-line' id='labPhysicsStatus' role='status' aria-live='polite'>" +
     scienceLabEscape(s.message) +
     "</div>" +
     scienceLabCanvasHint(
-      "The dotted arc is visible before you fire. Change a control and compare the landing point with the flag.",
+      "Predict the landing point before you launch. The course reveals the actual path only after the shot.",
     ) +
     "</section><aside class='lab-control-panel'><div class='lab-control-title'><span>YOUR CONTROLS</span><b>" +
     scienceLabEscape(SCIENCE_LAB_SUBJECTS.physics.goal) +
@@ -649,13 +783,9 @@ function scienceLabPhysicsMarkup() {
     s.speed +
     "' oninput=\"scienceLabPhysicsAdjust('speed',this.value)\" aria-label='Change launch speed'" +
     (disabled ? " disabled" : "") +
-    "><small>10 m/s <span>Low power</span> 22 m/s</small></label><div class='lab-physics-readout'><span>FLIGHT TIME</span><b id='labFlightTime'>" +
-    scienceLabPhysicsRange(s.angle, s.speed).time.toFixed(2) +
-    " s</b><span>MAXIMUM HEIGHT</span><b id='labFlightHeight'>" +
-    scienceLabPhysicsRange(s.angle, s.speed).height.toFixed(1) +
-    " m</b></div><div class='lab-action-stack'><button id='labPhysicsLaunch' class='btn btn-p lab-main-button' onclick='scienceLabPhysicsLaunch()'" +
+    "><small>10 m/s <span>Low power</span> 22 m/s</small></label><div class='lab-physics-readout'><span>FLIGHT TIME</span><b id='labFlightTime'>—</b><span>MAXIMUM HEIGHT</span><b id='labFlightHeight'>—</b></div><div class='lab-action-stack'><button id='labPhysicsLaunch' class='btn btn-p lab-main-button' onclick='scienceLabPhysicsLaunch()'" +
     (disabled ? " disabled" : "") +
-    ">⚾ Launch ball</button><button class='btn btn-g lab-secondary-button' onclick='scienceLabPhysicsNewTarget()'>↻ New target</button></div><p class='lab-control-note'>Ideal projectile model: level landing, no air resistance, and <b>g = 9.81 m s⁻²</b>.</p><details class='lab-explain'><summary>Why does the arc change?</summary><p>The horizontal and vertical components change together when angle or speed changes. Here the landing range follows <b>R = u² sin(2θ) ÷ g</b>. The animation uses the same constant-acceleration model; it is not a hidden-answer quiz.</p></details><div class='lab-mini-stats'><span>LAUNCHES <b id='labPhysicsAttempts'>" +
+    ">⚾ Launch ball</button><button class='btn btn-g lab-secondary-button' onclick='scienceLabPhysicsNewTarget()'>↻ New target</button></div><p class='lab-control-note'>Ideal projectile model: level landing, no air resistance, and <b>g = 9.81 m s⁻²</b>.</p><details class='lab-explain'><summary>What changes with angle and speed?</summary><p>Changing angle changes both horizontal and vertical components; changing speed changes the size of both. The launched path follows constant-acceleration motion with <b>g = 9.81 m s⁻²</b>, level launch and landing, and no air resistance. Flight measurements appear only after the shot.</p></details><div class='lab-mini-stats'><span>LAUNCHES <b id='labPhysicsAttempts'>" +
     stats.attempts +
     "</b></span><span>BULLSEYES <b id='labPhysicsWins'>" +
     stats.wins +
@@ -1517,6 +1647,511 @@ function scienceLabBioMarkup() {
   );
 }
 
+function scienceLabBondingChallenge() {
+  return SCIENCE_LAB_BONDING_CHALLENGES[scienceLabBondingState.level] || null;
+}
+function scienceLabBondingResetLevel() {
+  var s = scienceLabBondingState,
+    challenge = scienceLabBondingChallenge();
+  if (!challenge) return;
+  s.atoms = challenge.atoms.map(function (atom) {
+    var electrons = [];
+    for (var i = 0; i < atom.valence; i++) electrons.push({ type: "dot" });
+    return {
+      symbol: atom.symbol,
+      name: atom.name,
+      valence: atom.valence,
+      shells: atom.shells,
+      electrons: electrons,
+    };
+  });
+  s.transfers = 0;
+  s.bondProgress = (challenge.bonds || []).map(function () {
+    return 0;
+  });
+  s.selectedElectron = null;
+  s.selectedAnswer = -1;
+  s.phase = "build";
+  s.solved = false;
+  s.rewarded = false;
+  s.message = challenge.prompt;
+}
+function scienceLabBondingRefresh(focusId) {
+  if (typeof render === "function") render();
+  var target = focusId && document.getElementById(focusId);
+  if (target && typeof target.focus === "function") target.focus();
+}
+function scienceLabBondingFirstActionId() {
+  var challenge = scienceLabBondingChallenge();
+  if (!challenge) return "bonding-restart";
+  return challenge.kind === "ionic"
+    ? "bonding-electron-0-0"
+    : "bonding-add-pair-0";
+}
+function scienceLabBondingSelectElectron(atomIndex, electronIndex) {
+  var s = scienceLabBondingState,
+    challenge = scienceLabBondingChallenge(),
+    atom = s.atoms[atomIndex],
+    electron = atom && atom.electrons[electronIndex];
+  if (!challenge || challenge.kind !== "ionic" || s.phase !== "build") return;
+  if (!electron || electron.type !== "dot") return;
+  s.selectedElectron = { atom: atomIndex, electron: electronIndex };
+  s.message =
+    "Electron selected from " +
+    atom.name +
+    ". Choose the atom it should move to.";
+  var nextTransfer = challenge.transfers[s.transfers];
+  scienceLabBondingRefresh(
+    nextTransfer
+      ? "bonding-transfer-target-" + nextTransfer.to
+      : "labBondingStatus",
+  );
+}
+function scienceLabBondingTransferTo(atomIndex) {
+  var s = scienceLabBondingState,
+    challenge = scienceLabBondingChallenge();
+  if (!challenge || challenge.kind !== "ionic" || s.phase !== "build") return;
+  if (!s.selectedElectron) {
+    s.message = "Select an outer electron first, then choose its destination.";
+    scienceLabBondingRefresh("labBondingStatus");
+    return;
+  }
+  var next = challenge.transfers[s.transfers],
+    selected = s.selectedElectron;
+  if (!next || selected.atom !== next.from || atomIndex !== next.to) {
+    s.message =
+      "Check the task: move the next electron from " +
+      challenge.atoms[next ? next.from : 0].name +
+      " to " +
+      challenge.atoms[next ? next.to : 1].name +
+      ".";
+    scienceLabBondingRefresh(
+      "bonding-electron-" + selected.atom + "-" + selected.electron,
+    );
+    return;
+  }
+  var source = s.atoms[selected.atom],
+    destination = s.atoms[atomIndex],
+    moved = source.electrons.splice(selected.electron, 1)[0];
+  if (!moved) {
+    s.selectedElectron = null;
+    s.message = "Choose one of the visible outer electrons.";
+    scienceLabBondingRefresh();
+    return;
+  }
+  destination.electrons.push({ type: "cross", from: source.symbol });
+  s.transfers++;
+  s.selectedElectron = null;
+  s.message =
+    "Transfer complete: " +
+    source.symbol +
+    " has lost an electron and " +
+    destination.symbol +
+    " has gained one. Continue until both ions are stable.";
+  if (s.transfers === challenge.transfers.length)
+    s.message =
+      "All required electrons are transferred. Check the ionic model.";
+  var nextTransfer = challenge.transfers[s.transfers];
+  scienceLabBondingRefresh(
+    nextTransfer
+      ? "bonding-electron-" + nextTransfer.from + "-0"
+      : "bonding-check-build",
+  );
+}
+function scienceLabBondingAddPair(bondIndex) {
+  var s = scienceLabBondingState,
+    challenge = scienceLabBondingChallenge(),
+    bond = challenge && challenge.bonds && challenge.bonds[bondIndex];
+  if (!bond || challenge.kind !== "covalent" || s.phase !== "build") return;
+  if (s.bondProgress[bondIndex] >= bond.pairs) {
+    s.message = "That link already has all the shared pairs required.";
+    scienceLabBondingRefresh();
+    return;
+  }
+  s.bondProgress[bondIndex]++;
+  s.message =
+    "Shared pair added to " +
+    s.atoms[bond.a].symbol +
+    "–" +
+    s.atoms[bond.b].symbol +
+    ". Check the shell counts, then add any remaining pairs.";
+  var nextBond = -1;
+  for (var i = 0; i < challenge.bonds.length; i++)
+    if (s.bondProgress[i] < challenge.bonds[i].pairs) {
+      nextBond = i;
+      break;
+    }
+  scienceLabBondingRefresh(
+    nextBond >= 0 ? "bonding-add-pair-" + nextBond : "bonding-check-build",
+  );
+}
+function scienceLabBondingCheckBuild() {
+  var s = scienceLabBondingState,
+    challenge = scienceLabBondingChallenge();
+  if (!challenge || s.phase !== "build") return;
+  var complete =
+    challenge.kind === "ionic"
+      ? s.transfers === challenge.transfers.length
+      : challenge.bonds.every(function (bond, index) {
+          return s.bondProgress[index] === bond.pairs;
+        });
+  if (!complete) {
+    s.message =
+      challenge.kind === "ionic"
+        ? "Not complete yet. Transfer the required outer electrons one at a time."
+        : "Not complete yet. Add the required shared pair(s) to every bond.";
+    scienceLabBondingRefresh("labBondingStatus");
+    return;
+  }
+  s.phase = "reason";
+  s.selectedAnswer = -1;
+  s.message = "Electron model built. Use it to answer the structure question.";
+  scienceLabBondingRefresh("bonding-option-0");
+}
+function scienceLabBondingSelectAnswer(index) {
+  var s = scienceLabBondingState,
+    challenge = scienceLabBondingChallenge();
+  if (!challenge || s.phase !== "reason" || s.solved) return;
+  if (index < 0 || index >= challenge.options.length) return;
+  s.selectedAnswer = index;
+  scienceLabBondingRefresh("bonding-option-" + index);
+}
+function scienceLabBondingCheckReason() {
+  var s = scienceLabBondingState,
+    challenge = scienceLabBondingChallenge();
+  if (!challenge || s.phase !== "reason" || s.solved) return;
+  if (s.selectedAnswer < 0) {
+    s.message = "Choose an explanation before checking your answer.";
+    scienceLabBondingRefresh("bonding-option-0");
+    return;
+  }
+  var correct = s.selectedAnswer === challenge.answer;
+  scienceLabTrack("bonding", correct);
+  if (correct) {
+    s.solved = true;
+    s.message = challenge.explanation;
+    scienceLabAward("bonding", s);
+  } else {
+    s.message =
+      "Not quite. Revisit the electron model and the clue, then choose again.";
+  }
+  scienceLabBondingRefresh(
+    s.solved ? "bonding-next" : "bonding-option-" + s.selectedAnswer,
+  );
+}
+function scienceLabBondingNext() {
+  var s = scienceLabBondingState;
+  if (!s.solved) return;
+  s.level++;
+  if (s.level < SCIENCE_LAB_BONDING_CHALLENGES.length) {
+    scienceLabBondingResetLevel();
+    scienceLabBondingRefresh(scienceLabBondingFirstActionId());
+  } else {
+    s.atoms = [];
+    s.phase = "complete";
+    scienceLabBondingRefresh("bonding-restart");
+  }
+}
+function scienceLabBondingRestart() {
+  scienceLabBondingState.level = 0;
+  scienceLabBondingResetLevel();
+  scienceLabBondingRefresh(scienceLabBondingFirstActionId());
+}
+function scienceLabBondingAtomMarkup(atomIndex, challenge) {
+  var s = scienceLabBondingState,
+    atom = s.atoms[atomIndex],
+    ionic = challenge.kind === "ionic";
+  if (ionic) {
+    var charge = atom.valence - atom.electrons.length,
+      chargeText =
+        charge > 0
+          ? atom.symbol + "<sup>" + charge + "+</sup>"
+          : charge < 0
+            ? atom.symbol + "<sup>" + Math.abs(charge) + "−</sup>"
+            : atom.symbol,
+      shellParts = atom.shells.split(",");
+    shellParts[shellParts.length - 1] = String(atom.electrons.length);
+    if (atom.electrons.length === 0 && shellParts.length > 1) shellParts.pop();
+    var electrons = atom.electrons
+      .map(function (electron, index) {
+        if (electron.type === "cross")
+          return "<span class='bonding-electron transferred' aria-label='Transferred electron'>×</span>";
+        var selected =
+          s.selectedElectron &&
+          s.selectedElectron.atom === atomIndex &&
+          s.selectedElectron.electron === index;
+        return (
+          "<button type='button' id='bonding-electron-" +
+          atomIndex +
+          "-" +
+          index +
+          "' class='bonding-electron" +
+          (selected ? " selected" : "") +
+          "'" +
+          (s.phase !== "build" ? " disabled" : "") +
+          " onclick='scienceLabBondingSelectElectron(" +
+          atomIndex +
+          "," +
+          index +
+          ")' aria-label='Select outer electron " +
+          (index + 1) +
+          " on " +
+          scienceLabEscape(atom.name) +
+          "'>•</button>"
+        );
+      })
+      .join("");
+    return (
+      "<article class='bonding-atom-card ionic-atom'><div class='bonding-atom-top'><span>" +
+      scienceLabEscape(atom.name) +
+      "</span><b class='bonding-charge'>" +
+      chargeText +
+      "</b></div><div class='bonding-atom-symbol'>" +
+      atom.symbol +
+      "</div><div class='bonding-electron-field' role='group' aria-label='Outer-shell electrons on " +
+      scienceLabEscape(atom.name) +
+      "'>" +
+      electrons +
+      "</div><div class='bonding-atom-count'>OUTER e⁻ <b>" +
+      atom.electrons.length +
+      "</b><span>shells " +
+      scienceLabEscape(shellParts.join(", ")) +
+      "</span></div><button type='button' id='bonding-transfer-target-" +
+      atomIndex +
+      "' class='bonding-transfer-target'" +
+      (s.phase !== "build" || s.transfers >= challenge.transfers.length
+        ? " disabled"
+        : "") +
+      " onclick='scienceLabBondingTransferTo(" +
+      atomIndex +
+      ")' aria-label='Transfer selected electron to " +
+      scienceLabEscape(atom.name) +
+      "'>Transfer selected electron here <span>→</span></button></article>"
+    );
+  }
+  var shared = 0;
+  challenge.bonds.forEach(function (bond, index) {
+    if (bond.a === atomIndex || bond.b === atomIndex)
+      shared += s.bondProgress[index];
+  });
+  var lone = atom.valence - shared,
+    shellCount = lone + shared * 2,
+    shellLimit = atom.symbol === "H" ? 2 : 8,
+    loneDots = "";
+  for (var d = 0; d < lone; d += 2)
+    loneDots +=
+      "<span class='bonding-lone-pair' aria-hidden='true'><i>•</i>" +
+      (d + 1 < lone ? "<i>•</i>" : "") +
+      "</span>";
+  return (
+    "<article class='bonding-atom-card covalent-atom'><div class='bonding-atom-top'><span>" +
+    scienceLabEscape(atom.name) +
+    "</span><b class='bonding-shell-status'>" +
+    shellCount +
+    "/" +
+    shellLimit +
+    " e⁻</b></div><div class='bonding-atom-symbol'>" +
+    atom.symbol +
+    "</div><div class='bonding-electron-field lone-pair-field' aria-label='" +
+    lone +
+    " non-bonding electrons'>" +
+    loneDots +
+    "</div><div class='bonding-atom-count'>LONE e⁻ <b>" +
+    lone +
+    "</b><span>" +
+    shellCount +
+    " around atom incl. shared pairs</span></div></article>"
+  );
+}
+function scienceLabBondingLinkMarkup(bondIndex, challenge) {
+  var s = scienceLabBondingState,
+    bond = challenge.bonds[bondIndex],
+    made = s.bondProgress[bondIndex],
+    pairs = "";
+  for (var i = 0; i < made; i++)
+    pairs +=
+      "<span class='bonding-shared-pair' aria-label='Shared electron pair'><i>•</i><i>×</i></span>";
+  return (
+    "<div class='bonding-link-card'><div class='bonding-link-heading'><b>" +
+    s.atoms[bond.a].symbol +
+    "–" +
+    s.atoms[bond.b].symbol +
+    "</b><span>" +
+    made +
+    " / " +
+    bond.pairs +
+    " shared pairs</span></div><div class='bonding-link-visual'><span>" +
+    s.atoms[bond.a].symbol +
+    "</span><i>" +
+    (made ? pairs : "······") +
+    "</i><span>" +
+    s.atoms[bond.b].symbol +
+    "</span></div><button type='button' id='bonding-add-pair-" +
+    bondIndex +
+    "' class='bonding-add-pair' onclick='scienceLabBondingAddPair(" +
+    bondIndex +
+    ")'" +
+    (made >= bond.pairs || s.phase !== "build" ? " disabled" : "") +
+    " aria-label='Add one shared pair to " +
+    s.atoms[bond.a].symbol +
+    "-" +
+    s.atoms[bond.b].symbol +
+    " bond'>＋ Add one shared pair</button></div>"
+  );
+}
+function scienceLabBondingOptionsMarkup(challenge) {
+  return challenge.options
+    .map(function (option, index) {
+      return (
+        "<button type='button' id='bonding-option-" +
+        index +
+        "' class='bonding-answer-option" +
+        (scienceLabBondingState.selectedAnswer === index ? " selected" : "") +
+        "' onclick='scienceLabBondingSelectAnswer(" +
+        index +
+        ")' aria-pressed='" +
+        (scienceLabBondingState.selectedAnswer === index) +
+        "'" +
+        (scienceLabBondingState.solved ? " disabled" : "") +
+        "><span>" +
+        String.fromCharCode(65 + index) +
+        "</span><b>" +
+        scienceLabEscape(option) +
+        "</b></button>"
+      );
+    })
+    .join("");
+}
+function scienceLabBondingGeometryMarkup(challenge) {
+  if (challenge.id === "water")
+    return "<div class='bonding-geometry-preview' role='img' aria-label='Water has a bent shape with a bond angle of about 104.5 degrees.'><svg viewBox='0 0 220 110' aria-hidden='true'><path d='M110 20L28 84M110 20L192 84' fill='none' stroke='#52745b' stroke-width='4'/><path d='M94 33A24 24 0 0 0 126 33' fill='none' stroke='#bd7c3c' stroke-width='2'/><circle cx='110' cy='20' r='17' fill='#dfe9db' stroke='#55745a' stroke-width='2'/><circle cx='28' cy='84' r='13' fill='#f1e4d0' stroke='#ad7848' stroke-width='2'/><circle cx='192' cy='84' r='13' fill='#f1e4d0' stroke='#ad7848' stroke-width='2'/><text x='110' y='25' text-anchor='middle' font-size='13' font-family='Georgia,serif' fill='#31543d'>O</text><text x='28' y='88' text-anchor='middle' font-size='10' font-family='Georgia,serif' fill='#715235'>H</text><text x='192' y='88' text-anchor='middle' font-size='10' font-family='Georgia,serif' fill='#715235'>H</text><text x='110' y='68' text-anchor='middle' font-size='10' font-family='sans-serif' fill='#815c3c'>104.5°</text></svg><b>Bent molecular shape</b></div>";
+  if (challenge.id === "carbon-dioxide")
+    return "<div class='bonding-geometry-preview' role='img' aria-label='Carbon dioxide is linear, with a bond angle of 180 degrees.'><svg viewBox='0 0 220 95' aria-hidden='true'><path d='M47 37H85M47 52H85M135 37H173M135 52H173' fill='none' stroke='#52745b' stroke-width='3'/><circle cx='32' cy='45' r='18' fill='#e6ece1' stroke='#55745a' stroke-width='2'/><circle cx='110' cy='45' r='18' fill='#f1e4d0' stroke='#ad7848' stroke-width='2'/><circle cx='188' cy='45' r='18' fill='#e6ece1' stroke='#55745a' stroke-width='2'/><text x='32' y='50' text-anchor='middle' font-size='13' font-family='Georgia,serif' fill='#31543d'>O</text><text x='110' y='50' text-anchor='middle' font-size='13' font-family='Georgia,serif' fill='#715235'>C</text><text x='188' y='50' text-anchor='middle' font-size='13' font-family='Georgia,serif' fill='#31543d'>O</text><text x='110' y='87' text-anchor='middle' font-size='10' font-family='sans-serif' fill='#815c3c'>180°</text></svg><b>Linear molecular shape</b></div>";
+  return "";
+}
+function scienceLabBondingHeaderMarkup() {
+  return "<header class='games-heading lab-page-heading bonding-page-heading'><div><button class='games-back-link' onclick=\"go('games')\">← Science Arcade</button><div class='book-eyebrow'>CHEMISTRY · UNIT 1 · BONDING &amp; STRUCTURE</div><h1>⚗️ Bonding Studio</h1><p>Move valence electrons to build ionic and covalent models, then use the model to explain a property or molecular shape.</p><div class='bonding-page-links'><button class='btn btn-g btn-s' onclick=\"go('topic/chemistry/U1/U1T3')\">← Bonding &amp; Structure notes</button><button class='btn btn-g btn-s' onclick=\"go('games/lab/chemistry')\">Open Collision Lab</button></div></div><div class='lab-top-goal'><span>FOUR BUILD-AND-EXPLAIN ROUNDS</span><b>Transfer · share · explain</b></div></header>";
+}
+function scienceLabBondingMarkup() {
+  var s = scienceLabBondingState,
+    challenge = scienceLabBondingChallenge(),
+    stats = scienceLabReadStats().bonding;
+  if (!challenge) {
+    return (
+      "<section class='games-hub science-lab-page bonding-lab-page'>" +
+      scienceLabBondingHeaderMarkup() +
+      "<section class='lab-stage-card bonding-complete-card'><span class='bonding-complete-icon'>✓</span><div class='book-eyebrow'>BONDING STUDIO · SET COMPLETE</div><h2>All four structures built.</h2><p>You modelled electron transfer for ionic compounds, shared pairs for covalent molecules, and used each structure to explain a syllabus idea.</p><div class='lab-mini-stats'><span>MODEL CHECKS <b>" +
+      stats.attempts +
+      "</b></span><span>ROUNDS CLEARED <b>" +
+      stats.wins +
+      "</b></span></div><div class='lab-action-stack'><button id='bonding-restart' class='btn btn-p lab-main-button' onclick='scienceLabBondingRestart()'>↻ Play the set again</button><button class='btn btn-g lab-secondary-button' onclick=\"go('games')\">Back to science games</button></div></section></section>"
+    );
+  }
+  if (!s.atoms.length) scienceLabBondingResetLevel();
+  var ionic = challenge.kind === "ionic",
+    atomMarkup = s.atoms
+      .map(function (_atom, index) {
+        return scienceLabBondingAtomMarkup(index, challenge);
+      })
+      .join(""),
+    bondMarkup = ionic
+      ? ""
+      : "<div class='bonding-link-grid'>" +
+        challenge.bonds
+          .map(function (_bond, index) {
+            return scienceLabBondingLinkMarkup(index, challenge);
+          })
+          .join("") +
+        "</div>",
+    kindLabel = ionic ? "IONIC · ELECTRON TRANSFER" : "COVALENT · SHARED PAIRS",
+    modelHint = ionic
+      ? "Dot-and-cross model: <b>•</b> marks an atom’s original electron; <b>×</b> marks an electron transferred from the other atom."
+      : "Each shared pair contains one electron from each atom; lone-pair dots stay on their atom.",
+    layoutNote = ionic
+      ? ""
+      : "<p class='bonding-layout-note'>Atom cards are electron-count panels only; their row is not a molecular-shape diagram.</p>",
+    roundCount = challenge.atoms ? SCIENCE_LAB_BONDING_CHALLENGES.length : 0,
+    quiz =
+      s.phase === "reason"
+        ? "<div class='bonding-reason-panel'><span class='book-overline'>APPLY THE STRUCTURE</span><h3>" +
+          scienceLabEscape(challenge.question) +
+          "</h3><div class='bonding-answer-grid' role='group' aria-label='Bonding reasoning answer choices'>" +
+          scienceLabBondingOptionsMarkup(challenge) +
+          "</div><details class='lab-explain bonding-hint'><summary>Need a nudge?</summary><p>" +
+          scienceLabEscape(challenge.hint) +
+          "</p></details>" +
+          (s.solved
+            ? "<div class='bonding-success-note' role='status'><b>Round cleared · +12 XP first time / +3 XP replay</b><p>" +
+              scienceLabEscape(challenge.explanation) +
+              "</p>" +
+              scienceLabBondingGeometryMarkup(challenge) +
+              "</div><button type='button' id='bonding-next' class='btn btn-p lab-main-button' onclick='scienceLabBondingNext()'>" +
+              (s.level + 1 === roundCount
+                ? "Finish set →"
+                : "Next structure →") +
+              "</button>"
+            : "<button type='button' id='bonding-check-reason' class='btn btn-p lab-main-button' onclick='scienceLabBondingCheckReason()'>Check my explanation</button>") +
+          "</div>"
+        : "<div class='bonding-build-prompt'><span class='book-overline'>BUILD TASK</span><p>" +
+          scienceLabEscape(challenge.prompt) +
+          "</p><p class='bonding-control-tip'>" +
+          (ionic
+            ? "Select one dot electron, then choose its destination atom."
+            : "Add a shared pair to each link. One pair makes a single bond; two pairs make a double bond.") +
+          "</p><button type='button' id='bonding-check-build' class='btn btn-p lab-main-button' onclick='scienceLabBondingCheckBuild()'>Check electron model</button><button type='button' id='bonding-restart' class='btn btn-g lab-secondary-button' onclick='scienceLabBondingRestart()'>↻ Restart set</button></div>",
+    atomClass = ionic
+      ? "bonding-atom-grid ionic-grid"
+      : "bonding-atom-grid covalent-grid";
+  return (
+    "<section class='games-hub science-lab-page bonding-lab-page'>" +
+    scienceLabBondingHeaderMarkup() +
+    "<div class='lab-play-layout'><section class='lab-stage-card bonding-stage-card'><div class='lab-stage-heading'><div><span>STRUCTURE " +
+    (s.level + 1) +
+    " OF " +
+    roundCount +
+    "</span><b>" +
+    scienceLabEscape(challenge.name) +
+    " · " +
+    kindLabel +
+    "</b></div><span class='lab-live-badge'>" +
+    (s.solved
+      ? "ROUND CLEARED"
+      : s.phase === "reason"
+        ? "MODEL READY"
+        : "BUILD THE MODEL") +
+    "</span></div><div class='bonding-formula-banner'><span>STRUCTURE MODEL</span><b>" +
+    scienceLabEscape(challenge.formula) +
+    "</b><span>" +
+    kindLabel +
+    "</span></div>" +
+    layoutNote +
+    "<div class='" +
+    atomClass +
+    "' role='group' aria-label='Atoms in the " +
+    scienceLabEscape(challenge.name) +
+    " model'>" +
+    atomMarkup +
+    "</div>" +
+    bondMarkup +
+    "<div id='labBondingStatus' class='lab-status-line bonding-status-line' role='status' aria-live='polite' tabindex='-1'>" +
+    scienceLabEscape(s.message) +
+    "</div><div class='lab-canvas-hint bonding-model-note'><span>✦</span><span>" +
+    modelHint +
+    "</span></div></section><aside class='lab-control-panel bonding-control-panel'><div class='lab-control-title'><span>" +
+    (s.phase === "reason" ? "EXPLAIN THE MODEL" : "YOUR TASK") +
+    "</span><b>" +
+    scienceLabEscape(challenge.name) +
+    " · " +
+    scienceLabEscape(challenge.formula) +
+    "</b></div>" +
+    quiz +
+    "<div class='bonding-method-note'><b>Remember</b><p>For ionic bonding, transfer electrons to form oppositely charged ions. For covalent bonding, each shared pair contains one electron from each atom.</p></div><div class='lab-mini-stats'><span>MODEL CHECKS <b>" +
+    stats.attempts +
+    "</b></span><span>ROUNDS CLEARED <b>" +
+    stats.wins +
+    "</b></span></div></aside></div></section>"
+  );
+}
 function scienceLabAfterRender() {
   var id = scienceLabCurrentSubject();
   if (!id) return;
@@ -1559,6 +2194,7 @@ function scienceLabStopAnimations(keep) {
   });
 }
 function vScienceLabGame(id) {
+  if (id === "bonding") return scienceLabBondingMarkup();
   if (id === "physics") return scienceLabPhysicsMarkup();
   if (id === "chemistry") return scienceLabChemMarkup();
   if (id === "biology") return scienceLabBioMarkup();

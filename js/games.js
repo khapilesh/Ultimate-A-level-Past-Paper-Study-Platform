@@ -173,7 +173,7 @@ function drawProjectileGame(progress){
     ctx.strokeStyle=sage;ctx.lineWidth=2.5;ctx.stroke();
     var elapsed=flight*Math.max(0,Math.min(1,progress)),bx=projectileSUVATDisplacement(initial.ux,0,elapsed),by=projectileSUVATDisplacement(initial.uy,-PROJECTILE_G,elapsed);
     ctx.fillStyle="#b86d46";ctx.beginPath();ctx.arc(xAt(bx),yAt(Math.max(0,by)),7,0,Math.PI*2);ctx.fill();ctx.strokeStyle=paper;ctx.lineWidth=2;ctx.stroke();
-    if(progress>=1){ctx.strokeStyle=warm;ctx.lineWidth=1.5;ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(xAt(range),baseline-1);ctx.lineTo(xAt(range),baseline-24);ctx.stroke();ctx.setLineDash([]);}
+
   }
   ctx.textAlign="left";ctx.textBaseline="top";ctx.fillStyle=muted;ctx.font="10px 'DM Mono',monospace";ctx.fillText(active?"SHOT PATH · SUVAT MODEL":"COURSE MAP · PATH HIDDEN UNTIL LAUNCH",left,7);
 }
