@@ -27,11 +27,12 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 - Every topic now includes a two-part explanatory walkthrough that connects mechanisms, calculations and applications.
 - 🃏 Flashcards per topic, topic checklists and progress tracking
 
-### 🎮 Learn by playing
-- **Science Study Arcade: 58 original topic games**—one mapped challenge for every Physics topic (19), Chemistry topic (22) and Biology topic (17) in the platform. Browse by subject and unit, or launch a mixed-science challenge.
-- Play three formats: paper-first numeric problems with checked units and worked steps; multiple-choice reasoning puzzles with plausible distractors; and accessible step-ordering challenges for mechanisms, pathways and practical methods. Hints are optional, worked solutions stay collapsed until an attempt, and per-topic mastery, streaks and XP save locally.
-- **Featured projectile-motion challenge**: choose a launch angle for a fixed-speed ball, or choose its speed when the angle is fixed, and try to land it in the target hole. Each round gives three known values for vertical and horizontal motion; solve the components with syllabus SUVAT equations. The pre-shot map hides the trajectory until firing, and the worked solution is collapsed.
-- The projectile game assumes level ground and no air resistance, so it also demonstrates why mass cancels from the ideal trajectory. Existing hits, streaks and game XP are retained.
+### 🎮 Playable science labs + topic practice
+- **Three new visual, controllable lab prototypes** are the first staged redesign: **Physics — Trajectory Tuner** (change angle and launch speed, watch the projected arc update live, then launch at a target); **Chemistry — Collision Lab** (adjust temperature, concentration and catalyst, then watch particles collide and form products); **Biology — Membrane Mission** (choose oxygen, glucose, water or potassium, select a transport route, select a visible molecule, and animate it across the membrane).
+- The labs use Canvas drawings and native touch/keyboard-accessible controls; feedback explains how the visible outcome connects to the science. These are first prototypes for student playtesting, not yet a claim that all 58 topics have bespoke simulations.
+- The existing **58 topic-aligned practice challenges** remain available across Physics (19), Chemistry (22) and Biology (17): 32 numeric, 22 reasoning and 4 ordering challenges. They are labeled as topic challenges, not full visual simulations. Browse by subject and unit or launch a mixed-science challenge; hints, worked solutions, mastery, streaks and XP are retained.
+- The separate **paper-first projectile SUVAT challenge** is preserved, with both fixed-speed/variable-angle and fixed-angle/variable-speed modes. It still hides its trajectory until a shot and keeps the worked solution collapsed until after the attempt.
+- The projectile model assumes level ground and no air resistance. Lab and topic progress stays in local browser storage.
 
 ### 🤖 Ask AI tutor
 - Built-in **offline tutor** that knows the whole syllabus: explain topics, define terms, give formulae, set quizzes, share exam tips
@@ -50,7 +51,7 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-Run the built-in arcade coverage and interaction smoke test with `node tests/topic-games.test.js`.
+Run both built-in interaction suites with `node tests/topic-games.test.js` and `node tests/interactive-labs.test.js`.
 
 Or deploy the folder to GitHub Pages / Netlify / Vercel as-is.
 
@@ -60,7 +61,8 @@ Or deploy the folder to GitHub Pages / Netlify / Vercel as-is.
 index.html          — main app shell; opens on the subject bookshelf
 css/style.css       — shared flat-color design system (no gradients)
 css/book-layout.css — permanent paper, bookshelf and paged-reader presentation
-css/games.css       — responsive warm-paper layout for projectile and topic mini-games
+css/games.css       — responsive warm-paper layout for the projectile challenge and topic-practice arcade
+css/labs.css        — visual lab showcase, Canvas stages, accessible controls and responsive lab layouts
 js/
   data-physics.js    — Physics syllabus + notes
   data-chemistry.js  — Chemistry syllabus + notes
@@ -81,7 +83,8 @@ js/
   tutor.js           — offline tutor engine + optional LLM mode
   book-layout.js     — subject bookshelf, complete paged notes, and question flip reader
   topic-games.js     — original hand-calculation, reasoning and process challenges mapped to every Physics/Chemistry/Biology topic
-  games.js           — science-game arcade, projectile canvas, accessible controls and local game stats
+  interactive-labs.js — three visual, controllable Physics/Chemistry/Biology lab prototypes
+  games.js           — science-game arcade, retained projectile challenge, topic practice and local game stats
   app.js             — routing, papers/mock/AI/progress/games views and interactions
 ```
 

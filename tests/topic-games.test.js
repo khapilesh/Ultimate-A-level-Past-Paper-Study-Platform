@@ -35,7 +35,7 @@ const scripts = [...html.matchAll(/<script src="(js\/[^"]+)"/g)].map(match=>matc
 for(const filename of scripts) vm.runInContext(fs.readFileSync(filename,"utf8"),sandbox,{filename});
 
 assert.match(element("app").innerHTML,/Science Study Arcade/);
-assert.match(element("app").innerHTML,/58 \/ 58 topic games/);
+assert.match(element("app").innerHTML,/58 \/ 58 topic challenges/);
 assert.match(element("app").innerHTML,/Land it in the hole/);
 
 const expected = {physics:19,chemistry:22,biology:17};
@@ -130,7 +130,7 @@ assert.equal(Object.keys(JSON.parse(storage["ial-games"]).topicArcade.completed)
 
 location.hash="#/subject/chemistry/U1";
 sandbox.render();
-assert.match(element("app").innerHTML,/Play this topic/);
+assert.match(element("app").innerHTML,/Try topic challenge/);
 assert.match(element("app").innerHTML,/topicArcadeStart\('chemistry','U1','U1T1'\)/);
 sandbox.topicArcadeStart("chemistry","U1","U1T1");
 assert.equal(location.hash,"#/games/chemistry/U1/U1T1");

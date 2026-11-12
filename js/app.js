@@ -50,7 +50,9 @@ function toggleTheme(){ var h=document.documentElement; h.dataset.theme=(h.datas
 function render(){
   stopTimer();
   var h=(location.hash||"#/home").replace(/^#\//,""), parts=h.split("/");
-  if(!(parts[0]==="games"&&parts[1]==="projectile")&&typeof stopProjectileGameAnimation==="function")stopProjectileGameAnimation();
+  var onProjectileRoute=parts[0]==="games"&&parts[1]==="projectile";
+  if(!onProjectileRoute&&typeof stopProjectileGameAnimation==="function")stopProjectileGameAnimation();
+  if(typeof scienceLabStopAnimations==="function")scienceLabStopAnimations(parts[0]==="games"&&parts[1]==="lab"?parts[2]:null);
   document.querySelectorAll("#navLinks button").forEach(function(b){ b.classList.toggle("on", b.dataset.nav===parts[0]||(parts[0]==="subject"&&b.dataset.nav===parts[1])||(parts[0]==="topic"&&b.dataset.nav===parts[1])); });
   var app=document.getElementById("app");
   if(parts[0]==="subject"&&SUBJECTS[parts[1]]){
