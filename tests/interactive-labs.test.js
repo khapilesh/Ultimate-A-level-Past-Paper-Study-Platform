@@ -146,7 +146,7 @@ assert.match(
 assert.match(element("app").innerHTML, /Play the motion lab/);
 assert.match(element("app").innerHTML, /Play the collision lab/);
 assert.match(element("app").innerHTML, /Play the cell mission/);
-assert.match(element("app").innerHTML, /Play the bonding studio/);
+assert.match(element("app").innerHTML, /Play Molecular Shapes/);
 assert.match(element("app").innerHTML, /58 \/ 58 topic challenges/);
 
 location.hash = "#/games/lab/physics";
@@ -236,103 +236,184 @@ sandbox.scienceLabChemFinish();
 assert.equal(chemistry.finished, true);
 assert.equal(sandbox.scienceLabReadStats().chemistry.wins, 1);
 
+const shapeXpStart = JSON.parse(storage["ial-progress"]).xp;
 location.hash = "#/topic/chemistry/U1/U1T3";
 sandbox.render();
 assert.match(element("app").innerHTML, /Bonding &amp; Structure/);
-assert.match(element("app").innerHTML, /Play Bonding Studio/);
+assert.match(element("app").innerHTML, /Play Molecular Shapes Studio/);
+assert.match(
+  element("app").innerHTML,
+  /Try topic challenge/,
+  "the molecular-shapes game is added without replacing the existing topic challenge",
+);
 location.hash = "#/games/lab/bonding";
 sandbox.render();
-assert.match(element("app").innerHTML, /Bonding Studio/);
-assert.match(element("app").innerHTML, /Sodium chloride/);
-assert.match(element("app").innerHTML, /id='bonding-electron-0-0'/);
-assert.match(element("app").innerHTML, /id='bonding-transfer-target-1'/);
-const bonding = sandbox.scienceLabBondingState;
-assert.equal(bonding.atoms[0].electrons.length, 1);
-assert.equal(bonding.atoms[1].electrons.length, 7);
-sandbox.scienceLabBondingSelectElectron(1, 0);
-sandbox.scienceLabBondingTransferTo(0);
-assert.equal(
-  bonding.transfers,
-  0,
-  "a transfer in the wrong direction is rejected",
+assert.match(element("app").innerHTML, /Molecular Shapes Studio/);
+assert.match(element("app").innerHTML, /VSEPR/);
+assert.match(element("app").innerHTML, /CO₂/);
+assert.match(element("app").innerHTML, /vsepr-bondingDomains-plus/);
+assert.match(element("app").innerHTML, /vsepr-lonePairs-plus/);
+assert.match(
+  element("app").innerHTML,
+  /onclick='scienceLabVseprAdjust\("bondingDomains",1\)'/,
+  "the count steppers call the interactive VSEPR control",
 );
-sandbox.scienceLabBondingCheckBuild();
-assert.equal(
-  bonding.phase,
-  "build",
-  "an incomplete model cannot be checked as complete",
+assert.match(element("app").innerHTML, /aria-label='Bonding domains selected'/);
+assert.match(element("app").innerHTML, /aria-label='Lone pairs selected'/);
+assert.doesNotMatch(
+  element("app").innerHTML,
+  /Sodium chloride|bonding-electron|bonding-transfer-target/,
 );
-sandbox.scienceLabBondingSelectElectron(0, 0);
-sandbox.scienceLabBondingTransferTo(1);
-assert.equal(bonding.atoms[0].electrons.length, 0);
-assert.equal(bonding.atoms[1].electrons.length, 8);
-assert.match(element("app").innerHTML, /Na<sup>1\+<\/sup>/);
-assert.match(element("app").innerHTML, /Cl<sup>1−<\/sup>/);
-sandbox.scienceLabBondingCheckBuild();
-assert.equal(bonding.phase, "reason");
-sandbox.scienceLabBondingSelectAnswer(0);
-sandbox.scienceLabBondingCheckReason();
+assert.doesNotMatch(
+  element("app").innerHTML,
+  /vsepr-reveal-diagram/,
+  "the 3D-style geometry stays hidden before the player predicts the shape",
+);
+const vsepr = sandbox.scienceLabVseprState;
+assert.equal(vsepr.bondingDomains, 0);
+assert.equal(vsepr.lonePairs, 0);
+sandbox.scienceLabVseprAdjust("bondingDomains", 1);
+sandbox.scienceLabVseprCheckDomains();
 assert.equal(
-  bonding.solved,
+  vsepr.phase,
+  "domains",
+  "an incorrect electron-domain inventory can be revised",
+);
+sandbox.scienceLabVseprAdjust("bondingDomains", 1);
+sandbox.scienceLabVseprCheckDomains();
+assert.equal(vsepr.phase, "shape");
+assert.doesNotMatch(
+  element("app").innerHTML,
+  /vsepr-reveal-diagram/,
+  "checking the inventory does not expose the molecular shape before the prediction",
+);
+sandbox.scienceLabVseprSelectAnswer(0);
+sandbox.scienceLabVseprCheckAnswer();
+assert.equal(
+  vsepr.solved,
   false,
-  "a wrong explanation can be retried without exposing the answer",
+  "a wrong VSEPR prediction can be retried without revealing the correct shape",
 );
-sandbox.scienceLabBondingSelectAnswer(
-  sandbox.scienceLabBondingChallenge().answer,
+assert.doesNotMatch(
+  element("app").innerHTML,
+  /vsepr-reveal-diagram|Bent molecular shape/,
 );
-sandbox.scienceLabBondingCheckReason();
-assert.equal(bonding.solved, true);
-assert.equal(sandbox.scienceLabReadStats().bonding.wins, 1);
+sandbox.scienceLabVseprSelectAnswer(sandbox.scienceLabVseprChallenge().answer);
+sandbox.scienceLabVseprCheckAnswer();
+assert.equal(vsepr.solved, true);
+assert.match(element("app").innerHTML, /Linear/);
+assert.match(element("app").innerHTML, /180°/);
+assert.match(element("app").innerHTML, /vsepr-reveal-diagram/);
+assert.match(element("app").innerHTML, /vsepr-svg-ligand/);
+assert.equal(
+  (element("app").innerHTML.match(/class='vsepr-svg-bond'/g) || []).length,
+  4,
+  "the CO₂ reveal draws two parallel strokes for each double bond",
+);
+assert.equal(sandbox.scienceLabReadStats().shapes.wins, 1);
+assert.equal(
+  JSON.parse(storage["ial-progress"]).xp,
+  shapeXpStart + 12,
+  "the first cleared molecule earns its first-clear XP reward",
+);
 
-sandbox.scienceLabBondingNext();
-assert.equal(bonding.level, 1);
-assert.equal(bonding.atoms[0].symbol, "Mg");
-for (let i = 0; i < 2; i++) {
-  sandbox.scienceLabBondingSelectElectron(0, 0);
-  sandbox.scienceLabBondingTransferTo(1);
+sandbox.scienceLabVseprNext();
+assert.equal(vsepr.level, 1);
+assert.equal(vsepr.bondingDomains, 0);
+assert.equal(vsepr.lonePairs, 0);
+assert.equal(sandbox.scienceLabVseprChallenge().id, "bf3");
+for (let i = 0; i < 3; i++) sandbox.scienceLabVseprAdjust("bondingDomains", 1);
+sandbox.scienceLabVseprAdjust("lonePairs", 1);
+sandbox.scienceLabVseprCheckDomains();
+assert.equal(
+  vsepr.phase,
+  "domains",
+  "extra lone pairs are not accepted for a three-bond, no-lone-pair centre",
+);
+sandbox.scienceLabVseprAdjust("lonePairs", -1);
+function solveCurrentVseprChallenge() {
+  const challenge = sandbox.scienceLabVseprChallenge();
+  while (vsepr.bondingDomains < challenge.bondingDomains)
+    sandbox.scienceLabVseprAdjust("bondingDomains", 1);
+  while (vsepr.bondingDomains > challenge.bondingDomains)
+    sandbox.scienceLabVseprAdjust("bondingDomains", -1);
+  while (vsepr.lonePairs < challenge.lonePairs)
+    sandbox.scienceLabVseprAdjust("lonePairs", 1);
+  while (vsepr.lonePairs > challenge.lonePairs)
+    sandbox.scienceLabVseprAdjust("lonePairs", -1);
+  sandbox.scienceLabVseprCheckDomains();
+  assert.equal(
+    vsepr.phase,
+    "shape",
+    challenge.id + " inventory should be accepted",
+  );
+  assert.doesNotMatch(
+    element("app").innerHTML,
+    /vsepr-reveal-diagram/,
+    challenge.id + " geometry stays concealed before its answer is checked",
+  );
+  sandbox.scienceLabVseprSelectAnswer(challenge.answer);
+  sandbox.scienceLabVseprCheckAnswer();
+  assert.equal(vsepr.solved, true, challenge.id + " shape answer should clear");
+  assert.match(element("app").innerHTML, /vsepr-reveal-diagram/);
+  assert.match(element("app").innerHTML, new RegExp(challenge.shape));
+  assert.match(element("app").innerHTML, new RegExp(challenge.angle));
 }
-assert.equal(bonding.atoms[0].electrons.length, 0);
-assert.equal(bonding.atoms[1].electrons.length, 8);
-sandbox.scienceLabBondingCheckBuild();
-sandbox.scienceLabBondingSelectAnswer(
-  sandbox.scienceLabBondingChallenge().answer,
+solveCurrentVseprChallenge();
+assert.match(element("app").innerHTML, /Trigonal planar/);
+sandbox.scienceLabVseprNext();
+assert.equal(vsepr.level, 2);
+solveCurrentVseprChallenge();
+assert.match(element("app").innerHTML, /Tetrahedral/);
+sandbox.scienceLabVseprNext();
+assert.equal(vsepr.level, 3);
+solveCurrentVseprChallenge();
+assert.match(element("app").innerHTML, /Trigonal pyramidal/);
+assert.match(element("app").innerHTML, /vsepr-svg-lone-pair/);
+assert.match(element("app").innerHTML, /vsepr-svg-bond dashed/);
+assert.match(element("app").innerHTML, /vsepr-svg-wedge/);
+assert.equal(
+  (element("app").innerHTML.match(/class='vsepr-svg-lone-pair'/g) || []).length,
+  1,
+  "NH₃'s revealed model includes its single lone pair",
 );
-sandbox.scienceLabBondingCheckReason();
-assert.equal(bonding.solved, true);
-sandbox.scienceLabBondingNext();
-assert.equal(bonding.level, 2);
-assert.deepEqual(Array.from(bonding.bondProgress), [0, 0]);
-sandbox.scienceLabBondingAddPair(0);
-sandbox.scienceLabBondingAddPair(1);
-assert.deepEqual(Array.from(bonding.bondProgress), [1, 1]);
-sandbox.scienceLabBondingCheckBuild();
-assert.equal(bonding.phase, "reason");
-assert.doesNotMatch(element("app").innerHTML, /bonding-geometry-preview/);
-sandbox.scienceLabBondingSelectAnswer(
-  sandbox.scienceLabBondingChallenge().answer,
+sandbox.scienceLabVseprNext();
+assert.equal(vsepr.level, 4);
+solveCurrentVseprChallenge();
+assert.match(element("app").innerHTML, /Bent/);
+assert.match(element("app").innerHTML, /vsepr-svg-lone-pair/);
+assert.equal(
+  (element("app").innerHTML.match(/class='vsepr-svg-lone-pair'/g) || []).length,
+  2,
+  "H₂O's revealed model includes both lone pairs",
 );
-sandbox.scienceLabBondingCheckReason();
-assert.equal(bonding.solved, true);
-assert.match(element("app").innerHTML, /Bent molecular shape/);
-sandbox.scienceLabBondingNext();
-assert.equal(bonding.level, 3);
-for (let i = 0; i < 2; i++) {
-  sandbox.scienceLabBondingAddPair(0);
-  sandbox.scienceLabBondingAddPair(1);
-}
-assert.deepEqual(Array.from(bonding.bondProgress), [2, 2]);
-sandbox.scienceLabBondingCheckBuild();
-assert.doesNotMatch(element("app").innerHTML, /bonding-geometry-preview/);
-sandbox.scienceLabBondingSelectAnswer(
-  sandbox.scienceLabBondingChallenge().answer,
+sandbox.scienceLabVseprNext();
+assert.equal(vsepr.level, 5);
+solveCurrentVseprChallenge();
+assert.match(element("app").innerHTML, /Octahedral/);
+sandbox.scienceLabVseprAdjust("lonePairs", 1);
+assert.equal(
+  vsepr.lonePairs,
+  0,
+  "the completed round cannot change its inventory",
 );
-sandbox.scienceLabBondingCheckReason();
-assert.equal(bonding.solved, true);
-assert.match(element("app").innerHTML, /Linear molecular shape/);
-sandbox.scienceLabBondingNext();
-assert.equal(bonding.phase, "complete");
-assert.match(element("app").innerHTML, /All four structures built/);
-assert.equal(sandbox.scienceLabReadStats().bonding.wins, 4);
+sandbox.scienceLabVseprNext();
+assert.equal(vsepr.phase, "complete");
+assert.match(element("app").innerHTML, /All six shape challenges solved/);
+assert.equal(sandbox.scienceLabReadStats().shapes.wins, 6);
+assert.equal(
+  sandbox.scienceLabReadStats().shapes.attempts,
+  7,
+  "shape checks count the one retry plus six correct predictions",
+);
+assert.equal(
+  JSON.parse(storage["ial-progress"]).xp,
+  shapeXpStart + 72,
+  "each new molecular shape awards first-clear XP",
+);
+sandbox.scienceLabVseprRestart();
+assert.equal(vsepr.level, 0);
+assert.equal(vsepr.phase, "domains");
 
 location.hash = "#/games/lab/biology";
 sandbox.render();
@@ -401,11 +482,11 @@ assert.match(
 console.log(
   "INTERACTIVE_LABS_TESTS_OK",
   JSON.stringify({
-    labs: ["physics", "chemistry", "biology", "bonding"],
+    labs: ["physics", "chemistry", "biology", "molecular-shapes"],
     controls:
-      "hidden-before-launch angle/speed, temperature/concentration/catalyst, membrane transport, ionic transfer, covalent pairs",
+      "hidden-before-launch angle/speed, temperature/concentration/catalyst, membrane transport, VSEPR bonding-domain and lone-pair counts, shape-and-angle predictions",
     visuals:
-      "post-launch solid trajectory, particle collisions/products, animated membrane transport, dot-and-cross structures",
+      "post-launch solid trajectory, particle collisions/products, animated membrane transport, labelled molecular geometry diagrams",
     projectileChallenge: "preserved",
   }),
 );

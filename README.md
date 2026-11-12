@@ -29,9 +29,9 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 
 ### 🎮 Playable science labs + topic practice
 - The first staged redesign includes three cross-subject visual labs: **Physics — Trajectory Tuner** (set angle and speed, estimate on paper, then launch to reveal the path and landing); **Chemistry — Collision Lab** (adjust temperature, concentration and catalyst, then watch particles collide and form products); and **Biology — Membrane Mission** (choose oxygen, glucose, water or potassium, select a transport route and move visible molecules across the membrane).
-- A fourth visual game, **Chemistry — Bonding Studio**, is linked from the `U1T3` **Bonding & Structure** topic. Build ionic NaCl and MgO models by transferring electrons, build covalent H₂O and CO₂ models by adding shared pairs, then apply each model to a property, shape or polarity question. The dot-and-cross workbench is a playable first version for this topic, not a claim that all 58 topics have bespoke simulations.
+- A fourth visual game, **Chemistry — Molecular Shapes Studio**, is linked from the `U1T3` **Bonding & Structure** topic alongside the existing topic challenge. It is a VSEPR/molecular-geometry game—not a dot-and-cross electron-transfer activity: adjust bonding-domain and lone-pair counts, predict shapes and bond angles for CO₂, BF₃, CH₄, NH₃, H₂O and SF₆, then reveal accessible molecular diagrams and explanations. The “Quantum Chemistry” reference activity has not been identified, so this prototype is not presented as an exact recreation of it.
 - The Physics lab hides its path, landing point, flight time and maximum height until after launch; no Physics view draws a dotted trajectory or landing guide.
-- The labs combine Canvas scenes with touch- and keyboard-operable controls; the bonding model uses accessible HTML controls. Feedback explains how each visible outcome connects to the science. These prototypes are intended for student playtesting.
+- The labs combine Canvas scenes with touch- and keyboard-operable controls; Molecular Shapes Studio uses accessible count steppers, answer choices and labelled SVG models. Feedback explains how each visible outcome connects to the science. These prototypes are intended for student playtesting.
 - The existing **58 topic-aligned practice challenges** remain available across Physics (19), Chemistry (22) and Biology (17): 32 numeric, 22 reasoning and 4 ordering challenges. They are labeled as topic challenges, not full visual simulations. Browse by subject and unit or launch a mixed-science challenge; hints, worked solutions, mastery, streaks and XP are retained.
 - The separate **paper-first projectile SUVAT challenge** is preserved, with both fixed-speed/variable-angle and fixed-angle/variable-speed modes. It still hides its trajectory until a shot and keeps the worked solution collapsed until after the attempt.
 - The projectile model assumes level ground and no air resistance. Lab and topic progress stays in local browser storage.
@@ -85,7 +85,7 @@ js/
   tutor.js           — offline tutor engine + optional LLM mode
   book-layout.js     — subject bookshelf, complete paged notes, and question flip reader
   topic-games.js     — original hand-calculation, reasoning and process challenges mapped to every Physics/Chemistry/Biology topic
-  interactive-labs.js — Physics, Chemistry and Biology labs plus the Chemistry Bonding Studio
+  interactive-labs.js — Physics, Chemistry and Biology labs plus the Chemistry Molecular Shapes Studio
   games.js           — science-game arcade, retained projectile challenge, topic practice and local game stats
   app.js             — routing, papers/mock/AI/progress/games views and interactions
 ```
