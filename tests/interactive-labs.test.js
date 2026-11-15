@@ -5,6 +5,8 @@ const vm = require("node:vm");
 const storage = Object.create(null);
 const elements = Object.create(null);
 const lineDashCalls = [];
+const canvasTexts = [];
+let canvasEllipseCalls = 0;
 const rafCallbacks = new Map();
 let rafId = 0;
 function classList() {
@@ -22,6 +24,12 @@ const context = new Proxy(
     setTransform() {},
     setLineDash(segments) {
       lineDashCalls.push(segments);
+    },
+    fillText(text) {
+      canvasTexts.push(String(text));
+    },
+    ellipse() {
+      canvasEllipseCalls++;
     },
     getImageData() {
       return { data: [] };
@@ -146,7 +154,7 @@ assert.match(
 assert.match(element("app").innerHTML, /Play the motion lab/);
 assert.match(element("app").innerHTML, /Play the collision lab/);
 assert.match(element("app").innerHTML, /Play the cell mission/);
-assert.match(element("app").innerHTML, /Play Molecular Shapes/);
+assert.match(element("app").innerHTML, /Open 3D Bonding Sandbox/);
 assert.match(element("app").innerHTML, /58 \/ 58 topic challenges/);
 
 location.hash = "#/games/lab/physics";
@@ -236,184 +244,145 @@ sandbox.scienceLabChemFinish();
 assert.equal(chemistry.finished, true);
 assert.equal(sandbox.scienceLabReadStats().chemistry.wins, 1);
 
-const shapeXpStart = JSON.parse(storage["ial-progress"]).xp;
+const orbitalXpStart = JSON.parse(storage["ial-progress"]).xp;
 location.hash = "#/topic/chemistry/U1/U1T3";
 sandbox.render();
 assert.match(element("app").innerHTML, /Bonding &amp; Structure/);
-assert.match(element("app").innerHTML, /Play Molecular Shapes Studio/);
+assert.match(element("app").innerHTML, /Open 3D Bonding Sandbox/);
 assert.match(
   element("app").innerHTML,
   /Try topic challenge/,
-  "the molecular-shapes game is added without replacing the existing topic challenge",
+  "the bonding sandbox is added without removing existing topic practice",
 );
 location.hash = "#/games/lab/bonding";
 sandbox.render();
-assert.match(element("app").innerHTML, /Molecular Shapes Studio/);
-assert.match(element("app").innerHTML, /VSEPR/);
-assert.match(element("app").innerHTML, /CO₂/);
-assert.match(element("app").innerHTML, /vsepr-bondingDomains-plus/);
-assert.match(element("app").innerHTML, /vsepr-lonePairs-plus/);
-assert.match(
-  element("app").innerHTML,
-  /onclick='scienceLabVseprAdjust\("bondingDomains",1\)'/,
-  "the count steppers call the interactive VSEPR control",
-);
-assert.match(element("app").innerHTML, /aria-label='Bonding domains selected'/);
-assert.match(element("app").innerHTML, /aria-label='Lone pairs selected'/);
-assert.doesNotMatch(
-  element("app").innerHTML,
-  /Sodium chloride|bonding-electron|bonding-transfer-target/,
-);
-assert.doesNotMatch(
-  element("app").innerHTML,
-  /vsepr-reveal-diagram/,
-  "the 3D-style geometry stays hidden before the player predicts the shape",
-);
-const vsepr = sandbox.scienceLabVseprState;
-assert.equal(vsepr.bondingDomains, 0);
-assert.equal(vsepr.lonePairs, 0);
-sandbox.scienceLabVseprAdjust("bondingDomains", 1);
-sandbox.scienceLabVseprCheckDomains();
-assert.equal(
-  vsepr.phase,
-  "domains",
-  "an incorrect electron-domain inventory can be revised",
-);
-sandbox.scienceLabVseprAdjust("bondingDomains", 1);
-sandbox.scienceLabVseprCheckDomains();
-assert.equal(vsepr.phase, "shape");
-assert.doesNotMatch(
-  element("app").innerHTML,
-  /vsepr-reveal-diagram/,
-  "checking the inventory does not expose the molecular shape before the prediction",
-);
-sandbox.scienceLabVseprSelectAnswer(0);
-sandbox.scienceLabVseprCheckAnswer();
-assert.equal(
-  vsepr.solved,
-  false,
-  "a wrong VSEPR prediction can be retried without revealing the correct shape",
-);
-assert.doesNotMatch(
-  element("app").innerHTML,
-  /vsepr-reveal-diagram|Bent molecular shape/,
-);
-sandbox.scienceLabVseprSelectAnswer(sandbox.scienceLabVseprChallenge().answer);
-sandbox.scienceLabVseprCheckAnswer();
-assert.equal(vsepr.solved, true);
-assert.match(element("app").innerHTML, /Linear/);
-assert.match(element("app").innerHTML, /180°/);
-assert.match(element("app").innerHTML, /vsepr-reveal-diagram/);
-assert.match(element("app").innerHTML, /vsepr-svg-ligand/);
-assert.equal(
-  (element("app").innerHTML.match(/class='vsepr-svg-bond'/g) || []).length,
-  4,
-  "the CO₂ reveal draws two parallel strokes for each double bond",
-);
-assert.equal(sandbox.scienceLabReadStats().shapes.wins, 1);
-assert.equal(
-  JSON.parse(storage["ial-progress"]).xp,
-  shapeXpStart + 12,
-  "the first cleared molecule earns its first-clear XP reward",
-);
+assert.match(element("app").innerHTML, /3D Bonding Sandbox/);
+assert.match(element("app").innerHTML, /labOrbitalCanvas/);
+assert.match(element("app").innerHTML, /Hybridise orbitals/);
+assert.match(element("app").innerHTML, /See VSEPR/);
+assert.match(element("app").innerHTML, /Twist bond/);
+assert.match(element("app").innerHTML, /Optional explanation/);
+assert.match(element("app").innerHTML, /simplified educational shapes/);
+assert.match(element("app").innerHTML, /Make C–C σ bond/);
+assert.match(element("app").innerHTML, /Make π overlap 1/);
+assert.doesNotMatch(element("app").innerHTML, /vsepr-bondingDomains-plus|Check domain count|Count the electron domains/);
+const orbital = sandbox.scienceLabOrbitalState;
+assert.equal(orbital.moleculeId, "ethene");
+assert.equal(orbital.hybridised, false);
+assert.equal(orbital.mode, "build");
+assert.ok(canvasEllipseCalls > 0, "the low-cost projected model draws orbital clouds to Canvas");
 
-sandbox.scienceLabVseprNext();
-assert.equal(vsepr.level, 1);
-assert.equal(vsepr.bondingDomains, 0);
-assert.equal(vsepr.lonePairs, 0);
-assert.equal(sandbox.scienceLabVseprChallenge().id, "bf3");
-for (let i = 0; i < 3; i++) sandbox.scienceLabVseprAdjust("bondingDomains", 1);
-sandbox.scienceLabVseprAdjust("lonePairs", 1);
-sandbox.scienceLabVseprCheckDomains();
-assert.equal(
-  vsepr.phase,
-  "domains",
-  "extra lone pairs are not accepted for a three-bond, no-lone-pair centre",
-);
-sandbox.scienceLabVseprAdjust("lonePairs", -1);
-function solveCurrentVseprChallenge() {
-  const challenge = sandbox.scienceLabVseprChallenge();
-  while (vsepr.bondingDomains < challenge.bondingDomains)
-    sandbox.scienceLabVseprAdjust("bondingDomains", 1);
-  while (vsepr.bondingDomains > challenge.bondingDomains)
-    sandbox.scienceLabVseprAdjust("bondingDomains", -1);
-  while (vsepr.lonePairs < challenge.lonePairs)
-    sandbox.scienceLabVseprAdjust("lonePairs", 1);
-  while (vsepr.lonePairs > challenge.lonePairs)
-    sandbox.scienceLabVseprAdjust("lonePairs", -1);
-  sandbox.scienceLabVseprCheckDomains();
-  assert.equal(
-    vsepr.phase,
-    "shape",
-    challenge.id + " inventory should be accepted",
-  );
-  assert.doesNotMatch(
-    element("app").innerHTML,
-    /vsepr-reveal-diagram/,
-    challenge.id + " geometry stays concealed before its answer is checked",
-  );
-  sandbox.scienceLabVseprSelectAnswer(challenge.answer);
-  sandbox.scienceLabVseprCheckAnswer();
-  assert.equal(vsepr.solved, true, challenge.id + " shape answer should clear");
-  assert.match(element("app").innerHTML, /vsepr-reveal-diagram/);
-  assert.match(element("app").innerHTML, new RegExp(challenge.shape));
-  assert.match(element("app").innerHTML, new RegExp(challenge.angle));
+sandbox.scienceLabOrbitalHybridise();
+assert.equal(orbital.hybridised, true);
+assert.equal(orbital.hybridization, "sp2");
+assert.ok(orbital.hitRegions.some((hit) => hit.type === "sigma-site"));
+assert.ok(orbital.hitRegions.some((hit) => hit.type === "pi-cloud"));
+assert.ok(orbital.hitRegions.some((hit) => hit.type === "h-target"));
+
+const orbitalCanvas = element("labOrbitalCanvas");
+function pointerEventAt(point) {
+  return {
+    currentTarget: orbitalCanvas,
+    clientX: point.x,
+    clientY: point.y * 0.75,
+    pointerId: 1,
+    preventDefault() {},
+  };
 }
-solveCurrentVseprChallenge();
-assert.match(element("app").innerHTML, /Trigonal planar/);
-sandbox.scienceLabVseprNext();
-assert.equal(vsepr.level, 2);
-solveCurrentVseprChallenge();
+function dragOrbitalTo(source, target) {
+  sandbox.scienceLabOrbitalPointerDown(pointerEventAt(source));
+  sandbox.scienceLabOrbitalPointerUp(pointerEventAt(target));
+}
+let hOrbital = orbital.hitRegions.find((hit) => hit.type === "sigma-site" && hit.id === 0);
+let hTarget = orbital.hitRegions.find((hit) => hit.type === "h-target" && hit.id === 0);
+dragOrbitalTo(hOrbital, hTarget);
+assert.deepEqual(Array.from(orbital.formedHydrogens), [0], "dragging a hybrid orbital to its atom makes a σ bond");
+assert.match(orbital.message, /C–H σ bond/);
+assert.match(element("app").innerHTML, /Make C–H σ bond 1 ✓/);
+
+let ccOrbital = orbital.hitRegions.find((hit) => hit.type === "cc-site" && hit.atom === 0);
+let carbonTarget = orbital.hitRegions.find((hit) => hit.type === "central-atom" && hit.atom === 1);
+dragOrbitalTo(ccOrbital, carbonTarget);
+assert.equal(orbital.sigmaFormed, true, "directly joining the carbon orbital lobes makes a C–C σ bond");
+
+sandbox.scienceLabOrbitalSetMode("rotation");
+const rotationControl = { value: "30" };
+sandbox.scienceLabOrbitalRotate(30, rotationControl);
+assert.equal(orbital.rotationDegrees, 30, "an unbonded p pair can be visibly twisted before π overlap forms");
+sandbox.scienceLabOrbitalSetMode("build");
+sandbox.scienceLabOrbitalFormPi(0);
+assert.equal(orbital.piFormed[0], undefined, "twisted p orbitals cannot create side-on π overlap");
+assert.match(orbital.message, /twisted out of alignment/);
+sandbox.scienceLabOrbitalRotate(0, rotationControl);
+let pCloud = orbital.hitRegions.find((hit) => hit.type === "pi-cloud" && hit.atom === 0 && hit.direction === 0);
+let pPartner = orbital.hitRegions.find((hit) => hit.type === "pi-cloud" && hit.atom === 1 && hit.direction === 0);
+dragOrbitalTo(pCloud, pPartner);
+assert.equal(orbital.piFormed[0], true, "dragging aligned p clouds side-on forms a π bond");
+assert.match(orbital.message, /Side-on p–p overlap/);
+sandbox.scienceLabOrbitalSetMode("rotation");
+sandbox.scienceLabOrbitalRotate(30, rotationControl);
+assert.equal(orbital.rotationDegrees, 0, "the π bond prevents rotation of the double bond");
+assert.equal(orbital.attemptedRotation, 30);
+assert.match(orbital.message, /Rotation blocked.*destroy the sideways overlap/);
+assert.match(element("orbitalRotationStatus").textContent, /30° twist was blocked/);
+assert.ok(canvasTexts.includes("π OVERLAP · ROTATION LOCKED"));
+sandbox.scienceLabOrbitalSetMode("build");
+sandbox.scienceLabOrbitalFormHydrogen(1);
+sandbox.scienceLabOrbitalFormHydrogen(2);
+sandbox.scienceLabOrbitalFormHydrogen(3);
+assert.equal(orbital.complete, true, "all ethene σ and π overlaps complete the model");
+assert.equal(sandbox.scienceLabReadStats().bonding.wins, 1);
+assert.equal(JSON.parse(storage["ial-progress"]).xp, orbitalXpStart + 12, "first completed molecule earns its first-clear XP");
+
+sandbox.scienceLabOrbitalSelectMolecule("ethane");
+assert.equal(orbital.hybridised, false);
+assert.equal(orbital.rotationDegrees, 0);
+assert.match(element("app").innerHTML, /C₂H₆ · Ethane/);
+sandbox.scienceLabOrbitalHybridise();
+sandbox.scienceLabOrbitalFormSigma();
+sandbox.scienceLabOrbitalSetMode("rotation");
+sandbox.scienceLabOrbitalRotate(35, rotationControl);
+assert.equal(orbital.rotationDegrees, 35, "an ethane single σ bond allows rotation");
+assert.match(orbital.message, /single|head-on overlap/);
+
+sandbox.scienceLabOrbitalSelectMolecule("water");
+sandbox.scienceLabOrbitalSetMode("vsepr");
+assert.match(element("app").innerHTML, /2 bonding domains · 2 lone pairs/);
+assert.match(element("app").innerHTML, /Electron geometry/);
 assert.match(element("app").innerHTML, /Tetrahedral/);
-sandbox.scienceLabVseprNext();
-assert.equal(vsepr.level, 3);
-solveCurrentVseprChallenge();
-assert.match(element("app").innerHTML, /Trigonal pyramidal/);
-assert.match(element("app").innerHTML, /vsepr-svg-lone-pair/);
-assert.match(element("app").innerHTML, /vsepr-svg-bond dashed/);
-assert.match(element("app").innerHTML, /vsepr-svg-wedge/);
-assert.equal(
-  (element("app").innerHTML.match(/class='vsepr-svg-lone-pair'/g) || []).length,
-  1,
-  "NH₃'s revealed model includes its single lone pair",
-);
-sandbox.scienceLabVseprNext();
-assert.equal(vsepr.level, 4);
-solveCurrentVseprChallenge();
 assert.match(element("app").innerHTML, /Bent/);
-assert.match(element("app").innerHTML, /vsepr-svg-lone-pair/);
-assert.equal(
-  (element("app").innerHTML.match(/class='vsepr-svg-lone-pair'/g) || []).length,
-  2,
-  "H₂O's revealed model includes both lone pairs",
-);
-sandbox.scienceLabVseprNext();
-assert.equal(vsepr.level, 5);
-solveCurrentVseprChallenge();
-assert.match(element("app").innerHTML, /Octahedral/);
-sandbox.scienceLabVseprAdjust("lonePairs", 1);
-assert.equal(
-  vsepr.lonePairs,
-  0,
-  "the completed round cannot change its inventory",
-);
-sandbox.scienceLabVseprNext();
-assert.equal(vsepr.phase, "complete");
-assert.match(element("app").innerHTML, /All six shape challenges solved/);
-assert.equal(sandbox.scienceLabReadStats().shapes.wins, 6);
-assert.equal(
-  sandbox.scienceLabReadStats().shapes.attempts,
-  7,
-  "shape checks count the one retry plus six correct predictions",
-);
-assert.equal(
-  JSON.parse(storage["ial-progress"]).xp,
-  shapeXpStart + 72,
-  "each new molecular shape awards first-clear XP",
-);
-sandbox.scienceLabVseprRestart();
-assert.equal(vsepr.level, 0);
-assert.equal(vsepr.phase, "domains");
+assert.match(element("app").innerHTML, /104\.5°/);
+canvasTexts.length = 0;
+canvasEllipseCalls = 0;
+sandbox.scienceLabOrbitalDraw();
+assert.equal(canvasTexts.filter((text) => text === "LP").length, 2, "water's two lone-pair domains appear as repelling clouds");
+assert.ok(canvasEllipseCalls >= 4, "VSEPR view draws its bonding and lone-pair domains rather than asking for counts");
+
+sandbox.scienceLabOrbitalSelectMolecule("ammonia");
+sandbox.scienceLabOrbitalSetMode("vsepr");
+assert.match(element("app").innerHTML, /3 bonding domains · 1 lone pair/);
+assert.match(element("app").innerHTML, /Trigonal pyramidal/);
+assert.match(element("app").innerHTML, /107°/);
+assert.equal(sandbox.scienceLabOrbitalMolecule().lonePairs.length, 1);
+
+sandbox.scienceLabOrbitalSelectMolecule("bf3");
+assert.equal(sandbox.scienceLabOrbitalMolecule().hybridization, "sp2");
+assert.match(sandbox.scienceLabOrbitalMolecule().vsepr.shape, /Trigonal planar/);
+sandbox.scienceLabOrbitalSelectMolecule("methane");
+assert.equal(sandbox.scienceLabOrbitalMolecule().hybridization, "sp3");
+assert.equal(sandbox.scienceLabOrbitalMolecule().hSites.length, 4);
+assert.match(sandbox.scienceLabOrbitalMolecule().vsepr.angle, /109\.5°/);
+sandbox.scienceLabOrbitalSelectMolecule("ethyne");
+assert.equal(sandbox.scienceLabOrbitalMolecule().hybridization, "sp");
+assert.equal(sandbox.scienceLabOrbitalMolecule().piDirections.length, 2);
+sandbox.scienceLabOrbitalHybridise();
+sandbox.scienceLabOrbitalFormSigma();
+sandbox.scienceLabOrbitalFormPi(0);
+sandbox.scienceLabOrbitalFormPi(1);
+sandbox.scienceLabOrbitalFormHydrogen(0);
+sandbox.scienceLabOrbitalFormHydrogen(1);
+assert.equal(orbital.complete, true, "the triple-bond model builds one σ plus two π overlaps");
+assert.equal(sandbox.scienceLabReadStats().bonding.wins, 2);
 
 location.hash = "#/games/lab/biology";
 sandbox.render();
@@ -482,11 +451,11 @@ assert.match(
 console.log(
   "INTERACTIVE_LABS_TESTS_OK",
   JSON.stringify({
-    labs: ["physics", "chemistry", "biology", "molecular-shapes"],
+    labs: ["physics", "chemistry", "biology", "3d-bonding-sandbox"],
     controls:
-      "hidden-before-launch angle/speed, temperature/concentration/catalyst, membrane transport, VSEPR bonding-domain and lone-pair counts, shape-and-angle predictions",
+      "hidden-before-launch angle/speed, temperature/concentration/catalyst, membrane transport, direct orbital-drag σ/π bonding, rotation lock, and visible VSEPR domain repulsion",
     visuals:
-      "post-launch solid trajectory, particle collisions/products, animated membrane transport, labelled molecular geometry diagrams",
+      "post-launch solid trajectory, particle collisions/products, animated membrane transport, projected hybrid orbitals, σ/π overlap and VSEPR domains",
     projectileChallenge: "preserved",
   }),
 );

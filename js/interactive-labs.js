@@ -1,4 +1,4 @@
-/* Three cross-subject visual labs plus the Chemistry VSEPR Molecular Shapes Studio. */
+/* Three cross-subject visual labs plus the Chemistry 3D Bonding Sandbox. */
 var SCIENCE_LAB_SUBJECTS = {
   physics: {
     label: "PHYSICS",
@@ -117,241 +117,78 @@ var SCIENCE_LAB_ROUTE_OPTIONS = [
     icon: "⚡",
   },
 ];
-var SCIENCE_LAB_VSEPR_CHALLENGES = [
+var SCIENCE_LAB_ORBITAL_MOLECULES = [
   {
-    id: "co2",
-    molecule: "CO₂",
-    name: "Carbon dioxide",
-    central: "C",
-    attached: "2 oxygen atoms",
-    ligandSymbol: "O",
-    bondingDomains: 2,
-    lonePairs: 0,
-    bondOrders: [2, 2],
-    geometry: "linear",
-    shape: "Linear",
-    angle: "180°",
-    prompt: "Count the electron domains around carbon in CO₂.",
-    hint: "Each C=O double bond counts as one bonding domain, not two.",
-    options: [
-      { shape: "Trigonal planar", angle: "120°" },
-      { shape: "Bent", angle: "104.5°" },
-      { shape: "Linear", angle: "180°" },
-      { shape: "Tetrahedral", angle: "109.5°" },
+    id: "methane", name: "Methane", formula: "CH₄", hybridization: "sp3",
+    atoms: [{ element: "C", position: [0, 0, 0] }],
+    hSites: [
+      { atom: 0, direction: [0.577, 0.577, 0.577] },
+      { atom: 0, direction: [0.577, -0.577, -0.577] },
+      { atom: 0, direction: [-0.577, 0.577, -0.577] },
+      { atom: 0, direction: [-0.577, -0.577, 0.577] },
     ],
-    answer: 2,
-    explanation:
-      "Carbon has two bonding domains and no lone pairs. They repel to opposite sides, so CO₂ is linear with a 180° bond angle.",
+    lonePairs: [], sigmaDirections: [], piDirections: [], ccSigma: false,
+    vsepr: { domains: "4 bonding domains · 0 lone pairs", electronGeometry: "Tetrahedral", shape: "Tetrahedral", angle: "109.5°", explanation: "Four bonding domains repel equally and point toward the corners of a tetrahedron." },
+    lesson: "Carbon mixes one 2s and three 2p orbitals to make four equivalent sp³ hybrid orbitals. Each overlaps head-on with a hydrogen 1s orbital to form a σ bond.",
   },
   {
-    id: "bf3",
-    molecule: "BF₃",
-    name: "Boron trifluoride",
-    central: "B",
-    attached: "3 fluorine atoms",
-    ligandSymbol: "F",
-    bondingDomains: 3,
-    lonePairs: 0,
-    bondOrders: [1, 1, 1],
-    geometry: "trigonal-planar",
-    shape: "Trigonal planar",
-    angle: "120°",
-    prompt: "Set the bonding domains and lone pairs around boron in BF₃.",
-    hint: "Boron forms three B–F bonds in BF₃ and has no lone pair on the central atom.",
-    options: [
-      { shape: "Trigonal pyramidal", angle: "107°" },
-      { shape: "Trigonal planar", angle: "120°" },
-      { shape: "Tetrahedral", angle: "109.5°" },
-      { shape: "Linear", angle: "180°" },
-    ],
-    answer: 1,
-    explanation:
-      "Three bonding domains and no lone pairs arrange as far apart as possible in one plane. BF₃ is trigonal planar with 120° bond angles.",
+    id: "water", name: "Water", formula: "H₂O", hybridization: "sp3",
+    atoms: [{ element: "O", position: [0, 0, 0] }],
+    hSites: [{ atom: 0, direction: [-0.791, 0.612, 0] }, { atom: 0, direction: [0.791, 0.612, 0] }],
+    lonePairs: [{ atom: 0, direction: [0, -0.74, 0.673] }, { atom: 0, direction: [0, -0.74, -0.673] }],
+    sigmaDirections: [], piDirections: [], ccSigma: false,
+    vsepr: { domains: "2 bonding domains · 2 lone pairs", electronGeometry: "Tetrahedral", shape: "Bent", angle: "104.5°", explanation: "The two lone pairs repel more strongly than bonding pairs, squeezing the H–O–H angle below the tetrahedral value." },
+    lesson: "Oxygen has four electron domains: two O–H σ bonds and two lone pairs. The electron-domain arrangement is tetrahedral, but the atom-only molecular shape is bent.",
   },
   {
-    id: "ch4",
-    molecule: "CH₄",
-    name: "Methane",
-    central: "C",
-    attached: "4 hydrogen atoms",
-    ligandSymbol: "H",
-    bondingDomains: 4,
-    lonePairs: 0,
-    bondOrders: [1, 1, 1, 1],
-    geometry: "tetrahedral",
-    shape: "Tetrahedral",
-    angle: "109.5°",
-    prompt: "Build the electron-domain count around carbon in CH₄.",
-    hint: "Each of the four C–H bonds is one bonding domain; carbon has no lone pairs here.",
-    options: [
-      { shape: "Bent", angle: "104.5°" },
-      { shape: "Trigonal pyramidal", angle: "107°" },
-      { shape: "Octahedral", angle: "90°" },
-      { shape: "Tetrahedral", angle: "109.5°" },
-    ],
-    answer: 3,
-    explanation:
-      "Four bonding domains and no lone pairs give a tetrahedral molecular shape. The H–C–H bond angle is about 109.5°.",
+    id: "ammonia", name: "Ammonia", formula: "NH₃", hybridization: "sp3",
+    atoms: [{ element: "N", position: [0, 0, 0] }],
+    hSites: [{ atom: 0, direction: [0.928, -0.372, 0] }, { atom: 0, direction: [-0.464, -0.372, 0.804] }, { atom: 0, direction: [-0.464, -0.372, -0.804] }],
+    lonePairs: [{ atom: 0, direction: [0, 1, 0] }], sigmaDirections: [], piDirections: [], ccSigma: false,
+    vsepr: { domains: "3 bonding domains · 1 lone pair", electronGeometry: "Tetrahedral", shape: "Trigonal pyramidal", angle: "107°", explanation: "A lone pair occupies the fourth tetrahedral domain and repels the N–H bonding pairs more strongly." },
+    lesson: "Nitrogen is described with four sp³ hybrid orbitals: three overlap with hydrogen 1s orbitals to form σ bonds, and one contains the lone pair.",
   },
   {
-    id: "nh3",
-    molecule: "NH₃",
-    name: "Ammonia",
-    central: "N",
-    attached: "3 hydrogen atoms",
-    ligandSymbol: "H",
-    bondingDomains: 3,
-    lonePairs: 1,
-    bondOrders: [1, 1, 1],
-    geometry: "trigonal-pyramidal",
-    electronGeometry: "tetrahedral",
-    shape: "Trigonal pyramidal",
-    angle: "107°",
-    prompt: "Count bonding domains and lone pairs around nitrogen in NH₃.",
-    hint: "Nitrogen forms three N–H bonds; its remaining non-bonding pair is one lone pair.",
-    options: [
-      { shape: "Trigonal planar", angle: "120°" },
-      { shape: "Trigonal pyramidal", angle: "107°" },
-      { shape: "Bent", angle: "104.5°" },
-      { shape: "Tetrahedral", angle: "109.5°" },
-    ],
-    answer: 1,
-    explanation:
-      "The electron-domain arrangement is tetrahedral (three bonding pairs and one lone pair), but the molecular shape is trigonal pyramidal. Stronger lone-pair repulsion compresses the angle to about 107°.",
+    id: "bf3", name: "Boron trifluoride", formula: "BF₃", hybridization: "sp2", ligandSymbol: "F",
+    atoms: [{ element: "B", position: [0, 0, 0] }],
+    hSites: [{ atom: 0, direction: [1, 0, 0] }, { atom: 0, direction: [-0.5, 0.866, 0] }, { atom: 0, direction: [-0.5, -0.866, 0] }],
+    lonePairs: [], sigmaDirections: [], piDirections: [], ccSigma: false,
+    vsepr: { domains: "3 bonding domains · 0 lone pairs", electronGeometry: "Trigonal planar", shape: "Trigonal planar", angle: "120°", explanation: "Three bonding domains repel evenly in one plane. Boron has an empty unhybridised p orbital in this simplified model." },
+    lesson: "Boron uses three sp² hybrid orbitals for three head-on B–F σ bonds; the remaining p orbital is unoccupied in this simple Lewis/VSEPR description.",
   },
   {
-    id: "h2o",
-    molecule: "H₂O",
-    name: "Water",
-    central: "O",
-    attached: "2 hydrogen atoms",
-    bondingDomains: 2,
-    lonePairs: 2,
-    bondOrders: [1, 1],
-    geometry: "bent",
-    electronGeometry: "tetrahedral",
-    shape: "Bent",
-    angle: "104.5°",
-    prompt: "Build the electron-domain inventory around oxygen in H₂O.",
-    hint: "Oxygen has six outer electrons: two form O–H bonds and two pairs remain as lone pairs.",
-    options: [
-      { shape: "Bent", angle: "104.5°" },
-      { shape: "Linear", angle: "180°" },
-      { shape: "Trigonal pyramidal", angle: "107°" },
-      { shape: "Tetrahedral", angle: "109.5°" },
+    id: "ethane", name: "Ethane", formula: "C₂H₆", hybridization: "sp3",
+    atoms: [{ element: "C", position: [-0.66, 0, 0] }, { element: "C", position: [0.66, 0, 0] }],
+    hSites: [
+      { atom: 0, direction: [-0.333, 0.943, 0] }, { atom: 0, direction: [-0.333, -0.471, 0.816] }, { atom: 0, direction: [-0.333, -0.471, -0.816] },
+      { atom: 1, direction: [0.333, 0.943, 0] }, { atom: 1, direction: [0.333, -0.471, 0.816] }, { atom: 1, direction: [0.333, -0.471, -0.816] },
     ],
-    answer: 0,
-    explanation:
-      "The electron-domain arrangement is tetrahedral (two bonding pairs and two lone pairs), but the molecular shape is bent. Lone-pair repulsions compress H–O–H to about 104.5°.",
+    lonePairs: [], sigmaDirections: [{ atom: 0, direction: [1, 0, 0] }, { atom: 1, direction: [-1, 0, 0] }], piDirections: [], ccSigma: true, rotation: "free",
+    vsepr: { domains: "4 bonding domains around each carbon", electronGeometry: "Tetrahedral at each carbon", shape: "Tetrahedral at each carbon", angle: "109.5°", explanation: "Each carbon has four σ-bonding domains. The C–C bond is a single σ bond, so the idealised model permits rotation around its axis." },
+    lesson: "Each carbon is sp³-hybridised. The C–C and six C–H bonds are σ bonds; head-on overlap around the C–C axis remains while the groups rotate.",
   },
   {
-    id: "sf6",
-    molecule: "SF₆",
-    name: "Sulfur hexafluoride",
-    central: "S",
-    attached: "6 fluorine atoms",
-    ligandSymbol: "F",
-    bondingDomains: 6,
-    lonePairs: 0,
-    bondOrders: [1, 1, 1, 1, 1, 1],
-    geometry: "octahedral",
-    shape: "Octahedral",
-    angle: "90°",
-    prompt: "Set the bonding domains and lone pairs around sulfur in SF₆.",
-    hint: "Sulfur is bonded to six fluorine atoms and has no lone pairs in this VSEPR model.",
-    options: [
-      { shape: "Tetrahedral", angle: "109.5°" },
-      { shape: "Trigonal planar", angle: "120°" },
-      { shape: "Octahedral", angle: "90°" },
-      { shape: "Trigonal pyramidal", angle: "107°" },
-    ],
-    answer: 2,
-    explanation:
-      "Six bonding domains and no lone pairs give an octahedral molecular shape. Adjacent S–F bonds meet at about 90° (with opposite bonds at 180°).",
+    id: "ethene", name: "Ethene", formula: "C₂H₄", hybridization: "sp2",
+    atoms: [{ element: "C", position: [-0.68, 0, 0] }, { element: "C", position: [0.68, 0, 0] }],
+    hSites: [{ atom: 0, direction: [-0.5, 0.866, 0] }, { atom: 0, direction: [-0.5, -0.866, 0] }, { atom: 1, direction: [0.5, 0.866, 0] }, { atom: 1, direction: [0.5, -0.866, 0] }],
+    lonePairs: [], sigmaDirections: [{ atom: 0, direction: [1, 0, 0] }, { atom: 1, direction: [-1, 0, 0] }], piDirections: [[0, 0, 1]], ccSigma: true, rotation: "restricted",
+    vsepr: { domains: "3 bonding domains around each carbon · 0 lone pairs", electronGeometry: "Trigonal planar at each carbon", shape: "Trigonal planar at each carbon", angle: "120°", explanation: "The C=C double bond counts as one VSEPR domain around each carbon. Each carbon is planar with approximately 120° bond angles." },
+    lesson: "Each carbon uses three coplanar sp² orbitals for σ bonds and keeps one unhybridised p orbital. Side-on overlap of those parallel p orbitals makes the π bond.",
+  },
+  {
+    id: "ethyne", name: "Ethyne", formula: "C₂H₂", hybridization: "sp",
+    atoms: [{ element: "C", position: [-0.62, 0, 0] }, { element: "C", position: [0.62, 0, 0] }],
+    hSites: [{ atom: 0, direction: [-1, 0, 0] }, { atom: 1, direction: [1, 0, 0] }],
+    lonePairs: [], sigmaDirections: [{ atom: 0, direction: [1, 0, 0] }, { atom: 1, direction: [-1, 0, 0] }], piDirections: [[0, 1, 0], [0, 0, 1]], ccSigma: true, rotation: "restricted",
+    vsepr: { domains: "2 bonding domains around each carbon · 0 lone pairs", electronGeometry: "Linear at each carbon", shape: "Linear at each carbon", angle: "180°", explanation: "A C≡C triple bond is one VSEPR domain. The two domains at each carbon point in opposite directions." },
+    lesson: "Each carbon uses two sp orbitals for the C–H and C–C σ bonds. Two pairs of perpendicular unhybridised p orbitals overlap sideways to form two π bonds.",
   },
 ];
-var SCIENCE_LAB_VSEPR_DIAGRAMS = {
-  linear: {
-    viewBox: "0 0 240 145",
-    center: { x: 120, y: 72 },
-    outer: [
-      { x: 38, y: 72 },
-      { x: 202, y: 72 },
-    ],
-    bondTypes: ["line", "line"],
-    lonePairs: [],
-  },
-  "trigonal-planar": {
-    viewBox: "0 0 240 155",
-    center: { x: 120, y: 88 },
-    outer: [
-      { x: 120, y: 20 },
-      { x: 59, y: 123 },
-      { x: 181, y: 123 },
-    ],
-    bondTypes: ["line", "line", "line"],
-    lonePairs: [],
-  },
-  tetrahedral: {
-    viewBox: "0 0 240 170",
-    center: { x: 120, y: 82 },
-    outer: [
-      { x: 120, y: 20 },
-      { x: 55, y: 93 },
-      { x: 185, y: 93 },
-      { x: 120, y: 150 },
-    ],
-    bondTypes: ["line", "line", "dash", "wedge"],
-    lonePairs: [],
-  },
-  "trigonal-pyramidal": {
-    viewBox: "0 0 240 170",
-    center: { x: 120, y: 92 },
-    outer: [
-      { x: 49, y: 53 },
-      { x: 191, y: 53 },
-      { x: 120, y: 151 },
-    ],
-    bondTypes: ["line", "dash", "wedge"],
-    lonePairs: [{ x: 120, y: 23 }],
-  },
-  bent: {
-    viewBox: "0 0 240 150",
-    center: { x: 120, y: 60 },
-    outer: [
-      { x: 45, y: 118 },
-      { x: 195, y: 118 },
-    ],
-    bondTypes: ["line", "line"],
-    lonePairs: [
-      { x: 98, y: 22 },
-      { x: 142, y: 22 },
-    ],
-  },
-  octahedral: {
-    viewBox: "0 0 240 170",
-    center: { x: 120, y: 83 },
-    outer: [
-      { x: 120, y: 18 },
-      { x: 185, y: 83 },
-      { x: 120, y: 148 },
-      { x: 55, y: 83 },
-      { x: 172, y: 124 },
-      { x: 68, y: 42 },
-    ],
-    bondTypes: ["line", "line", "line", "line", "wedge", "dash"],
-    lonePairs: [],
-  },
-};
-var scienceLabVseprState = {
-  level: 0,
-  bondingDomains: 0,
-  lonePairs: 0,
-  selectedAnswer: -1,
-  phase: "domains",
-  solved: false,
-  message: "",
-  rewarded: false,
+var scienceLabOrbitalState = {
+  moleculeId: "ethene", hybridization: null, hybridised: false, formedHydrogens: [], sigmaFormed: false, piFormed: [],
+  rotationDegrees: 0, attemptedRotation: 0, mode: "build", cameraYaw: -0.38, cameraPitch: 0.24, zoom: 1,
+  drag: null, dragPoint: null, hitRegions: [], frameId: null,
+  message: "Choose a hybridisation to populate the orbital clouds, then drag to form overlaps.", complete: false, rewarded: false,
 };
 var scienceLabStates = {
   physics: {
@@ -552,10 +389,9 @@ function scienceLabShowcase() {
     "<article class='interactive-lab-card lab-card-biology'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#e1eadf'/><path d='M0 0h157v155H0Z' fill='#e9efe4'/><path d='M202 0h158v155H202Z' fill='#d4e2d2'/><path d='M161 0v155M199 0v155' stroke='#688565' stroke-width='7'/><path d='M180 0v155' stroke='#dac48d' stroke-width='5' stroke-dasharray='6 7'/><rect x='163' y='53' width='34' height='39' rx='15' fill='#365c4a'/><rect x='172' y='58' width='16' height='28' rx='8' fill='#eff2dd'/><circle cx='70' cy='51' r='10' fill='#527f8c'/><text x='70' y='55' text-anchor='middle' font-size='9' font-family='sans-serif' fill='white'>O₂</text><circle cx='118' cy='98' r='10' fill='#bd7c3c'/><text x='118' y='102' text-anchor='middle' font-size='9' font-family='sans-serif' fill='white'>G</text><path d='M85 50h67m-9-7 9 7-9 7' stroke='#45654f' stroke-width='3' fill='none'/><circle cx='243' cy='77' r='29' fill='#a9c49f'/><circle cx='243' cy='77' r='13' fill='#708f77'/><circle cx='307' cy='43' r='8' fill='#72749a'/></svg><span class='lab-art-tag'>CHOOSE · MOVE · DELIVER</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>🧬 BIOLOGY · CELL TRANSPORT</div><h3>Run the membrane mission</h3><p>Pick oxygen, glucose or potassium. Choose a route and move each molecule through the membrane.</p><button type='button' onclick=\"go('games/lab/biology')\">Play the cell mission <span>→</span></button></div></article>",
   ];
   cards.push(
-    "<article class='interactive-lab-card lab-card-shapes'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#f0e8d8'/><path d='M180 77L105 31M180 77L255 31M180 77L180 139' fill='none' stroke='#58745b' stroke-width='4'/><circle cx='180' cy='77' r='25' fill='#dbe7d8' stroke='#58745b' stroke-width='3'/><circle cx='105' cy='31' r='16' fill='#fff8e8' stroke='#b47d48' stroke-width='3'/><circle cx='255' cy='31' r='16' fill='#fff8e8' stroke='#b47d48' stroke-width='3'/><circle cx='180' cy='139' r='16' fill='#fff8e8' stroke='#b47d48' stroke-width='3'/><text x='180' y='83' text-anchor='middle' font-size='18' font-family='Georgia,serif' fill='#2e5540'>B</text><text x='105' y='36' text-anchor='middle' font-size='11' font-family='sans-serif' fill='#594534'>F</text><text x='255' y='36' text-anchor='middle' font-size='11' font-family='sans-serif' fill='#594534'>F</text><text x='180' y='144' text-anchor='middle' font-size='11' font-family='sans-serif' fill='#594534'>F</text><path d='M95 56A93 93 0 0 0 265 56' fill='none' stroke='#bd7c3c' stroke-width='2' stroke-dasharray='4 5'/><text x='180' y='25' text-anchor='middle' font-size='11' font-family='sans-serif' fill='#7a684e'>120°</text></svg><span class='lab-art-tag'>COUNT · PREDICT · REVEAL</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>⚗️ CHEMISTRY · BONDING &amp; STRUCTURE</div><h3>Shape the molecule</h3><p>Count bonding domains and lone pairs, predict the VSEPR shape and bond angle, then reveal a spatial model.</p><button type='button' onclick=\"go('games/lab/bonding')\">Play Molecular Shapes <span>→</span></button></div></article>",
-  );
-  return (
-    "<section class='lab-showcase' aria-labelledby='lab-showcase-title'><div class='lab-showcase-heading'><div><span>THREE LABS + ONE TOPIC GAME · FIRST PROTOTYPE ROUND</span><h2 id='lab-showcase-title'>Controls in your hands. Science on screen.</h2><p>Adjust something. See what changes. Make a choice. These are the first visual game prototypes—bring a student and watch where they get stuck.</p></div><span class='lab-showcase-stamp'>PLAY<br>TEST<br>IMPROVE</span></div><div class='interactive-lab-grid'>" +
+    "<article class='interactive-lab-card lab-card-bonding'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#efe7d6'/><ellipse cx='162' cy='77' rx='52' ry='20' fill='#77ae84' fill-opacity='.48' stroke='#43815a' stroke-width='2'/><ellipse cx='180' cy='43' rx='64' ry='19' fill='#79abc4' fill-opacity='.44' stroke='#4c819f' stroke-width='2'/><ellipse cx='180' cy='111' rx='64' ry='19' fill='#79abc4' fill-opacity='.44' stroke='#4c819f' stroke-width='2'/><circle cx='125' cy='77' r='21' fill='#3f815a' stroke='#295b3d' stroke-width='3'/><circle cx='235' cy='77' r='21' fill='#3f815a' stroke='#295b3d' stroke-width='3'/><circle cx='91' cy='38' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><circle cx='91' cy='116' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><circle cx='269' cy='38' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><circle cx='269' cy='116' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><text x='125' y='82' text-anchor='middle' font-size='14' font-family='sans-serif' fill='white'>C</text><text x='235' y='82' text-anchor='middle' font-size='14' font-family='sans-serif' fill='white'>C</text><text x='180' y='21' text-anchor='middle' font-size='11' font-family='sans-serif' fill='#416d88'>π side-on</text><text x='180' y='148' text-anchor='middle' font-size='10' font-family='sans-serif' fill='#436d4f'>σ head-on · sp²</text></svg><span class='lab-art-tag'>HYBRIDISE · OVERLAP · TWIST</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>⚗️ CHEMISTRY · BONDING &amp; STRUCTURE</div><h3>Orbitals in motion</h3><p>Hybridise orbitals, drag them into σ and π overlap, test rotation restrictions and see electron-domain repulsion in 3D.</p><button type='button' onclick=\"go('games/lab/bonding')\">Open 3D Bonding Sandbox <span>→</span></button></div></article>",
+  );  return (
+    "<section class='lab-showcase' aria-labelledby='lab-showcase-title'><div class='lab-showcase-heading'><div><span>THREE CROSS-SUBJECT LABS + A CHEMISTRY BONDING SANDBOX</span><h2 id='lab-showcase-title'>Controls in your hands. Science on screen.</h2><p>Adjust something. See what changes. Make a choice. These are the first visual game prototypes—bring a student and watch where they get stuck.</p></div><span class='lab-showcase-stamp'>PLAY<br>TEST<br>IMPROVE</span></div><div class='interactive-lab-grid'>" +
     cards.join("") +
     "</div></section>"
   );
@@ -1759,413 +1595,12 @@ function scienceLabBioMarkup() {
   );
 }
 
-function scienceLabVseprChallenge() {
-  return SCIENCE_LAB_VSEPR_CHALLENGES[scienceLabVseprState.level] || null;
-}
-function scienceLabVseprResetLevel() {
-  var s = scienceLabVseprState,
-    challenge = scienceLabVseprChallenge();
-  if (!challenge) return;
-  s.bondingDomains = 0;
-  s.lonePairs = 0;
-  s.selectedAnswer = -1;
-  s.phase = "domains";
-  s.solved = false;
-  s.rewarded = false;
-  s.message =
-    "Set the bonding-domain and lone-pair count around " +
-    challenge.central +
-    " in " +
-    challenge.molecule +
-    ".";
-}
-function scienceLabVseprRefresh(focusId) {
-  if (typeof render === "function") render();
-  var target = focusId && document.getElementById(focusId);
-  if (target && typeof target.focus === "function") target.focus();
-}
-function scienceLabVseprAdjust(kind, delta) {
-  var s = scienceLabVseprState,
-    key = kind === "lonePairs" ? "lonePairs" : "bondingDomains",
-    next = s[key] + (delta < 0 ? -1 : 1),
-    total = s.bondingDomains + s.lonePairs;
-  if (s.phase !== "domains") return;
-  if (next < 0 || next > 6 || (delta > 0 && total >= 6)) {
-    s.message =
-      "The model allows up to six electron domains. Adjust the other count if needed.";
-    scienceLabVseprRefresh("vsepr-" + key + "-plus");
-    return;
-  }
-  s[key] = next;
-  s.message =
-    "Current inventory: " +
-    s.bondingDomains +
-    " bonding domain" +
-    (s.bondingDomains === 1 ? "" : "s") +
-    " and " +
-    s.lonePairs +
-    " lone pair" +
-    (s.lonePairs === 1 ? "" : "s") +
-    ".";
-  scienceLabVseprRefresh("vsepr-" + key + (delta < 0 ? "-minus" : "-plus"));
-}
-function scienceLabVseprCheckDomains() {
-  var s = scienceLabVseprState,
-    challenge = scienceLabVseprChallenge();
-  if (!challenge || s.phase !== "domains") return;
-  if (
-    s.bondingDomains !== challenge.bondingDomains ||
-    s.lonePairs !== challenge.lonePairs
-  ) {
-    s.message =
-      "Not quite. Count one domain for each bond (even a multiple bond), then count any non-bonding pairs on the central atom. Try again.";
-    scienceLabVseprRefresh("labVseprStatus");
-    return;
-  }
-  s.phase = "shape";
-  s.selectedAnswer = -1;
-  s.message =
-    "Inventory checked. Now predict the molecular shape and bond angle from the bonding pairs and lone pairs.";
-  scienceLabVseprRefresh("vsepr-option-0");
-}
-function scienceLabVseprSelectAnswer(index) {
-  var s = scienceLabVseprState,
-    challenge = scienceLabVseprChallenge();
-  if (!challenge || s.phase !== "shape" || s.solved) return;
-  if (index < 0 || index >= challenge.options.length) return;
-  s.selectedAnswer = index;
-  scienceLabVseprRefresh("vsepr-option-" + index);
-}
-function scienceLabVseprCheckAnswer() {
-  var s = scienceLabVseprState,
-    challenge = scienceLabVseprChallenge();
-  if (!challenge || s.phase !== "shape" || s.solved) return;
-  if (s.selectedAnswer < 0) {
-    s.message = "Choose the molecular shape and bond angle before checking.";
-    scienceLabVseprRefresh("vsepr-option-0");
-    return;
-  }
-  var correct = s.selectedAnswer === challenge.answer;
-  scienceLabTrack("shapes", correct);
-  if (correct) {
-    s.solved = true;
-    s.message = challenge.explanation;
-    scienceLabAward("shapes-" + challenge.id, s);
-  } else {
-    s.message =
-      "Not quite yet. Revisit how the electron domains repel, and remember that lone pairs are not part of the molecular shape. Try another choice.";
-  }
-  scienceLabVseprRefresh(
-    s.solved ? "vsepr-next" : "vsepr-option-" + s.selectedAnswer,
-  );
-}
-function scienceLabVseprNext() {
-  var s = scienceLabVseprState;
-  if (!s.solved) return;
-  s.level++;
-  if (s.level < SCIENCE_LAB_VSEPR_CHALLENGES.length) {
-    scienceLabVseprResetLevel();
-    scienceLabVseprRefresh("vsepr-bondingDomains-plus");
-  } else {
-    s.phase = "complete";
-    scienceLabVseprRefresh("vsepr-restart");
-  }
-}
-function scienceLabVseprRestart() {
-  scienceLabVseprState.level = 0;
-  scienceLabVseprResetLevel();
-  scienceLabVseprRefresh("vsepr-bondingDomains-plus");
-}
-function scienceLabVseprOptionsMarkup(challenge) {
-  return challenge.options
-    .map(function (option, index) {
-      var selected = scienceLabVseprState.selectedAnswer === index;
-      return (
-        "<button type='button' id='vsepr-option-" +
-        index +
-        "' class='vsepr-answer-option" +
-        (selected ? " selected" : "") +
-        "' onclick='scienceLabVseprSelectAnswer(" +
-        index +
-        ")' aria-pressed='" +
-        selected +
-        "'" +
-        (scienceLabVseprState.solved ? " disabled" : "") +
-        "><span class='vsepr-answer-letter'>" +
-        String.fromCharCode(65 + index) +
-        "</span><b>" +
-        scienceLabEscape(option.shape) +
-        "</b><span class='vsepr-answer-angle'>" +
-        scienceLabEscape(option.angle) +
-        "</span></button>"
-      );
-    })
-    .join("");
-}
-function scienceLabVseprSvgBond(center, point, kind, order) {
-  var dx = point.x - center.x,
-    dy = point.y - center.y,
-    length = Math.sqrt(dx * dx + dy * dy) || 1,
-    px = -dy / length,
-    py = dx / length,
-    cls = "vsepr-svg-bond";
-  if (kind === "wedge") {
-    var half = 6;
-    return (
-      "<polygon class='vsepr-svg-wedge' points='" +
-      center.x +
-      "," +
-      center.y +
-      " " +
-      (point.x + px * half).toFixed(1) +
-      "," +
-      (point.y + py * half).toFixed(1) +
-      " " +
-      (point.x - px * half).toFixed(1) +
-      "," +
-      (point.y - py * half).toFixed(1) +
-      "'/>"
-    );
-  }
-  if (kind === "dash") cls += " dashed";
-  if (order > 1 && kind === "line") {
-    var lines = "",
-      gap = 3;
-    for (var i = 0; i < order; i++) {
-      var offset = (i - (order - 1) / 2) * gap;
-      lines +=
-        "<line class='" +
-        cls +
-        "' x1='" +
-        (center.x + px * offset).toFixed(1) +
-        "' y1='" +
-        (center.y + py * offset).toFixed(1) +
-        "' x2='" +
-        (point.x + px * offset).toFixed(1) +
-        "' y2='" +
-        (point.y + py * offset).toFixed(1) +
-        "'/>";
-    }
-    return lines;
-  }
-  return (
-    "<line class='" +
-    cls +
-    "' x1='" +
-    center.x +
-    "' y1='" +
-    center.y +
-    "' x2='" +
-    point.x +
-    "' y2='" +
-    point.y +
-    "'/>"
-  );
-}
-function scienceLabVseprDiagramMarkup(challenge) {
-  var diagram = SCIENCE_LAB_VSEPR_DIAGRAMS[challenge.geometry];
-  if (!diagram) return "";
-  var bonds = diagram.outer
-      .map(function (point, index) {
-        return scienceLabVseprSvgBond(
-          diagram.center,
-          point,
-          diagram.bondTypes[index] || "line",
-          challenge.bondOrders[index] || 1,
-        );
-      })
-      .join(""),
-    atoms = diagram.outer
-      .map(function (point) {
-        return (
-          "<g class='vsepr-svg-ligand'><circle cx='" +
-          point.x +
-          "' cy='" +
-          point.y +
-          "' r='15'/><text x='" +
-          point.x +
-          "' y='" +
-          (point.y + 5) +
-          "' text-anchor='middle'>" +
-          scienceLabEscape(challenge.ligandSymbol) +
-          "</text></g>"
-        );
-      })
-      .join(""),
-    lonePairs = diagram.lonePairs
-      .map(function (point) {
-        return (
-          "<g class='vsepr-svg-lone-pair' aria-hidden='true'><ellipse cx='" +
-          point.x +
-          "' cy='" +
-          point.y +
-          "' rx='14' ry='9'/><circle cx='" +
-          (point.x - 4) +
-          "' cy='" +
-          point.y +
-          "' r='1.8'/><circle cx='" +
-          (point.x + 4) +
-          "' cy='" +
-          point.y +
-          "' r='1.8'/></g>"
-        );
-      })
-      .join(""),
-    aria =
-      challenge.molecule +
-      " has a " +
-      challenge.shape.toLowerCase() +
-      " molecular shape with bond angle " +
-      challenge.angle +
-      ". Lone pairs are shown where present.";
-  return (
-    "<div class='vsepr-reveal-diagram' role='img' aria-label='" +
-    scienceLabEscape(aria) +
-    "'><svg viewBox='" +
-    diagram.viewBox +
-    "' aria-hidden='true' focusable='false'>" +
-    bonds +
-    lonePairs +
-    atoms +
-    "<g class='vsepr-svg-center'><circle cx='" +
-    diagram.center.x +
-    "' cy='" +
-    diagram.center.y +
-    "' r='21'/><text x='" +
-    diagram.center.x +
-    "' y='" +
-    (diagram.center.y + 6) +
-    "' text-anchor='middle'>" +
-    scienceLabEscape(challenge.central) +
-    "</text></g></svg><div class='vsepr-diagram-caption'><b>" +
-    scienceLabEscape(challenge.shape) +
-    "</b><span>Bond angle: " +
-    scienceLabEscape(challenge.angle) +
-    "</span></div><small>Electron-domain geometry includes lone pairs; molecular shape describes atom positions only." +
-    (diagram.bondTypes.indexOf("wedge") >= 0
-      ? " Solid wedges point toward you; dashed bonds point behind the page."
-      : "") +
-    "</small></div>"
-  );
-}
-function scienceLabVseprHeaderMarkup() {
-  return "<header class='games-heading lab-page-heading vsepr-page-heading'><div><button class='games-back-link' onclick=\"go('games')\">← Science Arcade</button><div class='book-eyebrow'>CHEMISTRY · UNIT 1 · BONDING &amp; STRUCTURE</div><h1>⚗️ Molecular Shapes Studio</h1><p>Use electron-domain repulsion (VSEPR) to count bonding domains and lone pairs, predict a molecule’s shape and bond angle, then inspect its spatial model.</p><div class='vsepr-page-links'><button class='btn btn-g btn-s' onclick=\"go('topic/chemistry/U1/U1T3')\">← Bonding &amp; Structure notes</button><button class='btn btn-g btn-s' onclick=\"go('games/lab/chemistry')\">Open Collision Lab</button></div></div><div class='lab-top-goal'><span>SIX VSEPR CHALLENGES</span><b>Count · predict · reveal</b></div></header>";
-}
-function scienceLabVseprMarkup() {
-  var s = scienceLabVseprState,
-    challenge = scienceLabVseprChallenge(),
-    stats = scienceLabReadStats().shapes,
-    roundCount = SCIENCE_LAB_VSEPR_CHALLENGES.length;
-  if (!challenge) {
-    return (
-      "<section class='games-hub science-lab-page vsepr-lab-page'>" +
-      scienceLabVseprHeaderMarkup() +
-      "<section class='lab-stage-card vsepr-complete-card'><span class='vsepr-complete-icon'>✓</span><div class='book-eyebrow'>MOLECULAR SHAPES · SET COMPLETE</div><h2>All six shape challenges solved.</h2><p>You counted bonding domains and lone pairs, used electron-pair repulsion to predict VSEPR shapes and bond angles, and checked each prediction against a molecular model.</p><div class='lab-mini-stats'><span>SHAPE CHECKS <b>" +
-      stats.attempts +
-      "</b></span><span>ROUNDS CLEARED <b>" +
-      stats.wins +
-      "</b></span></div><div class='lab-action-stack'><button id='vsepr-restart' class='btn btn-p lab-main-button' onclick='scienceLabVseprRestart()'>↻ Play the set again</button><button class='btn btn-g lab-secondary-button' onclick=\"go('games')\">Back to science games</button></div></section></section>"
-    );
-  }
-  if (!s.message) scienceLabVseprResetLevel();
-  var totalDomains = s.bondingDomains + s.lonePairs,
-    solved = s.solved,
-    options =
-      s.phase === "shape"
-        ? "<div class='vsepr-shape-question'><span class='book-overline'>PREDICT THE MOLECULAR SHAPE</span><h3>Which shape and bond angle fit " +
-          scienceLabEscape(challenge.molecule) +
-          "?</h3><div class='vsepr-answer-grid' role='group' aria-label='Molecular shape and bond angle choices'>" +
-          scienceLabVseprOptionsMarkup(challenge) +
-          "</div><details class='lab-explain vsepr-hint'><summary>Need a nudge?</summary><p>" +
-          scienceLabEscape(challenge.hint) +
-          "</p></details>" +
-          (solved
-            ? "<div class='vsepr-success-note' role='status'><b>Shape challenge cleared · +12 XP first time / +3 XP replay</b><p>" +
-              scienceLabEscape(challenge.explanation) +
-              "</p>" +
-              "</div><button type='button' id='vsepr-next' class='btn btn-p lab-main-button' onclick='scienceLabVseprNext()'>" +
-              (s.level + 1 === roundCount
-                ? "Finish set →"
-                : "Next molecule →") +
-              "</button>"
-            : "<button type='button' id='vsepr-check-answer' class='btn btn-p lab-main-button' onclick='scienceLabVseprCheckAnswer()'>Check shape and angle</button>") +
-          "</div>"
-        : "<div class='vsepr-build-prompt'><span class='book-overline'>BUILD THE DOMAIN INVENTORY</span><p>" +
-          scienceLabEscape(challenge.prompt) +
-          "</p><div class='vsepr-control-tip'><b>Count electron regions, not bond lines.</b><span>Each single, double or triple bond is one bonding domain. A lone pair is a separate domain.</span></div><button type='button' id='vsepr-check-domains' class='btn btn-p lab-main-button' onclick='scienceLabVseprCheckDomains()'>Check domain count</button><button type='button' id='vsepr-reset-level' class='btn btn-g lab-secondary-button' onclick='scienceLabVseprResetLevel();scienceLabVseprRefresh(\"vsepr-bondingDomains-plus\")'>↻ Reset this molecule</button></div>",
-    diagramMarkup = solved ? scienceLabVseprDiagramMarkup(challenge) : "";
-  return (
-    "<section class='games-hub science-lab-page vsepr-lab-page'>" +
-    scienceLabVseprHeaderMarkup() +
-    "<div class='lab-play-layout'><section class='lab-stage-card vsepr-stage-card'><div class='lab-stage-heading'><div><span>MOLECULE " +
-    (s.level + 1) +
-    " OF " +
-    roundCount +
-    "</span><b>" +
-    scienceLabEscape(challenge.name) +
-    " · " +
-    scienceLabEscape(challenge.molecule) +
-    "</b></div><span class='lab-live-badge'>" +
-    (solved
-      ? "SHAPE REVEALED"
-      : s.phase === "shape"
-        ? "MAKE A PREDICTION"
-        : "BUILD YOUR MODEL") +
-    "</span></div><div class='vsepr-formula-banner'><span>MOLECULE</span><b>" +
-    scienceLabEscape(challenge.molecule) +
-    "</b><span>CENTRAL ATOM · " +
-    scienceLabEscape(challenge.central) +
-    "</span></div><div class='vsepr-domain-builder'><div class='vsepr-builder-heading'><span class='book-overline'>ELECTRON-DOMAIN INVENTORY</span><span class='vsepr-total-chip'>TOTAL <b>" +
-    totalDomains +
-    "</b> / 6</span></div><div class='vsepr-counter-grid'><section class='vsepr-counter-card'><div><b>Bonding domains</b><small>Regions containing a bond to another atom</small></div><div class='vsepr-stepper'><button type='button' id='vsepr-bondingDomains-minus' onclick='scienceLabVseprAdjust(\"bondingDomains\",-1)' aria-label='Remove one bonding domain'" +
-    (s.phase !== "domains" || s.bondingDomains === 0 ? " disabled" : "") +
-    ">−</button><b class='vsepr-count' aria-label='Bonding domains selected' aria-live='polite' aria-atomic='true'>" +
-    s.bondingDomains +
-    "</b><button type='button' id='vsepr-bondingDomains-plus' onclick='scienceLabVseprAdjust(\"bondingDomains\",1)' aria-label='Add one bonding domain'" +
-    (s.phase !== "domains" || totalDomains >= 6 ? " disabled" : "") +
-    ">+</button></div></section><section class='vsepr-counter-card'><div><b>Lone pairs</b><small>Non-bonding electron pairs on the central atom</small></div><div class='vsepr-stepper'><button type='button' id='vsepr-lonePairs-minus' onclick='scienceLabVseprAdjust(\"lonePairs\",-1)' aria-label='Remove one lone pair'" +
-    (s.phase !== "domains" || s.lonePairs === 0 ? " disabled" : "") +
-    ">−</button><b class='vsepr-count' aria-label='Lone pairs selected' aria-live='polite' aria-atomic='true'>" +
-    s.lonePairs +
-    "</b><button type='button' id='vsepr-lonePairs-plus' onclick='scienceLabVseprAdjust(\"lonePairs\",1)' aria-label='Add one lone pair'" +
-    (s.phase !== "domains" || totalDomains >= 6 ? " disabled" : "") +
-    ">+</button></div></section></div><div class='vsepr-count-summary' aria-live='polite'><span>" +
-    totalDomains +
-    " total domains</span><b>" +
-    s.bondingDomains +
-    " bonding · " +
-    s.lonePairs +
-    " lone pairs</b></div></div>" +
-    (solved
-      ? diagramMarkup
-      : "<div class='vsepr-model-prompt' aria-label='Molecular shape model appears after your prediction is correct'><span class='vsepr-model-orb' aria-hidden='true'>" +
-        scienceLabEscape(challenge.central) +
-        "</span><b>Build first. The molecule’s shape stays hidden until you make a correct prediction.</b><small>" +
-        scienceLabEscape(challenge.attached) +
-        " around the central atom</small></div>") +
-    "<div id='labVseprStatus' class='lab-status-line vsepr-status-line' role='status' aria-live='polite' tabindex='-1'>" +
-    scienceLabEscape(s.message) +
-    "</div><div class='lab-canvas-hint vsepr-model-note'><span>✦</span><span>VSEPR: regions of electron density repel. Lone pairs repel more strongly than bonding pairs, so the molecular shape and bond angle depend on both counts.</span></div></section><aside class='lab-control-panel vsepr-control-panel'><div class='lab-control-title'><span>" +
-    (s.phase === "shape" ? "PREDICT THE SHAPE" : "YOUR TASK") +
-    "</span><b>" +
-    scienceLabEscape(challenge.name) +
-    " · " +
-    scienceLabEscape(challenge.molecule) +
-    "</b></div>" +
-    options +
-    (s.phase === "domains"
-      ? "<div class='vsepr-method-note'><b>How to count</b><p>Start from the displayed formula. Count the atoms bonded to the central atom; a multiple bond still contributes one bonding domain. Use the central atom’s valence to account for any lone pairs.</p></div>"
-      : "") +
-    "<div class='lab-mini-stats'><span>SHAPE CHECKS <b>" +
-    stats.attempts +
-    "</b></span><span>ROUNDS CLEARED <b>" +
-    stats.wins +
-    "</b></span></div></aside></div></section>"
-  );
-}
 function scienceLabAfterRender() {
   var id = scienceLabCurrentSubject();
-  if (!id) return;
+  if (!id) {
+    if (/^#\/games\/lab\/(bonding|shapes)(?:\/|$)/.test(location.hash || "")) scienceLabOrbitalDraw();
+    return;
+  }
   var s = scienceLabStates[id];
   if (id === "physics") {
     scienceLabPhysicsSync();
@@ -2205,7 +1640,7 @@ function scienceLabStopAnimations(keep) {
   });
 }
 function vScienceLabGame(id) {
-  if (id === "bonding" || id === "shapes") return scienceLabVseprMarkup();
+  if (id === "bonding" || id === "shapes") return scienceLabOrbitalMarkup();
   if (id === "physics") return scienceLabPhysicsMarkup();
   if (id === "chemistry") return scienceLabChemMarkup();
   if (id === "biology") return scienceLabBioMarkup();
