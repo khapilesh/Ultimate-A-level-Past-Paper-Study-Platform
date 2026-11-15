@@ -27,11 +27,14 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 - Every topic now includes a two-part explanatory walkthrough that connects mechanisms, calculations and applications.
 - 🃏 Flashcards per topic, topic checklists and progress tracking
 
-### 🎮 Learn by playing
-- **Science Study Arcade: 58 original topic games**—one mapped challenge for every Physics topic (19), Chemistry topic (22) and Biology topic (17) in the platform. Browse by subject and unit, or launch a mixed-science challenge.
-- Play three formats: paper-first numeric problems with checked units and worked steps; multiple-choice reasoning puzzles with plausible distractors; and accessible step-ordering challenges for mechanisms, pathways and practical methods. Hints are optional, worked solutions stay collapsed until an attempt, and per-topic mastery, streaks and XP save locally.
-- **Featured projectile-motion challenge**: choose a launch angle for a fixed-speed ball, or choose its speed when the angle is fixed, and try to land it in the target hole. Each round gives three known values for vertical and horizontal motion; solve the components with syllabus SUVAT equations. The pre-shot map hides the trajectory until firing, and the worked solution is collapsed.
-- The projectile game assumes level ground and no air resistance, so it also demonstrates why mass cancels from the ideal trajectory. Existing hits, streaks and game XP are retained.
+### 🎮 Playable science labs + topic practice
+- The first staged redesign includes three cross-subject visual labs: **Physics — Trajectory Tuner** (set angle and speed, estimate on paper, then launch to reveal the path and landing); **Chemistry — Collision Lab** (adjust temperature, concentration and catalyst, then watch particles collide and form products); and **Biology — Membrane Mission** (choose oxygen, glucose, water or potassium, select a transport route and move visible molecules across the membrane).
+- **Chemistry — 3D Bonding Sandbox** replaces the rejected count-and-predict shape exercise and is linked from the `U1T3` **Bonding & Structure** topic. A lightweight Canvas 3D projection lets students choose methane, water, ammonia, BF₃, ethane, ethene or ethyne; apply sp, sp² or sp³ hybridisation; drag orbital lobes and atoms together to make σ and π overlaps; and see lone-pair/bond-domain repulsion and VSEPR shapes. Ethane can twist around its single σ bond; building a π bond locks the rotation control and explains why twisting loses side-on p overlap. Accessible buttons offer alternatives to dragging, and the chemistry explanation is optional. Orbitals are conceptual teaching visuals—not a quantum-mechanical electron-density simulation or an exact recreation of an unidentified “Quantum Chemistry” activity.
+- The Physics lab hides its path, landing point, flight time and maximum height until after launch; no Physics view draws a dotted trajectory or landing guide.
+- The visual labs use Canvas scenes and touch/keyboard-operable controls. The bonding model redraws on interaction rather than running a continuous animation, to keep it responsive on ordinary devices. Students have not playtested this prototype yet.
+- The existing **58 topic-aligned practice challenges** remain available across Physics (19), Chemistry (22) and Biology (17): 32 numeric, 22 reasoning and 4 ordering challenges. They are labeled as topic challenges, not full visual simulations. Browse by subject and unit or launch a mixed-science challenge; hints, worked solutions, mastery, streaks and XP are retained.
+- The separate **paper-first projectile SUVAT challenge** is preserved, with both fixed-speed/variable-angle and fixed-angle/variable-speed modes. It still hides its trajectory until a shot and keeps the worked solution collapsed until after the attempt.
+- The projectile model assumes level ground and no air resistance. Lab and topic progress stays in local browser storage.
 
 ### 🤖 Ask AI tutor
 - Built-in **offline tutor** that knows the whole syllabus: explain topics, define terms, give formulae, set quizzes, share exam tips
@@ -50,7 +53,7 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-Run the built-in arcade coverage and interaction smoke test with `node tests/topic-games.test.js`.
+Run both built-in interaction suites with `node tests/topic-games.test.js` and `node tests/interactive-labs.test.js`.
 
 Or deploy the folder to GitHub Pages / Netlify / Vercel as-is.
 
@@ -60,7 +63,8 @@ Or deploy the folder to GitHub Pages / Netlify / Vercel as-is.
 index.html          — main app shell; opens on the subject bookshelf
 css/style.css       — shared flat-color design system (no gradients)
 css/book-layout.css — permanent paper, bookshelf and paged-reader presentation
-css/games.css       — responsive warm-paper layout for projectile and topic mini-games
+css/games.css       — responsive warm-paper layout for the projectile challenge and topic-practice arcade
+css/labs.css        — visual lab showcase, Canvas stages, accessible controls and responsive lab layouts
 js/
   data-physics.js    — Physics syllabus + notes
   data-chemistry.js  — Chemistry syllabus + notes
@@ -81,7 +85,9 @@ js/
   tutor.js           — offline tutor engine + optional LLM mode
   book-layout.js     — subject bookshelf, complete paged notes, and question flip reader
   topic-games.js     — original hand-calculation, reasoning and process challenges mapped to every Physics/Chemistry/Biology topic
-  games.js           — science-game arcade, projectile canvas, accessible controls and local game stats
+  interactive-labs.js — Physics, Chemistry and Biology visual labs
+  orbital-sandbox.js — Chemistry hybrid-orbital, σ/π bonding, rotation and VSEPR sandbox
+  games.js           — science-game arcade, retained projectile challenge, topic practice and local game stats
   app.js             — routing, papers/mock/AI/progress/games views and interactions
 ```
 

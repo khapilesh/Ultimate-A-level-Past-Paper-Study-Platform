@@ -9,7 +9,8 @@ function element(id){
   if(!elements[id]) elements[id] = {id,innerHTML:"",textContent:"",value:"",disabled:false,style:{},classList:classList(),focus(){},getBoundingClientRect(){return {width:900,height:300};}};
   return elements[id];
 }
-const canvasContext = {setTransform(){},clearRect(){},fillRect(){},beginPath(){},moveTo(){},lineTo(){},stroke(){},fillText(){},ellipse(){},fill(){},setLineDash(){},arc(){}};
+const lineDashCalls = [];
+const canvasContext = {setTransform(){},clearRect(){},fillRect(){},beginPath(){},moveTo(){},lineTo(){},stroke(){},fillText(){},ellipse(){},fill(){},setLineDash(segments){lineDashCalls.push(segments);},arc(){}};
 element("projectileCanvas").getContext = () => canvasContext;
 element("projectileCanvas").getBoundingClientRect = () => ({width:900,height:300});
 const navButtons = ["home","physics","chemistry","biology","maths","games","guide","progress"].map(nav=>({dataset:{nav},classList:classList()}));
@@ -35,7 +36,7 @@ const scripts = [...html.matchAll(/<script src="(js\/[^"]+)"/g)].map(match=>matc
 for(const filename of scripts) vm.runInContext(fs.readFileSync(filename,"utf8"),sandbox,{filename});
 
 assert.match(element("app").innerHTML,/Science Study Arcade/);
-assert.match(element("app").innerHTML,/58 \/ 58 topic games/);
+assert.match(element("app").innerHTML,/58 \/ 58 topic challenges/);
 assert.match(element("app").innerHTML,/Land it in the hole/);
 
 const expected = {physics:19,chemistry:22,biology:17};
@@ -130,7 +131,7 @@ assert.equal(Object.keys(JSON.parse(storage["ial-games"]).topicArcade.completed)
 
 location.hash="#/subject/chemistry/U1";
 sandbox.render();
-assert.match(element("app").innerHTML,/Play this topic/);
+assert.match(element("app").innerHTML,/Try topic challenge/);
 assert.match(element("app").innerHTML,/topicArcadeStart\('chemistry','U1','U1T1'\)/);
 sandbox.topicArcadeStart("chemistry","U1","U1T1");
 assert.equal(location.hash,"#/games/chemistry/U1/U1T1");
@@ -145,4 +146,7 @@ assert.equal(element("projectileGuess").value,"");
 sandbox.setProjectileMode("speed");
 assert.match(element("app").innerHTML,/SPEED MODE/);
 assert.equal(element("projectileGuess").value,"");
+sandbox.projectileGame.value=15;
+sandbox.drawProjectileGame(1);
+assert.equal(lineDashCalls.length,0,"Physics never draws a dotted landing guide, even after a shot");
 console.log("TOPIC_ARCADE_TESTS_OK",JSON.stringify({topics:total,bySubject:expected,formats:{calculation:32,reasoning:22,ordering:4},endToEnd:"numeric, choice, sequence, XP, collapsed solutions, preserved projectile modes"}));
