@@ -117,76 +117,10 @@ var SCIENCE_LAB_ROUTE_OPTIONS = [
     icon: "⚡",
   },
 ];
-var SCIENCE_LAB_ORBITAL_MOLECULES = [
-  {
-    id: "methane", name: "Methane", formula: "CH₄", hybridization: "sp3",
-    atoms: [{ element: "C", position: [0, 0, 0] }],
-    hSites: [
-      { atom: 0, direction: [0.577, 0.577, 0.577] },
-      { atom: 0, direction: [0.577, -0.577, -0.577] },
-      { atom: 0, direction: [-0.577, 0.577, -0.577] },
-      { atom: 0, direction: [-0.577, -0.577, 0.577] },
-    ],
-    lonePairs: [], sigmaDirections: [], piDirections: [], ccSigma: false,
-    vsepr: { domains: "4 bonding domains · 0 lone pairs", electronGeometry: "Tetrahedral", shape: "Tetrahedral", angle: "109.5°", explanation: "Four bonding domains repel equally and point toward the corners of a tetrahedron." },
-    lesson: "Carbon mixes one 2s and three 2p orbitals to make four equivalent sp³ hybrid orbitals. Each overlaps head-on with a hydrogen 1s orbital to form a σ bond.",
-  },
-  {
-    id: "water", name: "Water", formula: "H₂O", hybridization: "sp3",
-    atoms: [{ element: "O", position: [0, 0, 0] }],
-    hSites: [{ atom: 0, direction: [-0.791, 0.612, 0] }, { atom: 0, direction: [0.791, 0.612, 0] }],
-    lonePairs: [{ atom: 0, direction: [0, -0.74, 0.673] }, { atom: 0, direction: [0, -0.74, -0.673] }],
-    sigmaDirections: [], piDirections: [], ccSigma: false,
-    vsepr: { domains: "2 bonding domains · 2 lone pairs", electronGeometry: "Tetrahedral", shape: "Bent", angle: "104.5°", explanation: "The two lone pairs repel more strongly than bonding pairs, squeezing the H–O–H angle below the tetrahedral value." },
-    lesson: "Oxygen has four electron domains: two O–H σ bonds and two lone pairs. The electron-domain arrangement is tetrahedral, but the atom-only molecular shape is bent.",
-  },
-  {
-    id: "ammonia", name: "Ammonia", formula: "NH₃", hybridization: "sp3",
-    atoms: [{ element: "N", position: [0, 0, 0] }],
-    hSites: [{ atom: 0, direction: [0.928, -0.372, 0] }, { atom: 0, direction: [-0.464, -0.372, 0.804] }, { atom: 0, direction: [-0.464, -0.372, -0.804] }],
-    lonePairs: [{ atom: 0, direction: [0, 1, 0] }], sigmaDirections: [], piDirections: [], ccSigma: false,
-    vsepr: { domains: "3 bonding domains · 1 lone pair", electronGeometry: "Tetrahedral", shape: "Trigonal pyramidal", angle: "107°", explanation: "A lone pair occupies the fourth tetrahedral domain and repels the N–H bonding pairs more strongly." },
-    lesson: "Nitrogen is described with four sp³ hybrid orbitals: three overlap with hydrogen 1s orbitals to form σ bonds, and one contains the lone pair.",
-  },
-  {
-    id: "bf3", name: "Boron trifluoride", formula: "BF₃", hybridization: "sp2", ligandSymbol: "F",
-    atoms: [{ element: "B", position: [0, 0, 0] }],
-    hSites: [{ atom: 0, direction: [1, 0, 0] }, { atom: 0, direction: [-0.5, 0.866, 0] }, { atom: 0, direction: [-0.5, -0.866, 0] }],
-    lonePairs: [], sigmaDirections: [], piDirections: [], ccSigma: false,
-    vsepr: { domains: "3 bonding domains · 0 lone pairs", electronGeometry: "Trigonal planar", shape: "Trigonal planar", angle: "120°", explanation: "Three bonding domains repel evenly in one plane. Boron has an empty unhybridised p orbital in this simplified model." },
-    lesson: "Boron uses three sp² hybrid orbitals for three head-on B–F σ bonds; the remaining p orbital is unoccupied in this simple Lewis/VSEPR description.",
-  },
-  {
-    id: "ethane", name: "Ethane", formula: "C₂H₆", hybridization: "sp3",
-    atoms: [{ element: "C", position: [-0.66, 0, 0] }, { element: "C", position: [0.66, 0, 0] }],
-    hSites: [
-      { atom: 0, direction: [-0.333, 0.943, 0] }, { atom: 0, direction: [-0.333, -0.471, 0.816] }, { atom: 0, direction: [-0.333, -0.471, -0.816] },
-      { atom: 1, direction: [0.333, 0.943, 0] }, { atom: 1, direction: [0.333, -0.471, 0.816] }, { atom: 1, direction: [0.333, -0.471, -0.816] },
-    ],
-    lonePairs: [], sigmaDirections: [{ atom: 0, direction: [1, 0, 0] }, { atom: 1, direction: [-1, 0, 0] }], piDirections: [], ccSigma: true, rotation: "free",
-    vsepr: { domains: "4 bonding domains around each carbon", electronGeometry: "Tetrahedral at each carbon", shape: "Tetrahedral at each carbon", angle: "109.5°", explanation: "Each carbon has four σ-bonding domains. The C–C bond is a single σ bond, so the idealised model permits rotation around its axis." },
-    lesson: "Each carbon is sp³-hybridised. The C–C and six C–H bonds are σ bonds; head-on overlap around the C–C axis remains while the groups rotate.",
-  },
-  {
-    id: "ethene", name: "Ethene", formula: "C₂H₄", hybridization: "sp2",
-    atoms: [{ element: "C", position: [-0.68, 0, 0] }, { element: "C", position: [0.68, 0, 0] }],
-    hSites: [{ atom: 0, direction: [-0.5, 0.866, 0] }, { atom: 0, direction: [-0.5, -0.866, 0] }, { atom: 1, direction: [0.5, 0.866, 0] }, { atom: 1, direction: [0.5, -0.866, 0] }],
-    lonePairs: [], sigmaDirections: [{ atom: 0, direction: [1, 0, 0] }, { atom: 1, direction: [-1, 0, 0] }], piDirections: [[0, 0, 1]], ccSigma: true, rotation: "restricted",
-    vsepr: { domains: "3 bonding domains around each carbon · 0 lone pairs", electronGeometry: "Trigonal planar at each carbon", shape: "Trigonal planar at each carbon", angle: "120°", explanation: "The C=C double bond counts as one VSEPR domain around each carbon. Each carbon is planar with approximately 120° bond angles." },
-    lesson: "Each carbon uses three coplanar sp² orbitals for σ bonds and keeps one unhybridised p orbital. Side-on overlap of those parallel p orbitals makes the π bond.",
-  },
-  {
-    id: "ethyne", name: "Ethyne", formula: "C₂H₂", hybridization: "sp",
-    atoms: [{ element: "C", position: [-0.62, 0, 0] }, { element: "C", position: [0.62, 0, 0] }],
-    hSites: [{ atom: 0, direction: [-1, 0, 0] }, { atom: 1, direction: [1, 0, 0] }],
-    lonePairs: [], sigmaDirections: [{ atom: 0, direction: [1, 0, 0] }, { atom: 1, direction: [-1, 0, 0] }], piDirections: [[0, 1, 0], [0, 0, 1]], ccSigma: true, rotation: "restricted",
-    vsepr: { domains: "2 bonding domains around each carbon · 0 lone pairs", electronGeometry: "Linear at each carbon", shape: "Linear at each carbon", angle: "180°", explanation: "A C≡C triple bond is one VSEPR domain. The two domains at each carbon point in opposite directions." },
-    lesson: "Each carbon uses two sp orbitals for the C–H and C–C σ bonds. Two pairs of perpendicular unhybridised p orbitals overlap sideways to form two π bonds.",
-  },
-];
+var SCIENCE_LAB_ORBITAL_MOLECULES = SCIENCE_LAB_ORBITAL_MODEL_DATA.molecules;
 var scienceLabOrbitalState = {
   moleculeId: "ethene", hybridization: null, hybridised: false, formedHydrogens: [], sigmaFormed: false, piFormed: [],
-  rotationDegrees: 0, attemptedRotation: 0, mode: "build", cameraYaw: -0.38, cameraPitch: 0.24, zoom: 1,
+  rotationDegrees: 0, attemptedRotation: 0, mode: "build", cameraYaw: -0.38, cameraPitch: 0.24, zoom: 1, electronDensity: false,
   drag: null, dragPoint: null, hitRegions: [], frameId: null,
   message: "Choose a hybridisation to populate the orbital clouds, then drag to form overlaps.", complete: false, rewarded: false,
 };

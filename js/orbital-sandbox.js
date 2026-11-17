@@ -129,6 +129,70 @@ function scienceLabOrbitalDrawEllipse(ctx, project, center, axis, major, minor, 
   ctx.save(); ctx.translate(at.x, at.y); ctx.rotate(angle); ctx.beginPath(); ctx.ellipse(0, 0, major, minor, 0, 0, Math.PI * 2);
   ctx.globalAlpha = alpha; ctx.fillStyle = fill; ctx.fill(); ctx.globalAlpha = Math.min(1, alpha + 0.38); ctx.strokeStyle = stroke || fill; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore(); return at;
 }
+function scienceLabOrbitalDecodeDensity(cloud) {
+  if (!cloud || !cloud.packed) return null;
+  if (cloud._decoded) return cloud._decoded;
+  var binary = typeof atob === "function" ? atob(cloud.packed) : "";
+  if (!binary && typeof Buffer !== "undefined") binary = Buffer.from(cloud.packed, "base64").toString("binary");
+  var bytes = new Uint8Array(binary.length);
+  for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  cloud._decoded = bytes;
+  return bytes;
+}
+function scienceLabOrbitalDensityComponents(m) {
+  var s = scienceLabOrbitalState, density = SCIENCE_LAB_ORBITAL_MODEL_DATA.density[m.id], components = [];
+  if (!density) return components;
+  function add(item, kind) { if (item && item.cloud) components.push({ entry: item, kind: kind }); }
+  if (!s.hybridised) {
+    density.atomClouds.forEach(function (item) { add(item, "atomic"); });
+    density.ligandAtomClouds.forEach(function (item) { add(item, "atomic"); });
+    return components;
+  }
+  m.hSites.forEach(function (_, index) {
+    if (s.formedHydrogens.indexOf(index) >= 0) add(density.sigmaBonds.terminal[index], "sigma");
+    else {
+      add(density.hybridSites[index], "orbital");
+      add(density.ligandSites[index], "atomic");
+    }
+  });
+  if (m.ccSigma) {
+    if (s.sigmaFormed) add({ anchorAtom: null, cloud: density.sigmaBonds.cc }, "sigma");
+    else density.sigmaSites.forEach(function (item) { add(item, "orbital"); });
+  }
+  density.lonePairs.forEach(function (item) { add(item, "lonePair"); });
+  density.piAtomic.forEach(function (pair, index) {
+    if (s.piFormed[index]) add(density.piBonds[index], "pi");
+    else pair.forEach(function (item) { add(item, "p"); });
+  });
+  density.ligandLonePairs.forEach(function (item) { add(item, "lonePair"); });
+  return components;
+}
+function scienceLabOrbitalDrawDensity(ctx, project, molecule) {
+  var s = scienceLabOrbitalState, model = SCIENCE_LAB_ORBITAL_MODEL_DATA, components = scienceLabOrbitalDensityComponents(molecule), points = [];
+  if (!s.electronDensity || !components.length) return;
+  var colours = { atomic: "#a98750", orbital: "#68996f", sigma: "#34835b", pi: "#477f9b", lonePair: "#c1843d", p: "#628ca4" };
+  components.forEach(function (component) {
+    var entry = component.entry, cloud = entry.cloud, data = scienceLabOrbitalDecodeDensity(cloud);
+    if (!data) return;
+    for (var i = 0; i + 3 < data.length; i += 4) {
+      var point = [((data[i] / 255) * 2 - 1) * model.bounds[1], ((data[i + 1] / 255) * 2 - 1) * model.bounds[1], ((data[i + 2] / 255) * 2 - 1) * model.bounds[1]];
+      if (entry.anchorAtom === 1 && molecule.ccSigma && Math.abs(s.rotationDegrees) > 0.1 && !s.piFormed.some(Boolean)) {
+        var pivot = molecule.atoms[1].position;
+        point = scienceLabOrbitalAdd(pivot, scienceLabOrbitalRotateAboutX([point[0] - pivot[0], point[1] - pivot[1], point[2] - pivot[2]], s.rotationDegrees), 1);
+      }
+      var projected = project(point);
+      points.push({ x: projected.x, y: projected.y, z: projected.z, intensity: data[i + 3] / 255, electrons: cloud.electrons || 1, colour: colours[component.kind] || colours.atomic });
+    }
+  });
+  points.sort(function (a, b) { return b.z - a.z; });
+  ctx.save();
+  points.forEach(function (point) {
+    var intensity = Math.sqrt(point.intensity), occupancy = 0.84 + 0.12 * Math.log2(point.electrons + 1);
+    ctx.globalAlpha = Math.min(0.34, (0.035 + 0.19 * intensity) * occupancy);
+    ctx.fillStyle = point.colour; ctx.beginPath(); ctx.arc(point.x, point.y, 1.5 + 2.7 * intensity, 0, Math.PI * 2); ctx.fill();
+  });
+  ctx.restore();
+}
 function scienceLabOrbitalDrawArrow(ctx, from, to, colour) {
   var dx = to.x - from.x, dy = to.y - from.y, len = Math.sqrt(dx * dx + dy * dy) || 1, ux = dx / len, uy = dy / len, head = 6;
   ctx.strokeStyle = colour; ctx.fillStyle = colour; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
@@ -169,7 +233,7 @@ function scienceLabOrbitalDraw() {
   c.clearRect(0, 0, g.w, g.h); c.fillStyle = "#f7f2e8"; c.fillRect(0, 0, g.w, g.h); c.fillStyle = "#fbf9f2"; c.fillRect(12, 12, g.w - 24, g.h - 24);
   c.strokeStyle = "#ded6c5"; c.lineWidth = 1; c.strokeRect(12.5, 12.5, g.w - 25, g.h - 25);
   scienceLabOrbitalDrawText(c, "3D ORBITAL MODEL · " + m.formula, 32, 35, "#385c43", 12, "left");
-  var canvasGuide = s.mode === "vsepr" ? "DRAG EMPTY SPACE TO ORBIT · WATCH DOMAINS REPEL" : s.mode === "rotation" ? "DRAG EMPTY SPACE TO ORBIT · USE THE TWIST CONTROL" : s.hybridised ? "DRAG A GREEN LOBE TO ITS OUTLINED ATOM · EMPTY SPACE TO ORBIT" : "DRAG EMPTY SPACE TO ORBIT · HYBRIDISE TO BEGIN";
+  var canvasGuide = s.electronDensity ? "PYTHON LCAO DENSITY · DENSER CLOUDS = HIGHER PROBABILITY" : s.mode === "vsepr" ? "DRAG EMPTY SPACE TO ORBIT · WATCH DOMAINS REPEL" : s.mode === "rotation" ? "DRAG EMPTY SPACE TO ORBIT · USE THE TWIST CONTROL" : s.hybridised ? "DRAG A GREEN LOBE TO ITS OUTLINED ATOM · EMPTY SPACE TO ORBIT" : "DRAG EMPTY SPACE TO ORBIT · HYBRIDISE TO BEGIN";
   scienceLabOrbitalDrawText(c, canvasGuide, g.w - 32, 35, "#777666", 9, "right");
   c.strokeStyle = "#ebe4d5"; c.lineWidth = 1; c.beginPath(); c.moveTo(30, g.h - 46); c.lineTo(g.w - 30, g.h - 46); c.stroke();
   scienceLabOrbitalDrawText(c, "σ HEAD-ON", 34, g.h - 28, "#47875d", 9, "left"); scienceLabOrbitalDrawText(c, "π SIDE-ON", 143, g.h - 28, "#507e9b", 9, "left"); scienceLabOrbitalDrawText(c, "LONE PAIR", 253, g.h - 28, "#bd8241", 9, "left"); scienceLabOrbitalDrawText(c, "CONCEPTUAL · NOT TO SCALE", g.w - 34, g.h - 28, "#898271", 8, "right");
@@ -216,6 +280,7 @@ function scienceLabOrbitalDraw() {
       if (s.piFormed[directionIndex]) { var midpoint = { x: (atomPoints[0].x + atomPoints[1].x) / 2, y: (atomPoints[0].y + atomPoints[1].y) / 2 }; scienceLabOrbitalDrawText(c, "π", midpoint.x, midpoint.y - 31 - directionIndex * 12, "#386f8a", 12, "center"); }
     });
   }
+  scienceLabOrbitalDrawDensity(c, project, m);
   terminalSites.forEach(function (item, index) {
     var formed = s.formedHydrogens.includes(index), point = item.point, symbol = m.ligandSymbol || m.hSymbol || "H";
     c.save(); c.globalAlpha = formed ? 0.16 : 0.22; c.fillStyle = "#f0ca78"; c.beginPath(); c.arc(point.x, point.y, 23, 0, Math.PI * 2); c.fill(); c.restore();
@@ -281,6 +346,14 @@ function scienceLabOrbitalKey(event) {
   scienceLabOrbitalDraw();
 }
 function scienceLabOrbitalZoom(value) { var n = Number(value); if (!isFinite(n)) return; scienceLabOrbitalState.zoom = Math.max(0.7, Math.min(1.45, n)); scienceLabOrbitalDraw(); }
+function scienceLabOrbitalToggleDensity() {
+  var s = scienceLabOrbitalState;
+  s.electronDensity = !s.electronDensity;
+  var button = document.getElementById("orbitalDensityToggle"), status = document.getElementById("orbitalDensityStatus");
+  if (button) { button.textContent = s.electronDensity ? "Hide Python-simulated electron density" : "Show Python-simulated electron density"; button.setAttribute("aria-pressed", String(s.electronDensity)); }
+  if (status) status.textContent = s.electronDensity ? "Dot density indicates approximate electron probability, not particle paths." : "Optional density view · offline Gaussian-AO / LCAO model.";
+  scienceLabOrbitalDraw();
+}
 function scienceLabOrbitalResetView() { var s = scienceLabOrbitalState; s.cameraYaw = -0.38; s.cameraPitch = 0.24; s.zoom = 1; var zoom = document.getElementById("orbitalZoomSlider"); if (zoom) zoom.value = "1"; scienceLabOrbitalDraw(); }
 function scienceLabOrbitalModeMarkup(mode, label) {
   var active = scienceLabOrbitalState.mode === mode;
@@ -335,5 +408,5 @@ function scienceLabOrbitalMarkup() {
   var modeTabs = `<div class='orbital-mode-tabs' role='group' aria-label='Choose a chemistry model view'>${scienceLabOrbitalModeMarkup("build", "① Build bonds")}${scienceLabOrbitalModeMarkup("vsepr", "② See VSEPR")}${scienceLabOrbitalModeMarkup("rotation", "③ Twist bond")}</div>`,
     readout = `<div class='orbital-progress-grid'><div><span>σ BONDS</span><b>${sigmaDone} / ${sigmaTotal}</b><small>head-on overlap</small></div><div><span>π BONDS</span><b>${piDone} / ${piTotal}</b><small>side-on overlap</small></div></div>`,
     badge = s.hybridised ? (s.complete ? "BONDS COMPLETE" : piDone + " / " + piTotal + " π FORMED") : "ORBITALS NOT HYBRIDISED";
-  return `<section class='games-hub science-lab-page orbital-lab-page'>${scienceLabOrbitalHeaderMarkup()}<div class='orbital-layout'><section class='lab-stage-card orbital-stage-card'><div class='lab-stage-heading'><div><span>LIGHTWEIGHT PROJECTED 3D MOLECULAR MODEL</span><b>${scienceLabEscape(m.name)} · ${scienceLabEscape(formula)}</b></div><span class='lab-live-badge' id='orbitalModelBadge'>${badge}</span></div><div class='orbital-canvas-shell'><canvas id='labOrbitalCanvas' width='860' height='560' role='img' tabindex='0' aria-label='Interactive 3D-projected orbital model of ${scienceLabEscape(formula)}. Drag an orbital onto an atom to make a bond; drag empty space to rotate the view. Use the arrow keys to orbit.' onpointerdown='scienceLabOrbitalPointerDown(event)' onpointermove='scienceLabOrbitalPointerMove(event)' onpointerup='scienceLabOrbitalPointerUp(event)' onpointercancel='scienceLabOrbitalPointerUp(event)' onkeydown='scienceLabOrbitalKey(event)'>3D-projected model of ${scienceLabEscape(formula)}. It shows hybrid orbitals, atom positions, sigma and pi overlap, and electron-domain repulsion.</canvas><div class='orbital-zoom-control'><label for='orbitalZoomSlider'>Model size</label><input id='orbitalZoomSlider' type='range' min='0.7' max='1.45' step='0.05' value='${s.zoom}' oninput='scienceLabOrbitalZoom(this.value)' aria-label='Zoom the molecular model'><button type='button' onclick='scienceLabOrbitalResetView()'>Reset view</button></div></div><div id='orbitalLabStatus' class='lab-status-line orbital-status-line' role='status' aria-live='polite'>${status}</div><div class='orbital-model-note'><b>Model note:</b> orbitals are simplified educational shapes; this is not a quantum-mechanical electron-density simulation and is not to scale.</div><details class='lab-explain orbital-explanation'><summary>Optional explanation · show the chemistry</summary><p>${scienceLabEscape(m.lesson)}</p><p>${scienceLabEscape(m.vsepr.explanation)}</p></details></section><aside class='lab-control-panel orbital-control-panel'><div class='lab-control-title'><span>CHOOSE A MOLECULE</span><b>Drag · build · compare</b></div><label for='orbitalMolecule' class='orbital-select-label'>Molecule preset</label><select id='orbitalMolecule' class='orbital-molecule-select' onchange='scienceLabOrbitalSelectMolecule(this.value)'>${options}</select>${modeTabs}${readout}${buildPanel}<div class='lab-mini-stats orbital-mini-stats'><span>BUILDS COMPLETED <b>${stats.wins || 0}</b></span><span>MOLECULES EXPLORED <b>${SCIENCE_LAB_ORBITAL_MOLECULES.length}</b></span></div></aside></div></section>`;
+  return `<section class='games-hub science-lab-page orbital-lab-page'>${scienceLabOrbitalHeaderMarkup()}<div class='orbital-layout'><section class='lab-stage-card orbital-stage-card'><div class='lab-stage-heading'><div><span>LIGHTWEIGHT PROJECTED 3D MOLECULAR MODEL</span><b>${scienceLabEscape(m.name)} · ${scienceLabEscape(formula)}</b></div><span class='lab-live-badge' id='orbitalModelBadge'>${badge}</span></div><div class='orbital-canvas-shell'><canvas id='labOrbitalCanvas' width='860' height='560' role='img' tabindex='0' aria-label='Interactive 3D-projected orbital model of ${scienceLabEscape(formula)}. Drag an orbital onto an atom to make a bond; drag empty space to rotate the view. Use the arrow keys to orbit.' onpointerdown='scienceLabOrbitalPointerDown(event)' onpointermove='scienceLabOrbitalPointerMove(event)' onpointerup='scienceLabOrbitalPointerUp(event)' onpointercancel='scienceLabOrbitalPointerUp(event)' onkeydown='scienceLabOrbitalKey(event)'>3D-projected model of ${scienceLabEscape(formula)}. It shows hybrid orbitals, atom positions, sigma and pi overlap, and electron-domain repulsion.</canvas><div class='orbital-zoom-control'><label for='orbitalZoomSlider'>Model size</label><input id='orbitalZoomSlider' type='range' min='0.7' max='1.45' step='0.05' value='${s.zoom}' oninput='scienceLabOrbitalZoom(this.value)' aria-label='Zoom the molecular model'><button type='button' onclick='scienceLabOrbitalResetView()'>Reset view</button></div><div class='orbital-density-control'><button type='button' id='orbitalDensityToggle' class='orbital-density-toggle' aria-pressed='${s.electronDensity}' onclick='scienceLabOrbitalToggleDensity()'>${s.electronDensity ? 'Hide Python-simulated electron density' : 'Show Python-simulated electron density'}</button><span id='orbitalDensityStatus'>${s.electronDensity ? 'Dot density indicates approximate electron probability, not particle paths.' : 'Optional density view · offline Gaussian-AO / LCAO model.'}</span></div></div><div id='orbitalLabStatus' class='lab-status-line orbital-status-line' role='status' aria-live='polite'>${status}</div><div class='orbital-model-note'><b>Model note:</b> the orbitals are simplified educational shapes. The optional density overlay is generated with a Python Gaussian atomic-orbital / LCAO approximation; it illustrates probability by orbital state, not moving electron paths or a self-consistent quantum-chemistry calculation. Neither view is to scale.</div><details class='lab-explain orbital-explanation'><summary>Optional explanation · show the chemistry</summary><p>${scienceLabEscape(m.lesson)}</p><p>${scienceLabEscape(m.vsepr.explanation)}</p></details></section><aside class='lab-control-panel orbital-control-panel'><div class='lab-control-title'><span>CHOOSE A MOLECULE</span><b>Drag · build · compare</b></div><label for='orbitalMolecule' class='orbital-select-label'>Molecule preset</label><select id='orbitalMolecule' class='orbital-molecule-select' onchange='scienceLabOrbitalSelectMolecule(this.value)'>${options}</select>${modeTabs}${readout}${buildPanel}<div class='lab-mini-stats orbital-mini-stats'><span>BUILDS COMPLETED <b>${stats.wins || 0}</b></span><span>MOLECULES EXPLORED <b>${SCIENCE_LAB_ORBITAL_MOLECULES.length}</b></span></div></aside></div></section>`;
 }

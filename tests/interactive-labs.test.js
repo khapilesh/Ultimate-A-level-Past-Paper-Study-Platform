@@ -7,6 +7,7 @@ const elements = Object.create(null);
 const lineDashCalls = [];
 const canvasTexts = [];
 let canvasEllipseCalls = 0;
+let canvasArcCalls = 0;
 const rafCallbacks = new Map();
 let rafId = 0;
 function classList() {
@@ -30,6 +31,9 @@ const context = new Proxy(
     },
     ellipse() {
       canvasEllipseCalls++;
+    },
+    arc() {
+      canvasArcCalls++;
     },
     getImageData() {
       return { data: [] };
@@ -118,6 +122,9 @@ const sandbox = {
   Math,
   Date,
   JSON,
+  atob(encoded) {
+    return Buffer.from(encoded, "base64").toString("binary");
+  },
   isFinite,
   requestAnimationFrame(callback) {
     const id = ++rafId;
@@ -270,9 +277,24 @@ const orbital = sandbox.scienceLabOrbitalState;
 assert.equal(orbital.moleculeId, "ethene");
 assert.equal(orbital.hybridised, false);
 assert.equal(orbital.mode, "build");
+assert.equal(orbital.electronDensity, false);
 assert.ok(canvasEllipseCalls > 0, "the low-cost projected model draws orbital clouds to Canvas");
+assert.match(element("app").innerHTML, /Show Python-simulated electron density/);
+assert.match(element("app").innerHTML, /Gaussian atomic-orbital \/ LCAO approximation/);
+assert.equal(Object.keys(sandbox.SCIENCE_LAB_ORBITAL_MODEL_DATA.density).length, 7);
+const etheneDensityModel = sandbox.scienceLabOrbitalDensityComponents(sandbox.scienceLabOrbitalMolecule());
+assert.equal(etheneDensityModel.length, 6, "unhybridised electron density includes both carbons and four hydrogens");
+const densityArcStart = canvasArcCalls;
+sandbox.scienceLabOrbitalToggleDensity();
+assert.equal(orbital.electronDensity, true);
+assert.equal(element("orbitalDensityToggle").textContent, "Hide Python-simulated electron density");
+assert.ok(canvasArcCalls > densityArcStart + 200, "Python-generated 3D density samples are projected onto the Canvas");
+assert.ok(canvasTexts.includes("PYTHON LCAO DENSITY · DENSER CLOUDS = HIGHER PROBABILITY"));
 
 sandbox.scienceLabOrbitalHybridise();
+const hybridDensityModel = sandbox.scienceLabOrbitalDensityComponents(sandbox.scienceLabOrbitalMolecule());
+assert.equal(hybridDensityModel.filter((item) => item.kind === "orbital").length, 6);
+assert.equal(hybridDensityModel.filter((item) => item.kind === "p").length, 2);
 assert.equal(orbital.hybridised, true);
 assert.equal(orbital.hybridization, "sp2");
 assert.ok(orbital.hitRegions.some((hit) => hit.type === "sigma-site"));
@@ -299,6 +321,7 @@ dragOrbitalTo(hOrbital, hTarget);
 assert.deepEqual(Array.from(orbital.formedHydrogens), [0], "dragging a hybrid orbital to its atom makes a σ bond");
 assert.match(orbital.message, /C–H σ bond/);
 assert.match(element("app").innerHTML, /Make C–H σ bond 1 ✓/);
+assert.equal(sandbox.scienceLabOrbitalDensityComponents(sandbox.scienceLabOrbitalMolecule()).filter((item) => item.kind === "sigma").length, 1, "forming a σ bond swaps the separated AOs for a bonding molecular orbital density");
 
 let ccOrbital = orbital.hitRegions.find((hit) => hit.type === "cc-site" && hit.atom === 0);
 let carbonTarget = orbital.hitRegions.find((hit) => hit.type === "central-atom" && hit.atom === 1);
@@ -453,9 +476,9 @@ console.log(
   JSON.stringify({
     labs: ["physics", "chemistry", "biology", "3d-bonding-sandbox"],
     controls:
-      "hidden-before-launch angle/speed, temperature/concentration/catalyst, membrane transport, direct orbital-drag σ/π bonding, rotation lock, and visible VSEPR domain repulsion",
+      "hidden-before-launch angle/speed, temperature/concentration/catalyst, membrane transport, direct orbital-drag σ/π bonding, rotation lock, visible VSEPR repulsion and Python density toggle",
     visuals:
-      "post-launch solid trajectory, particle collisions/products, animated membrane transport, projected hybrid orbitals, σ/π overlap and VSEPR domains",
+      "post-launch solid trajectory, particle collisions/products, animated membrane transport, projected hybrid orbitals, Python-generated Gaussian-AO/LCAO electron probability clouds, σ/π overlap and VSEPR domains",
     projectileChallenge: "preserved",
   }),
 );

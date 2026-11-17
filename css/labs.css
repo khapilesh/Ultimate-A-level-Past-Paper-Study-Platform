@@ -979,6 +979,37 @@
   border-color: #4a855d;
   background: #e7f0e5;
 }
+.orbital-density-control {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 8px 11px;
+  border-top: 1px solid #e2dac9;
+  background: #fbf8ef;
+}
+.orbital-density-toggle {
+  min-height: 35px;
+  padding: 6px 10px;
+  border: 1px solid #7da083;
+  border-radius: 4px;
+  background: #e7f0e5;
+  color: #315f43;
+  font: 700 10px var(--font);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.orbital-density-toggle:hover,
+.orbital-density-toggle[aria-pressed='true'] {
+  border-color: #3f7954;
+  background: #3f7954;
+  color: #fffaf0;
+}
+#orbitalDensityStatus {
+  flex: 1 1 180px;
+  color: #665b49;
+  font: 9px/1.5 var(--font);
+}
 .orbital-status-line {
   min-height: 45px;
   margin: 10px 12px 0;
@@ -1041,7 +1072,8 @@
 .orbital-mode-tab:focus-visible,
 .orbital-bond-action:focus-visible,
 .orbital-control-panel button:focus-visible,
-.orbital-zoom-control button:focus-visible {
+.orbital-zoom-control button:focus-visible,
+.orbital-density-toggle:focus-visible {
   outline: 3px solid #bb7b3e;
   outline-offset: 2px;
 }
@@ -1427,6 +1459,18 @@
   .orbital-zoom-control button {
     grid-column: 1 / -1;
     min-height: 31px;
+  }
+  .orbital-density-control {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 8px;
+  }
+  .orbital-density-toggle {
+    width: 100%;
+    min-height: 40px;
+  }
+  #orbitalDensityStatus {
+    flex-basis: auto;
   }
   .orbital-control-panel {
     padding: 11px;
