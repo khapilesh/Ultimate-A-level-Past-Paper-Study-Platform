@@ -1,0 +1,6 @@
+# Python simulation, tests and Pygbag build staging
+__pycache__/
+*.py[cod]
+build/
+.venv/
+venv/

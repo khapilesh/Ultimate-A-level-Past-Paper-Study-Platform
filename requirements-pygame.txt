@@ -1,0 +1,3 @@
+# Optional toolchain for the browser Pygame prototype; the static website itself needs no Python build.
+pygbag==0.9.3
+pygame-ce==2.5.8

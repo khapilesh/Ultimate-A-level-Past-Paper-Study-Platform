@@ -117,76 +117,10 @@ var SCIENCE_LAB_ROUTE_OPTIONS = [
     icon: "⚡",
   },
 ];
-var SCIENCE_LAB_ORBITAL_MOLECULES = [
-  {
-    id: "methane", name: "Methane", formula: "CH₄", hybridization: "sp3",
-    atoms: [{ element: "C", position: [0, 0, 0] }],
-    hSites: [
-      { atom: 0, direction: [0.577, 0.577, 0.577] },
-      { atom: 0, direction: [0.577, -0.577, -0.577] },
-      { atom: 0, direction: [-0.577, 0.577, -0.577] },
-      { atom: 0, direction: [-0.577, -0.577, 0.577] },
-    ],
-    lonePairs: [], sigmaDirections: [], piDirections: [], ccSigma: false,
-    vsepr: { domains: "4 bonding domains · 0 lone pairs", electronGeometry: "Tetrahedral", shape: "Tetrahedral", angle: "109.5°", explanation: "Four bonding domains repel equally and point toward the corners of a tetrahedron." },
-    lesson: "Carbon mixes one 2s and three 2p orbitals to make four equivalent sp³ hybrid orbitals. Each overlaps head-on with a hydrogen 1s orbital to form a σ bond.",
-  },
-  {
-    id: "water", name: "Water", formula: "H₂O", hybridization: "sp3",
-    atoms: [{ element: "O", position: [0, 0, 0] }],
-    hSites: [{ atom: 0, direction: [-0.791, 0.612, 0] }, { atom: 0, direction: [0.791, 0.612, 0] }],
-    lonePairs: [{ atom: 0, direction: [0, -0.74, 0.673] }, { atom: 0, direction: [0, -0.74, -0.673] }],
-    sigmaDirections: [], piDirections: [], ccSigma: false,
-    vsepr: { domains: "2 bonding domains · 2 lone pairs", electronGeometry: "Tetrahedral", shape: "Bent", angle: "104.5°", explanation: "The two lone pairs repel more strongly than bonding pairs, squeezing the H–O–H angle below the tetrahedral value." },
-    lesson: "Oxygen has four electron domains: two O–H σ bonds and two lone pairs. The electron-domain arrangement is tetrahedral, but the atom-only molecular shape is bent.",
-  },
-  {
-    id: "ammonia", name: "Ammonia", formula: "NH₃", hybridization: "sp3",
-    atoms: [{ element: "N", position: [0, 0, 0] }],
-    hSites: [{ atom: 0, direction: [0.928, -0.372, 0] }, { atom: 0, direction: [-0.464, -0.372, 0.804] }, { atom: 0, direction: [-0.464, -0.372, -0.804] }],
-    lonePairs: [{ atom: 0, direction: [0, 1, 0] }], sigmaDirections: [], piDirections: [], ccSigma: false,
-    vsepr: { domains: "3 bonding domains · 1 lone pair", electronGeometry: "Tetrahedral", shape: "Trigonal pyramidal", angle: "107°", explanation: "A lone pair occupies the fourth tetrahedral domain and repels the N–H bonding pairs more strongly." },
-    lesson: "Nitrogen is described with four sp³ hybrid orbitals: three overlap with hydrogen 1s orbitals to form σ bonds, and one contains the lone pair.",
-  },
-  {
-    id: "bf3", name: "Boron trifluoride", formula: "BF₃", hybridization: "sp2", ligandSymbol: "F",
-    atoms: [{ element: "B", position: [0, 0, 0] }],
-    hSites: [{ atom: 0, direction: [1, 0, 0] }, { atom: 0, direction: [-0.5, 0.866, 0] }, { atom: 0, direction: [-0.5, -0.866, 0] }],
-    lonePairs: [], sigmaDirections: [], piDirections: [], ccSigma: false,
-    vsepr: { domains: "3 bonding domains · 0 lone pairs", electronGeometry: "Trigonal planar", shape: "Trigonal planar", angle: "120°", explanation: "Three bonding domains repel evenly in one plane. Boron has an empty unhybridised p orbital in this simplified model." },
-    lesson: "Boron uses three sp² hybrid orbitals for three head-on B–F σ bonds; the remaining p orbital is unoccupied in this simple Lewis/VSEPR description.",
-  },
-  {
-    id: "ethane", name: "Ethane", formula: "C₂H₆", hybridization: "sp3",
-    atoms: [{ element: "C", position: [-0.66, 0, 0] }, { element: "C", position: [0.66, 0, 0] }],
-    hSites: [
-      { atom: 0, direction: [-0.333, 0.943, 0] }, { atom: 0, direction: [-0.333, -0.471, 0.816] }, { atom: 0, direction: [-0.333, -0.471, -0.816] },
-      { atom: 1, direction: [0.333, 0.943, 0] }, { atom: 1, direction: [0.333, -0.471, 0.816] }, { atom: 1, direction: [0.333, -0.471, -0.816] },
-    ],
-    lonePairs: [], sigmaDirections: [{ atom: 0, direction: [1, 0, 0] }, { atom: 1, direction: [-1, 0, 0] }], piDirections: [], ccSigma: true, rotation: "free",
-    vsepr: { domains: "4 bonding domains around each carbon", electronGeometry: "Tetrahedral at each carbon", shape: "Tetrahedral at each carbon", angle: "109.5°", explanation: "Each carbon has four σ-bonding domains. The C–C bond is a single σ bond, so the idealised model permits rotation around its axis." },
-    lesson: "Each carbon is sp³-hybridised. The C–C and six C–H bonds are σ bonds; head-on overlap around the C–C axis remains while the groups rotate.",
-  },
-  {
-    id: "ethene", name: "Ethene", formula: "C₂H₄", hybridization: "sp2",
-    atoms: [{ element: "C", position: [-0.68, 0, 0] }, { element: "C", position: [0.68, 0, 0] }],
-    hSites: [{ atom: 0, direction: [-0.5, 0.866, 0] }, { atom: 0, direction: [-0.5, -0.866, 0] }, { atom: 1, direction: [0.5, 0.866, 0] }, { atom: 1, direction: [0.5, -0.866, 0] }],
-    lonePairs: [], sigmaDirections: [{ atom: 0, direction: [1, 0, 0] }, { atom: 1, direction: [-1, 0, 0] }], piDirections: [[0, 0, 1]], ccSigma: true, rotation: "restricted",
-    vsepr: { domains: "3 bonding domains around each carbon · 0 lone pairs", electronGeometry: "Trigonal planar at each carbon", shape: "Trigonal planar at each carbon", angle: "120°", explanation: "The C=C double bond counts as one VSEPR domain around each carbon. Each carbon is planar with approximately 120° bond angles." },
-    lesson: "Each carbon uses three coplanar sp² orbitals for σ bonds and keeps one unhybridised p orbital. Side-on overlap of those parallel p orbitals makes the π bond.",
-  },
-  {
-    id: "ethyne", name: "Ethyne", formula: "C₂H₂", hybridization: "sp",
-    atoms: [{ element: "C", position: [-0.62, 0, 0] }, { element: "C", position: [0.62, 0, 0] }],
-    hSites: [{ atom: 0, direction: [-1, 0, 0] }, { atom: 1, direction: [1, 0, 0] }],
-    lonePairs: [], sigmaDirections: [{ atom: 0, direction: [1, 0, 0] }, { atom: 1, direction: [-1, 0, 0] }], piDirections: [[0, 1, 0], [0, 0, 1]], ccSigma: true, rotation: "restricted",
-    vsepr: { domains: "2 bonding domains around each carbon · 0 lone pairs", electronGeometry: "Linear at each carbon", shape: "Linear at each carbon", angle: "180°", explanation: "A C≡C triple bond is one VSEPR domain. The two domains at each carbon point in opposite directions." },
-    lesson: "Each carbon uses two sp orbitals for the C–H and C–C σ bonds. Two pairs of perpendicular unhybridised p orbitals overlap sideways to form two π bonds.",
-  },
-];
+var SCIENCE_LAB_ORBITAL_MOLECULES = SCIENCE_LAB_ORBITAL_MODEL_DATA.molecules;
 var scienceLabOrbitalState = {
   moleculeId: "ethene", hybridization: null, hybridised: false, formedHydrogens: [], sigmaFormed: false, piFormed: [],
-  rotationDegrees: 0, attemptedRotation: 0, mode: "build", cameraYaw: -0.38, cameraPitch: 0.24, zoom: 1,
+  rotationDegrees: 0, attemptedRotation: 0, mode: "build", cameraYaw: -0.38, cameraPitch: 0.24, zoom: 1, electronDensity: false,
   drag: null, dragPoint: null, hitRegions: [], frameId: null,
   message: "Choose a hybridisation to populate the orbital clouds, then drag to form overlaps.", complete: false, rewarded: false,
 };
@@ -389,7 +323,7 @@ function scienceLabShowcase() {
     "<article class='interactive-lab-card lab-card-biology'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#e1eadf'/><path d='M0 0h157v155H0Z' fill='#e9efe4'/><path d='M202 0h158v155H202Z' fill='#d4e2d2'/><path d='M161 0v155M199 0v155' stroke='#688565' stroke-width='7'/><path d='M180 0v155' stroke='#dac48d' stroke-width='5' stroke-dasharray='6 7'/><rect x='163' y='53' width='34' height='39' rx='15' fill='#365c4a'/><rect x='172' y='58' width='16' height='28' rx='8' fill='#eff2dd'/><circle cx='70' cy='51' r='10' fill='#527f8c'/><text x='70' y='55' text-anchor='middle' font-size='9' font-family='sans-serif' fill='white'>O₂</text><circle cx='118' cy='98' r='10' fill='#bd7c3c'/><text x='118' y='102' text-anchor='middle' font-size='9' font-family='sans-serif' fill='white'>G</text><path d='M85 50h67m-9-7 9 7-9 7' stroke='#45654f' stroke-width='3' fill='none'/><circle cx='243' cy='77' r='29' fill='#a9c49f'/><circle cx='243' cy='77' r='13' fill='#708f77'/><circle cx='307' cy='43' r='8' fill='#72749a'/></svg><span class='lab-art-tag'>CHOOSE · MOVE · DELIVER</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>🧬 BIOLOGY · CELL TRANSPORT</div><h3>Run the membrane mission</h3><p>Pick oxygen, glucose or potassium. Choose a route and move each molecule through the membrane.</p><button type='button' onclick=\"go('games/lab/biology')\">Play the cell mission <span>→</span></button></div></article>",
   ];
   cards.push(
-    "<article class='interactive-lab-card lab-card-bonding'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#efe7d6'/><ellipse cx='162' cy='77' rx='52' ry='20' fill='#77ae84' fill-opacity='.48' stroke='#43815a' stroke-width='2'/><ellipse cx='180' cy='43' rx='64' ry='19' fill='#79abc4' fill-opacity='.44' stroke='#4c819f' stroke-width='2'/><ellipse cx='180' cy='111' rx='64' ry='19' fill='#79abc4' fill-opacity='.44' stroke='#4c819f' stroke-width='2'/><circle cx='125' cy='77' r='21' fill='#3f815a' stroke='#295b3d' stroke-width='3'/><circle cx='235' cy='77' r='21' fill='#3f815a' stroke='#295b3d' stroke-width='3'/><circle cx='91' cy='38' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><circle cx='91' cy='116' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><circle cx='269' cy='38' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><circle cx='269' cy='116' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><text x='125' y='82' text-anchor='middle' font-size='14' font-family='sans-serif' fill='white'>C</text><text x='235' y='82' text-anchor='middle' font-size='14' font-family='sans-serif' fill='white'>C</text><text x='180' y='21' text-anchor='middle' font-size='11' font-family='sans-serif' fill='#416d88'>π side-on</text><text x='180' y='148' text-anchor='middle' font-size='10' font-family='sans-serif' fill='#436d4f'>σ head-on · sp²</text></svg><span class='lab-art-tag'>HYBRIDISE · OVERLAP · TWIST</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>⚗️ CHEMISTRY · BONDING &amp; STRUCTURE</div><h3>Orbitals in motion</h3><p>Hybridise orbitals, drag them into σ and π overlap, test rotation restrictions and see electron-domain repulsion in 3D.</p><button type='button' onclick=\"go('games/lab/bonding')\">Open 3D Bonding Sandbox <span>→</span></button></div></article>",
+    "<article class='interactive-lab-card lab-card-bonding'><div class='lab-card-art'><svg viewBox='0 0 360 155' aria-hidden='true'><rect width='360' height='155' fill='#efe7d6'/><ellipse cx='162' cy='77' rx='52' ry='20' fill='#77ae84' fill-opacity='.48' stroke='#43815a' stroke-width='2'/><ellipse cx='180' cy='43' rx='64' ry='19' fill='#79abc4' fill-opacity='.44' stroke='#4c819f' stroke-width='2'/><ellipse cx='180' cy='111' rx='64' ry='19' fill='#79abc4' fill-opacity='.44' stroke='#4c819f' stroke-width='2'/><circle cx='125' cy='77' r='21' fill='#3f815a' stroke='#295b3d' stroke-width='3'/><circle cx='235' cy='77' r='21' fill='#3f815a' stroke='#295b3d' stroke-width='3'/><circle cx='91' cy='38' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><circle cx='91' cy='116' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><circle cx='269' cy='38' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><circle cx='269' cy='116' r='12' fill='#fff8e8' stroke='#bb8044' stroke-width='2'/><text x='125' y='82' text-anchor='middle' font-size='14' font-family='sans-serif' fill='white'>C</text><text x='235' y='82' text-anchor='middle' font-size='14' font-family='sans-serif' fill='white'>C</text><text x='180' y='21' text-anchor='middle' font-size='11' font-family='sans-serif' fill='#416d88'>π side-on</text><text x='180' y='148' text-anchor='middle' font-size='10' font-family='sans-serif' fill='#436d4f'>σ head-on · sp²</text></svg><span class='lab-art-tag'>HYBRIDISE · OVERLAP · TWIST</span></div><div class='lab-card-copy'><div class='lab-card-kicker'>⚗️ CHEMISTRY · BONDING &amp; STRUCTURE</div><h3>Orbitals in motion</h3><p>Run the new Python/Pygame-ce browser build: hybridise orbitals, form σ and π overlaps, test rotation and compare VSEPR shapes. The existing Canvas version stays available too.</p><a class='lab-card-pygame' href='#/games/lab/bonding-pygame'>Run Python/Pygame sandbox <span>→</span></a><a class='lab-card-secondary' href='#/games/lab/bonding'>Open 3D Bonding Sandbox (Canvas)</a></div></article>",
   );  return (
     "<section class='lab-showcase' aria-labelledby='lab-showcase-title'><div class='lab-showcase-heading'><div><span>THREE CROSS-SUBJECT LABS + A CHEMISTRY BONDING SANDBOX</span><h2 id='lab-showcase-title'>Controls in your hands. Science on screen.</h2><p>Adjust something. See what changes. Make a choice. These are the first visual game prototypes—bring a student and watch where they get stuck.</p></div><span class='lab-showcase-stamp'>PLAY<br>TEST<br>IMPROVE</span></div><div class='interactive-lab-grid'>" +
     cards.join("") +
@@ -1639,7 +1573,11 @@ function scienceLabStopAnimations(keep) {
     }
   });
 }
+function scienceLabPygameMarkup() {
+  return "<section class='games-hub science-lab-page pygame-lab-page'><header class='games-heading lab-page-heading orbital-page-heading'><div><button class='games-back-link' onclick=\"go('games')\">← Science Arcade</button><div class='book-eyebrow'>CHEMISTRY · UNIT 1 · PYTHON + PYGAME-CE · WEBASSEMBLY</div><h1>⚗️ Python/Pygame Bonding Sandbox</h1><p>This is a staged port of the existing hybrid-orbital sandbox: make sp, sp² or sp³ orbitals, form σ and π overlaps, examine lone-pair repulsion, rotate the model and test why π bonds restrict rotation.</p><div class='orbital-page-links'><button class='btn btn-g btn-s' onclick=\"go('games/lab/bonding')\">← Open the Canvas version</button><a class='btn btn-p btn-s' href='/runtime/pygame/bonding-sandbox/' target='_blank' rel='noopener'>Open Pygame full screen ↗</a></div></div><div class='lab-top-goal'><span>STAGED PYTHON PORT</span><b>σ · π · VSEPR</b></div></header><div class='pygame-runtime-note'><b>Browser runtime:</b> pygame-ce is compiled to WebAssembly by Pygbag. The game runs in Python in your browser; the large Python/WASM engine is loaded from the official Pygbag 0.9.3 CDN. This prototype does not yet sync its build state with the site's XP counter.</div><div class='pygame-runtime-shell'><iframe class='pygame-runtime-frame' src='/runtime/pygame/bonding-sandbox/' title='Interactive Python and Pygame Chemistry Bonding Sandbox' allow='fullscreen; gamepad' allowfullscreen loading='eager'></iframe></div><p class='pygame-mobile-note'>For a small screen, open the Pygame build in full screen and rotate to landscape. The existing Canvas sandbox remains available above.</p></section>";
+}
 function vScienceLabGame(id) {
+  if (id === "bonding-pygame") return scienceLabPygameMarkup();
   if (id === "bonding" || id === "shapes") return scienceLabOrbitalMarkup();
   if (id === "physics") return scienceLabPhysicsMarkup();
   if (id === "chemistry") return scienceLabChemMarkup();
