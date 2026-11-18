@@ -29,9 +29,10 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 
 ### 🎮 Playable science labs + topic practice
 - The first staged redesign includes three cross-subject visual labs: **Physics — Trajectory Tuner** (set angle and speed, estimate on paper, then launch to reveal the path and landing); **Chemistry — Collision Lab** (adjust temperature, concentration and catalyst, then watch particles collide and form products); and **Biology — Membrane Mission** (choose oxygen, glucose, water or potassium, select a transport route and move visible molecules across the membrane).
-- **Chemistry — 3D Bonding Sandbox** replaces the rejected count-and-predict shape exercise and is linked from the `U1T3` **Bonding & Structure** topic. A lightweight Canvas 3D projection lets students choose methane, water, ammonia, BF₃, ethane, ethene or ethyne; apply sp, sp² or sp³ hybridisation; drag orbital lobes and atoms together to make σ and π overlaps; and see lone-pair/bond-domain repulsion and VSEPR shapes. The optional **Python-simulated electron-density view** uses Gaussian atomic-orbital functions combined in an LCAO-inspired bonding model: unbonded orbitals are replaced by σ/π molecular-orbital density as students form bonds. It is an educational approximation—not a self-consistent quantum-chemistry solver or an exact recreation of an unidentified “Quantum Chemistry” activity. Ethane can twist around its single σ bond; building a π bond locks the rotation control and explains why twisting loses side-on p overlap. Accessible buttons offer alternatives to dragging, and the chemistry explanation is optional.
+- **Chemistry — 3D Bonding Sandbox** replaces the rejected count-and-predict shape exercise and is linked from the `U1T3` **Bonding & Structure** topic. The original Canvas implementation still supports methane, water, ammonia, BF₃, ethane, ethene and ethyne; sp, sp² and sp³ hybridisation; drag-to-form σ/π overlap; lone-pair/bond-domain repulsion and VSEPR explanations; and free or restricted C–C rotation. Its optional **Python-simulated electron-density view** uses Gaussian atomic-orbital functions combined in an LCAO-inspired bonding model. It is an educational approximation—not a self-consistent quantum-chemistry solver or an exact recreation of an unidentified “Quantum Chemistry” activity.
+- **First actual Python/Pygame runtime port:** the same Chemistry bonding sandbox can now be opened as a browser Pygame-ce app compiled with Pygbag 0.9.3 to WebAssembly. This code executes and renders the playable molecule model in Python/Pygame; Python-generated density data alone is not being treated as the port. It retains the seven shared molecule presets, hybridisation, direct orbital dragging plus button alternatives for σ/π bond formation, electron-domain and lone-pair repulsion, rotation experiments, the π-bond rotation restriction, and explanations. The existing Canvas version remains available. This first staged port does not yet include the Canvas density overlay or synchronise its build state to the site’s XP counter; the Physics projectile, reaction-collision and Biology membrane labs are still their existing browser Canvas prototypes, and the 58 topic challenges have not been replaced.
+- The Pygbag app shell and small app bundle are served from `runtime/pygame/bonding-sandbox/` for static Vercel hosting; the larger Python/WASM engine is loaded from the official Pygbag 0.9.3 CDN, so the browser needs access to that runtime host. The Pygame workbench redraws in response to interaction rather than running a continuous animation. No student playtest results are available yet.
 - The Physics lab hides its path, landing point, flight time and maximum height until after launch; no Physics view draws a dotted trajectory or landing guide.
-- The visual labs use Canvas scenes and touch/keyboard-operable controls. The bonding model redraws on interaction rather than running a continuous animation, to keep it responsive on ordinary devices. Students have not playtested this prototype yet.
 - The existing **58 topic-aligned practice challenges** remain available across Physics (19), Chemistry (22) and Biology (17): 32 numeric, 22 reasoning and 4 ordering challenges. They are labeled as topic challenges, not full visual simulations. Browse by subject and unit or launch a mixed-science challenge; hints, worked solutions, mastery, streaks and XP are retained.
 - The separate **paper-first projectile SUVAT challenge** is preserved, with both fixed-speed/variable-angle and fixed-angle/variable-speed modes. It still hides its trajectory until a shot and keeps the worked solution collapsed until after the attempt.
 - The projectile model assumes level ground and no air resistance. Lab and topic progress stays in local browser storage.
@@ -45,17 +46,25 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 
 ## Run it
 
-No build step — it's pure HTML/CSS/JS:
+The main site remains static HTML/CSS/JS; its small Pygbag app shell and game bundle are committed under `runtime/`, so Vercel can serve them without a Python build step. Run the site with any static server, e.g.:
 
 ```bash
-# any static server, e.g.
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-Run the interaction and Python-density tests with `node tests/topic-games.test.js`, `node tests/interactive-labs.test.js` and `python3 tests/test_orbital_simulation.py`. Regenerate the committed browser electron-density data after changing molecule models with `python3 tools/simulate_orbitals.py` (or check for stale generated data with `python3 tools/simulate_orbitals.py --check`).
+To rebuild the staged Python/Pygame browser app after changing its code or the shared molecule models, use an isolated environment (the system Python may be externally managed):
 
-Or deploy the folder to GitHub Pages / Netlify / Vercel as-is.
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements-pygame.txt
+python tools/build_pygame_bonding.py
+```
+
+The build writes a small static Pygbag package to `runtime/pygame/bonding-sandbox/`. The browser loads Pygbag's larger CPython/WebAssembly runtime from its official CDN. Run the interaction tests with `node tests/topic-games.test.js`, `node tests/interactive-labs.test.js`, `python3 tests/test_orbital_simulation.py` and `python3 tests/test_pygame_bonding.py`; the Pygame renderer/input smoke tests in `tests/test_pygame_bonding_ui.py` also need `pygame-ce` installed. Regenerate the committed browser electron-density data after changing molecule models with `python3 tools/simulate_orbitals.py` (or check for stale generated data with `python3 tools/simulate_orbitals.py --check`).
+
+The root site and committed Pygbag output can be deployed to GitHub Pages / Netlify / Vercel as static files.
 
 ## Project structure
 
@@ -90,7 +99,14 @@ js/
   orbital-density-data.js — precomputed Gaussian-AO/LCAO electron-density point clouds (generated by Python)
   games.js           — science-game arcade, retained projectile challenge, topic practice and local game stats
   app.js             — routing, papers/mock/AI/progress/games views and interactions
+pygame_apps/bonding_sandbox/
+  bonding.py         — shared-model-driven Chemistry interaction state and bond/rotation rules
+  main.py            — Pygame-ce browser scene, controls, orbital rendering and explanations
 data/orbital-molecule-models.json — single source of truth for molecule geometry and chemistry explanations
+runtime/pygame/bonding-sandbox/ — small, generated Pygbag static bundle served by Vercel
+requirements-pygame.txt — pinned optional Python/Pygbag build dependencies
+tools/build_pygame_bonding.py — package the Python app and shared model data into static output
+tools/pygbag/0.9.3/ — pinned Pygbag HTML template and icon used for repeatable offline builds
 tools/simulate_orbitals.py — Python Gaussian-AO/LCAO density precomputation; run it to refresh the browser data
 ```
 

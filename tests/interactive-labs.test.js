@@ -161,7 +161,8 @@ assert.match(
 assert.match(element("app").innerHTML, /Play the motion lab/);
 assert.match(element("app").innerHTML, /Play the collision lab/);
 assert.match(element("app").innerHTML, /Play the cell mission/);
-assert.match(element("app").innerHTML, /Open 3D Bonding Sandbox/);
+assert.match(element("app").innerHTML, /Open 3D Bonding Sandbox \(Canvas\)/);
+assert.match(element("app").innerHTML, /Run Python\/Pygame sandbox/);
 assert.match(element("app").innerHTML, /58 \/ 58 topic challenges/);
 
 location.hash = "#/games/lab/physics";
@@ -261,6 +262,12 @@ assert.match(
   /Try topic challenge/,
   "the bonding sandbox is added without removing existing topic practice",
 );
+location.hash = "#/games/lab/bonding-pygame";
+sandbox.render();
+assert.match(element("app").innerHTML, /Python\/Pygame Bonding Sandbox/);
+assert.match(element("app").innerHTML, /src='\/runtime\/pygame\/bonding-sandbox\//);
+assert.match(element("app").innerHTML, /official Pygbag 0\.9\.3 CDN/);
+assert.match(element("app").innerHTML, /does not yet sync its build state/);
 location.hash = "#/games/lab/bonding";
 sandbox.render();
 assert.match(element("app").innerHTML, /3D Bonding Sandbox/);

@@ -161,6 +161,48 @@
   font-size: 16px;
   line-height: 1;
 }
+.lab-card-pygame {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 39px;
+  padding: 8px 11px;
+  border: 1px solid var(--book-forest);
+  border-radius: 3px;
+  background: var(--book-forest);
+  color: var(--book-paper);
+  font: 700 10px var(--font);
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
+}
+.lab-card-pygame:hover,
+.lab-card-pygame:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--book-sage);
+  background: var(--book-sage);
+  color: #fff;
+}
+.lab-card-pygame span {
+  font-size: 16px;
+  line-height: 1;
+}
+.lab-card-secondary {
+  align-self: flex-start;
+  margin-top: 7px;
+  padding: 3px 0;
+  border: 0;
+  background: transparent;
+  color: var(--book-ink-soft);
+  font: 600 9px var(--font);
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.lab-card-secondary:hover,
+.lab-card-secondary:focus-visible {
+  color: var(--book-forest);
+}
 .lab-subject-tabs {
   display: flex;
   gap: 7px;
@@ -900,6 +942,44 @@
   gap: 7px;
   margin-top: 11px;
 }
+.pygame-lab-page .games-heading {
+  align-items: flex-end;
+}
+.pygame-runtime-note {
+  margin: 0 0 11px;
+  padding: 11px 14px;
+  border: 1px solid var(--book-border);
+  border-left: 4px solid var(--book-sage);
+  background: var(--book-paper-alt);
+  color: var(--book-ink-soft);
+  font-size: 11px;
+  line-height: 1.55;
+}
+.pygame-runtime-note b {
+  color: var(--book-forest);
+}
+.pygame-runtime-shell {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--book-border-strong);
+  border-radius: 5px;
+  background: var(--book-paper);
+  box-shadow: 0 6px 18px rgba(38, 55, 42, 0.1);
+}
+.pygame-runtime-frame {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: var(--book-paper-alt);
+}
+.pygame-mobile-note {
+  margin: 9px 0 0;
+  color: var(--book-ink-soft);
+  font-size: 10px;
+  line-height: 1.5;
+}
 .orbital-lab-page .lab-top-goal {
   border-left-color: #4e936d;
 }
@@ -1492,5 +1572,21 @@
   .orbital-bond-action,
   .orbital-primary-action {
     transition: none;
+  }
+}
+@media (max-width: 760px) {
+  .pygame-lab-page .games-heading {
+    align-items: flex-start;
+  }
+  .pygame-runtime-shell {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .pygame-runtime-frame {
+    width: 800px;
+    height: 450px;
+    min-height: 450px;
+    max-width: none;
+    aspect-ratio: auto;
   }
 }
