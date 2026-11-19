@@ -544,5 +544,190 @@
       ]}
     ],reviewPrompt:"How does increasing the collision time reduce average force when the momentum change is fixed?"}
   };
-  SUBJECT_MATHS.units.forEach(function(u){u.topics.forEach(function(t){if(extra[t.id]){t.notes.sections=extra[t.id].sections;t.notes.reviewPrompt=extra[t.id].reviewPrompt;}});});
+  // Extra worked-through explanations bring the shortest lessons up to the same
+  // depth as the rest of the course. Keep each addition specific to its topic.
+  var extended={
+    P1T3:[
+      {title:"Build a line equation from coordinates",intro:"Coordinate questions become easier when each geometric condition is translated into an algebraic statement.",points:[
+        "Given two points, calculate the gradient from the change in y divided by the change in x, then substitute either point into y=mx+c. Check both points in the resulting equation; this is a quick way to catch a sign error.",
+        "A vertical line has equation x=a and no finite gradient, so do not force it into y=mx+c form. A horizontal line has equation y=b and gradient zero. These are the limiting cases that the negative-reciprocal rule for perpendicular gradients does not express directly.",
+        "To find where two lines meet, solve their equations simultaneously. Substitute the candidate coordinates into both original equations; if the lines are parallel, the equations will have no unique intersection unless they are the same line."
+      ]},
+      {title:"Connect circle geometry to line methods",intro:"The same gradient, distance and simultaneous-equation tools describe tangents and chords.",points:[
+        "For a circle, the radius from the centre to a point of contact is perpendicular to the tangent. Find the radius gradient first, then choose the tangent gradient and use the known contact point in point–gradient form.",
+        "If the tangent point is not supplied, substitute the line into the circle equation. A quadratic with one repeated solution indicates tangency; two distinct real solutions indicate a chord crossing the circle.",
+        "After solving, check the point lies on the circle and line, and confirm the radius and tangent directions are perpendicular. These independent checks make a coordinate-geometry argument complete."
+      ]}
+    ],
+    P1T6:[
+      {title:"Interpret an integral before calculating",intro:"A definite integral combines the height of a function with the width of an interval to measure accumulated signed change.",points:[
+        "Sketch the curve and mark the limits before evaluating. If the graph stays above the axis, the definite integral is the geometric area; if it crosses below, the signed integral subtracts that portion.",
+        "For total geometric area, find the roots inside the interval, split the integral at each crossing, and make each contribution positive. Do not take the absolute value only after adding signed areas, because cancellation would already have occurred.",
+        "An area under a rate graph can represent a net change: integrating velocity gives displacement, while distance requires adding the magnitudes of intervals where velocity has a constant sign. Always state which interpretation the question requests."
+      ]},
+      {title:"Choose limits and report the result carefully",intro:"Correct bounds and units are part of the integration method, not finishing details.",points:[
+        "When an area is bounded by a curve and the x-axis, solve for their intersections to obtain the relevant limits. If two curves enclose a region, identify which is on top throughout the interval and integrate upper minus lower.",
+        "Evaluate an antiderivative as F(b)−F(a), keeping brackets around the complete lower-limit substitution. A negative answer may be valid signed area, but it is a warning to reconsider the diagram if ordinary area was requested.",
+        "The integral has units equal to the vertical units multiplied by the horizontal units. In an application, translate the calculated accumulation back into the named quantity and include appropriate units and rounding."
+      ]}
+    ],
+    P1T2:[
+      {title:"Determine a function's domain and range",intro:"Domain restrictions come from the input expression; the range depends on the outputs the permitted inputs can produce.",points:[
+        "For a rational function, exclude any input that makes a denominator zero. For a real square root, require the expression beneath the root to be non-negative; for a logarithm, its argument must be positive. Combine all restrictions rather than checking only the most obvious one.",
+        "To find a range, ask which y-values are actually attained. Completing the square can reveal the minimum or maximum of a quadratic; a graph can show whether an endpoint is included, approached asymptotically, or excluded by a missing input.",
+        "For a composition f(g(x)), x must first be allowed in g and the output g(x) must then be allowed as an input to f. This second condition is easy to miss, so write down both domains before simplifying the composite expression."
+      ]},
+      {title:"Compose and invert functions without losing restrictions",intro:"Composition follows the order of operations, while an inverse reverses inputs and outputs.",points:[
+        "To calculate fg(x), substitute the entire expression g(x) wherever the input of f appears. In general fg and gf are different; use a simple input value or expand both expressions to check the order.",
+        "For an inverse, write y=f(x), swap x and y, then solve for y. State the inverse domain as the range of the original function and its range as the original domain.",
+        "A function needs to be one-to-one on its domain to have an inverse that is itself a function. For example, x squared is not one-to-one over all real x, but restricting to x greater than or equal to zero gives a valid inverse branch."
+      ]},
+      {title:"Map points and features through transformations",intro:"Point mapping gives a reliable way to determine the direction and scale of a graph transformation.",points:[
+        "If (u,v) lies on y=f(x), then y=f(x−a)+b contains the mapped point (u+a,v+b). Check the mapping by substituting the new x-coordinate: the input to f returns to u, and the output is raised by b.",
+        "A multiplier outside f changes y-values, while a multiplier inside changes x-values by the reciprocal scale. A negative outside multiplier reflects in the x-axis; a negative inside multiplier reflects in the y-axis.",
+        "When sketching a transformed graph, carry over roots, intercepts, turning points and asymptotes where possible. Then check the transformed domain and range, and solve intersections by equating the functions rather than reading an imprecise crossing from a drawing."
+      ]}
+    ],
+    P1T5:[
+      {title:"Differentiate powers accurately",intro:"The power rule applies to positive, fractional and negative powers once the expression is written in index form.",points:[
+        "Rewrite a root as a fractional power and a reciprocal as a negative power before differentiating. For example, the derivative of the square root of x is one half x to the power negative one half; the derivative of x to the power negative two is negative two x to the power negative three.",
+        "For a polynomial, differentiate each term separately, keep its coefficient, multiply by the old exponent and reduce that exponent by one. A constant differentiates to zero, so it contributes no gradient.",
+        "Substitute a specified x-value into the derivative only after differentiating and simplifying. Keep exact fractions during the working, because a rounded gradient can alter a tangent or normal equation."
+      ]},
+      {title:"Construct and interpret tangent and normal lines",intro:"A derivative gives a gradient, but a line equation also needs a point on the curve.",points:[
+        "For a tangent at x=a, calculate the point (a,f(a)) and gradient f′(a), then use y−f(a)=f′(a)(x−a). Substituting the point into the final line should reproduce the same coordinates.",
+        "The normal passes through that same point and is perpendicular to the tangent. If the tangent gradient is non-zero, the normal gradient is its negative reciprocal; a horizontal tangent has a vertical normal, which should be written as x=a.",
+        "A question may ask for the tangent or normal at a named coordinate. First verify the coordinate satisfies the curve equation; an incorrect or irrelevant point cannot be repaired by correct differentiation."
+      ]},
+      {title:"Classify stationary points and solve optimisation problems",intro:"A stationary point is a candidate for an extremum, not automatically a maximum or minimum.",points:[
+        "Solve f′(x)=0, find the corresponding y-values from the original function and classify each point. A sign change in f′ from positive to negative indicates a local maximum; a change from negative to positive indicates a local minimum.",
+        "The second derivative provides a quick local test when it is non-zero: positive curvature gives a minimum and negative curvature a maximum. If the second derivative is zero, use a sign test or inspect the curve rather than claiming the test is decisive.",
+        "For an optimisation model, define the quantity and its valid domain before differentiating. Find interior stationary candidates, check any permitted endpoints, and state the final value in context with units; a mathematically stationary answer outside the model's domain is not acceptable."
+      ]}
+    ],
+    P2T5:[
+      {title:"Select the differentiation rule from the structure",intro:"Before differentiating a complicated expression, identify whether its operations form a sum, product, quotient or composition.",points:[
+        "For a product uv, differentiate one factor at a time: u′v+uv′. Do not differentiate both factors together or multiply their derivatives; keep the undifferentiated partner in each term.",
+        "For a quotient u/v, use (u′v−uv′)/v squared. The order in the numerator matters, and the denominator is squared. If factorising or simplifying first makes the expression shorter, do that only while preserving its domain.",
+        "For a composite F(g(x)), differentiate the outer function at the inner expression and multiply by g′(x). Brackets make the chain-rule factor visible and prevent it being omitted.",
+        "After applying a rule, check the result with a simple numerical value or an algebraic rearrangement. Keep intermediate expressions exact and avoid cancelling factors that might be zero without noting the restriction."
+      ]},
+      {title:"Connect differentiation and integration across a model",intro:"Derivatives describe local rates, while integrals recover accumulated change over an interval.",points:[
+        "For a velocity function v(t), acceleration is dv/dt and displacement between two times is the definite integral of v. If velocity changes sign, split the interval to find total distance rather than net displacement.",
+        "A quantity that grows or shrinks at a rate depending on its current value may be expressed as a differential relationship. Separate the variables when the equation permits, integrate both sides, then use an initial condition to determine the constant.",
+        "When an antiderivative is difficult, a numerical area estimate such as the trapezium rule can provide an approximation. Use the requested number of strips, calculate ordinates consistently and interpret whether the estimate is an over- or underestimate from the curve's shape.",
+        "Differentiate a proposed antiderivative to check it, and differentiate an integrated motion expression to return to the stated rate. These reverse checks help detect missing constants, signs and chain-rule factors."
+      ]}
+    ],
+    M1T1:[
+      {title:"Resolve a launch into horizontal and vertical motion",intro:"A two-dimensional motion problem can be separated into perpendicular one-dimensional models that share time.",points:[
+        "For a launch speed u at angle θ above the horizontal, resolve the initial velocity into u cos θ horizontally and u sin θ vertically. Use the angle from the diagram and label the direction of each component.",
+        "When air resistance is neglected, horizontal acceleration is zero and vertical acceleration is downward with magnitude g. The horizontal velocity therefore stays constant, while the vertical velocity changes according to the chosen sign convention.",
+        "Use the same time variable in both component equations because the particle follows one continuous motion. Solve the vertical equation for the event time, then substitute that time into the horizontal equation to find the horizontal displacement.",
+        "Combine the horizontal and vertical velocity components with Pythagoras to find speed; use their signs to determine direction. State the modelling assumption and check that the calculated time and landing position make physical sense."
+      ]},
+      {title:"Choose axes to simplify vector calculations",intro:"A useful coordinate system reduces algebra while preserving the physical meaning of each component.",points:[
+        "For motion on a slope, axes parallel and perpendicular to the plane often separate the component of weight that drives motion from the normal reaction. Resolve forces using the angle in the diagram, not an assumed angle from the horizontal.",
+        "Keep vectors signed along the chosen axes and distinguish a negative component from a negative speed. The sign gives direction; speed is the non-negative magnitude of the full velocity vector.",
+        "When combining stages, carry the velocity at the end of one interval into the next as its initial velocity. Recheck the direction of each component at a turning point or after a change of axis."
+      ]}
+    ],
+    P2T1:[
+      {title:"Choose a proof method and make every step explicit",intro:"The wording of a claim tells you whether to prove a universal statement, establish a conditional result or disprove it.",points:[
+        "A universal claim must be justified for every permitted case. Proof by exhaustion works only when the cases are finite and all are checked; testing several examples can suggest a pattern but does not establish it for infinitely many values.",
+        "One valid counterexample is enough to disprove a universal statement. Choose a value that directly violates the conclusion and show the calculation, rather than merely saying the claim is false.",
+        "For parity arguments, write an even integer as 2k and an odd integer as 2k+1, with k an integer. Substitute this form into the expression and simplify until its parity or divisibility is explicit.",
+        "A complete proof states the assumption, gives a reason for each algebraic transition, and ends by linking the result back to the original claim. Do not treat an unexplained contradiction or an example as a finished argument."
+      ]},
+      {title:"Use polynomial theorems to locate and verify roots",intro:"Substitution, division and factorisation form a cycle: each can turn a suspected root into a simpler equation.",points:[
+        "For a proposed factor x−a, calculate f(a). A zero confirms the factor; a non-zero value is the remainder. For a linear expression ax−b, the associated input is b/a, not b.",
+        "After finding one factor, divide the polynomial and continue with the quotient. A cubic may reduce to a quadratic; factorise or solve that quadratic and list every root, including repeated roots.",
+        "The multiplicity of a root is visible from repeated factors. A squared factor represents a repeated root and normally touches the x-axis rather than crossing it; verify the factorisation by expanding it back to the original polynomial.",
+        "Coefficient comparison is useful when the factor or quotient is not already known. Expand the proposed product, match coefficients of equal powers, and solve the resulting simultaneous equations without skipping the constant term."
+      ]},
+      {title:"Extract the requested term from a binomial expansion",intro:"The general term keeps the coefficient and both changing powers connected to one index.",points:[
+        "For (a+b) to the power n, the term with index r is nCr times a to the power n−r times b to the power r. Write this general term before substituting expressions involving x; it is safer than trying to list terms mentally.",
+        "To find the coefficient of x to a specified power, collect the powers of x in the general term and solve the resulting equation for r. Check that r is an integer between zero and n before using the coefficient.",
+        "When b contains a negative sign, its r-th power controls the sign of the term. Keep the sign inside the bracket until the power has been applied, then simplify the coefficient and powers separately.",
+        "For a numerical approximation, identify the small quantity and retain only the requested powers. Check that the discarded terms are of higher order and that the approximation is being used in the range stated by the question."
+      ]}
+    ],
+    P2T2:[
+      {title:"Identify the sequence before selecting a formula",intro:"Differences and ratios diagnose whether an arithmetic or geometric model fits the terms.",points:[
+        "Subtract consecutive terms to test for a constant difference. If it is constant, the sequence is arithmetic and each step adds the same amount; if the ratios of consecutive non-zero terms are constant, it is geometric and each step multiplies by the same factor.",
+        "For an arithmetic sequence, u_n=a+(n−1)d because there are n−1 jumps from the first term to the nth. This reasoning helps prevent the common off-by-one error and makes the roles of a and d clear.",
+        "For a geometric sequence, u_n=ar to the power n−1 for the same indexing reason. Use two known terms to form simultaneous relationships, divide them to eliminate a when useful, then substitute back to recover the first term."
+      ]},
+      {title:"Build a finite sum and solve for the number of terms",intro:"A series is the sum of sequence terms; the last term and the term count must agree with the indexing.",points:[
+        "The arithmetic sum pairs the first and last terms, the second and second-last, and so on. Each pair has the same total, which gives S_n=n(a+l)/2 and, after substituting l=a+(n−1)d, the equivalent formula in a and d.",
+        "The finite geometric formula follows by subtracting r times the sum from the original sum, causing the middle terms to cancel. The result is a(1−r^n)/(1−r) when r is not one; if r equals one, every term is a and the sum is na.",
+        "If a word problem gives a target total, set the appropriate sum formula equal to that target and solve for n or another unknown. Check that n is a whole number of terms and that the final term really matches the described sequence."
+      ]},
+      {title:"Interpret convergence, sigma notation and models",intro:"An infinite sum is a limit and is valid only when its partial sums approach a finite value.",points:[
+        "For a geometric series, the terms must approach zero, which requires the absolute value of r to be less than one. Then r to the power n tends to zero and the finite-sum formula approaches a/(1−r); otherwise there is no finite sum to infinity.",
+        "A negative common ratio can still converge when its absolute value is below one: the terms alternate in sign while shrinking. Evaluate the formula with its signed ratio, not its magnitude, because the sign affects the limiting total.",
+        "Sigma notation names the general term and the starting and ending indices. Substitute the first and last indices to confirm how many terms are included before simplifying or applying a summation formula.",
+        "In a model, a fixed addition suggests an arithmetic sequence and a fixed percentage change suggests a geometric one. State the initial amount and multiplier, keep units attached to time periods, and note that a mathematical limit may be an idealisation rather than an attainable real-world value."
+      ]}
+    ],
+    P3T6:[
+      {title:"Bracket a root before refining its value",intro:"A root is a value where f(x)=0; a sign-changing interval can provide evidence that a continuous curve crosses the axis.",points:[
+        "Calculate f at both endpoints and record the signs. If one value is positive and the other negative, continuity guarantees at least one root between them, although it does not guarantee that the interval contains only one root.",
+        "Bisection takes the midpoint and checks its sign against the endpoints. Keep the half-interval that still has opposite signs; after each step the interval width is halved, giving a transparent bound on the root's location.",
+        "A sign-change test can miss a repeated root where a curve touches the axis and turns back. Use a sketch, factorisation or another interval to check for additional roots in the required range."
+      ]},
+      {title:"Understand fixed-point iteration and convergence",intro:"A rearrangement x=g(x) generates approximations by repeatedly feeding each result into the next calculation.",points:[
+        "Start with the specified x_0 and calculate x_1=g(x_0), then x_2=g(x_1), continuing with unrounded values. A fixed point satisfies g(x)=x and therefore solves the rearranged equation, but different rearrangements can lead to different numerical behaviour.",
+        "Near a fixed point, an iteration is generally locally convergent when the magnitude of g′ there is less than one. If it exceeds one, small errors may grow; a negative derivative can produce alternating iterates even when their distance from the fixed point shrinks.",
+        "A table should show the formula, starting value and enough iterates to justify the requested accuracy. Agreement after rounding is useful evidence, but report the requested number of decimal places and retain extra precision during the calculations."
+      ]},
+      {title:"Use Newton–Raphson and assess numerical accuracy",intro:"Newton–Raphson improves a root estimate by using the tangent to the curve at the current approximation.",points:[
+        "The update is x_(n+1)=x_n−f(x_n)/f′(x_n). It comes from setting the tangent's value to zero, so the derivative must exist and must not be zero at the current iterate.",
+        "For f(x)=x squared−2, starting at 1.5 gives a next estimate of 1.5−(1.5 squared−2)/(2×1.5), approximately 1.4167. Repeating the step rapidly approaches the positive square root of two.",
+        "A starting value far from the desired root can jump to another root or fail to converge; a nearly horizontal tangent can create a very large step. Check the final value in the original function and use an interval or graph to identify which root was found.",
+        "For bisection, the final bracket provides a direct error bound; for iteration or Newton–Raphson, compare successive values and the residual f(x). Give no more decimal places than the method supports and distinguish an approximation from an exact solution."
+      ]}
+    ],
+    P4T1:[
+      {title:"Write a contradiction proof as a controlled chain",intro:"The strongest contradiction proofs make the negated claim precise before starting any algebra.",points:[
+        "To prove a statement, assume its negation while retaining the original conditions. If the claim concerns every integer in a class, preserve that domain; if it concerns divisibility, translate the negation into an exact integer statement.",
+        "For the irrationality of the square root of two, assume it equals a fraction a/b in lowest terms. Squaring gives a squared equals 2b squared, so a squared is even and therefore a is even; write a=2k and substitute back to show b is even too.",
+        "Both a and b then share a factor of two, contradicting the assumption that the fraction was in lowest terms. The conclusion is that no such rational fraction exists. State this final link explicitly rather than ending at the word contradiction.",
+        "Check the direction of each implication: an integer with an even square is itself even, and explain why rather than silently reversing a statement. Keep the assumption of lowest terms visible, because without it the shared factor would not create the contradiction."
+      ]},
+      {title:"Construct general binomial terms and validity intervals",intro:"The general binomial series extends finite integer expansions but must be used within its convergence range.",points:[
+        "The coefficient of the r-th term in (1+u) to the power n is n(n−1)…(n−r+1)/r!, multiplied by u to the power r. For a non-negative integer n the terms eventually stop; for a non-integer or negative n the series continues.",
+        "If the expression is (a+bx) to the power n, factor out a to the power n and use u=bx/a. The condition is that the absolute value of bx/a is less than one, so translate it into a range for x rather than copying the standard condition unchanged.",
+        "For example, (1+2x) to the power negative one half has a series valid when the absolute value of 2x is less than one, so the interval is the absolute value of x less than one half. This rescaling is a frequent source of lost validity marks.",
+        "When a question asks for a coefficient, write enough general terms to identify the required power. Keep the index and sign attached to each factor, and check that no later term can contribute to the same power."
+      ]},
+      {title:"Use a truncated series as a justified approximation",intro:"A finite polynomial is an approximation to an infinite series, so its accuracy depends on the omitted terms.",points:[
+        "Expand only to the power requested, but retain all lower powers as well. The order of a term describes its size as x becomes small; omitting an x-squared term is not justified when the question asks for an approximation through x-squared.",
+        "After substituting into an expression, collect like powers of x. Multiplying two truncated expansions may create cross-terms, so list those products before discarding terms above the required order.",
+        "For an estimate, check that the substituted quantity lies inside the validity interval and is sufficiently small for the neglected terms to have little effect. If a bound or accuracy is requested, explain what first omitted term controls the likely error.",
+        "A useful final check is to substitute a small permitted value numerically into both the original expression and the truncated polynomial. Close agreement supports the approximation, while it does not replace the algebraic validity argument."
+      ]}
+    ],
+    S1T4:[
+      {title:"Build a probability distribution and calculate its moments",intro:"A discrete distribution pairs each possible value of X with its probability, so the table is both a model and a calculation plan.",points:[
+        "List every possible value once and place P(X=x) beside the matching value. Check each probability is between zero and one and that the full column sums to one; if it does not, either an outcome or a probability has been omitted.",
+        "Expectation is the probability-weighted mean: multiply each value by its probability and add. It need not be one of the possible outcomes, and it describes the long-run average over many repetitions rather than predicting a single trial.",
+        "To find variance efficiently, add x squared times each probability to obtain E(X squared), then subtract the square of E(X). Standard deviation is the positive square root of variance and is in the same units as X.",
+        "For a small table, show the columns x, p, xp and x squared p. This makes arithmetic transparent and helps catch a probability paired with the wrong outcome."
+      ]},
+      {title:"Transform random variables without rebuilding the distribution",intro:"Linear transformations have predictable effects on the centre and spread of a random variable.",points:[
+        "If Y=aX+b, then E(Y)=aE(X)+b. Multiplication by a scales every possible value, while adding b shifts every value; the expectation follows the same two operations.",
+        "Variance measures squared deviations from the mean, so adding b changes nothing and multiplying by a multiplies the variance by a squared. Thus Var(aX+b)=a squared Var(X), and the standard deviation is multiplied by the absolute value of a.",
+        "For example, converting a measurement from one unit to another may multiply every outcome by a conversion factor. Apply that factor to the mean and its square to the variance; do not add the offset to variance.",
+        "Use these rules to check a calculation made from a transformed probability table. If a constant shift appears in the variance, or a negative variance results, revisit the algebra."
+      ]},
+      {title:"Select and apply binomial or Poisson models",intro:"A distribution formula is appropriate only after the scenario has been matched to its assumptions.",points:[
+        "Use a binomial model for a fixed number n of independent trials, each with the same probability p of the defined success. State what success means, verify that p stays constant, and use the complement probability for failure.",
+        "The binomial probability of exactly r successes is nCr times p to the power r times (1−p) to the power n−r. For a range such as at most r, add the required outcomes or use a cumulative probability; translate less than and less than or equal carefully because X is discrete.",
+        "A Poisson model describes counts in a fixed interval when events occur at a steady average rate independently. Its parameter λ is the expected count for that interval: scale the rate when the time or region changes, and remember that its mean and variance both equal λ.",
+        "For a Poisson tail, use the complement when it is shorter; for example, at least one event is one minus the probability of zero. State the model and interval in context, and distinguish the expected count from the probability of a particular count."
+      ]}
+    ]
+  };
+  SUBJECT_MATHS.units.forEach(function(u){u.topics.forEach(function(t){if(extra[t.id]){t.notes.sections=extra[t.id].sections.concat(extended[t.id]||[]);t.notes.reviewPrompt=extra[t.id].reviewPrompt;}});});
 })();
