@@ -10,7 +10,7 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 
 ### 📚 Book-style study library
 - The main screen is a bookshelf: click a subject cover to open its unit contents and select a topic.
-- Notes are split into turnable pages while retaining every summary point, expanded section, walkthrough, formula, definition, worked example, pitfall, tip, retrieval prompt and flashcard.
+- The former notes tab is replaced by **Detailed Teaching**: turnable lessons lead from a topic overview and core ideas through step-by-step explanations, expanded sections, worked examples, exam checks and retrieval prompts. All existing topic content and flashcards are retained.
 - Practice opens in page-turn mode by topic; answer drafts, hints, mark-scheme points, sample answers, examiner insights and the all-prompts/topic-set views remain available.
 - The light theme uses warm paper, sage and forest-green accents with a dark-mode option. No gradients are used.
 
@@ -22,9 +22,9 @@ A free, offline-friendly study website for **Edexcel International A Level**:
 - **⏱️ Mock Builder**: choose topics and timing, sit a timed set, then reveal answers and self-mark. Mocks omit the separate retry drills to avoid duplicate prompts.
 - **🗂️ Full Paper Archive**: session index and links to paper hubs, mark schemes and examiner reports.
 
-### 📖 Revise
-- **91 syllabus topics** with expanded, chapter-organised notes, concise revision points, formulae, definitions, worked examples, classic mistakes, exam tips and retrieval checks.
-- Every topic now includes a two-part explanatory walkthrough that connects mechanisms, calculations and applications.
+### 🧑‍🏫 Detailed Teaching
+- **91 syllabus topics** with expanded, chapter-organised teaching, concise core ideas, formulae, definitions, worked examples, common misconceptions, exam applications and retrieval checks.
+- Every topic includes a two-part explanatory walkthrough that connects mechanisms, calculations and applications; lesson sections open expanded so the teaching is visible immediately.
 - 🃏 Flashcards per topic, topic checklists and progress tracking
 
 ### 🎮 Playable science labs + topic practice
@@ -92,7 +92,7 @@ js/
   q-repeat.js        — one clearly labelled retry drill per syllabus topic
   examiner-insights.js — paraphrased, source-linked Pearson report notes
   tutor.js           — offline tutor engine + optional LLM mode
-  book-layout.js     — subject bookshelf, complete paged notes, and question flip reader
+  book-layout.js     — subject bookshelf, paged step-by-step teaching, and question flip reader
   topic-games.js     — original hand-calculation, reasoning and process challenges mapped to every Physics/Chemistry/Biology topic
   interactive-labs.js — Physics, Chemistry and Biology visual labs; molecule presets are loaded from the generated model data
   orbital-sandbox.js — Chemistry hybrid-orbital, σ/π bonding, Python density rendering, rotation and VSEPR sandbox
@@ -113,7 +113,7 @@ tools/simulate_orbitals.py — Python Gaussian-AO/LCAO density precomputation; r
 ## Content honesty and examiner-report sources
 
 - Topical questions are **original exam-style practice**, not copied official paper questions. Retry drills intentionally repeat existing prompts; they are not new official items. Full official papers are linked separately.
-- Expanded notes and walkthroughs are original explanations organised against the chapter topics supplied by the student. They are a revision aid; check the current Pearson specification and teacher guidance for assessed scope.
+- Expanded teaching sections and walkthroughs are original explanations organised around the chapter topics. They are a learning aid; check the current Pearson specification and teacher guidance for assessed scope.
 - Examiner-report reminders are paraphrased and linked at the question card. Topic-specific labels are used only where the report passage matches; other reminders are explicitly labelled as general advice from a representative unit report. Topic-pitfall lists are separate study guidance, not direct examiner-report quotations.
 - Representative official Pearson reports consulted: [Physics WPH11, June 2024](https://qualifications.pearson.com/content/dam/pdf/International-Advanced-Level/Physics/2018/Exam-materials/wph11-01-pef-20240815.pdf), [Chemistry WCH11, June 2024](https://qualifications.pearson.com/content/dam/pdf/International-Advanced-Level/Chemistry/2018/Exam-materials/wch11-01-pef-20240815.pdf), [Chemistry WCH11, June 2022](https://qualifications.pearson.com/content/dam/pdf/International%20Advanced%20Level/Chemistry/2018/Exam-materials/wch11-01-pef-20220818.pdf), [Biology WBI11, June 2024](https://qualifications.pearson.com/content/dam/pdf/International-Advanced-Level/Biology/2018/Exam-materials/wbi11-01-pef-20240815.pdf), and [Mathematics WMA11 P1, Summer 2024](https://qualifications.pearson.com/content/dam/pdf/International-Advanced-Level/Mathematics/2018/Exam-materials/wma11-01-pef-20240815.pdf). These are representative reports, not complete report coverage for every unit and topic.
 - Grade thresholds shown (Physics June 2025) are from published boundaries; confirm your session via the linked hubs.

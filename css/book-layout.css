@@ -128,7 +128,7 @@ header.site{background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-fil
 .book-reading-page>.book-page-running{margin-bottom:3px}
 .book-page-content{min-height:515px;padding:12px 0 15px}
 
-/* Notes as complete pages. Every original note field is rendered by js/book-layout.js. */
+/* Detailed teaching as complete pages. The original topic content remains in the subject data. */
 .book-note-reader{display:flex;flex-direction:column;min-height:470px}
 .book-note-page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:6px 0 9px}
 .book-note-page-head>div{min-width:0}
@@ -149,6 +149,18 @@ header.site{background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-fil
 .book-page-callout b{color:var(--book-warm);font:8px var(--mono);letter-spacing:.11em}
 .book-page-callout p{margin:4px 0 0;color:var(--book-ink-soft);font-size:10px;line-height:1.6}
 .book-page-hint{margin:10px 0;color:var(--muted);font-size:9px;line-height:1.55}
+.book-teaching-roadmap{margin:10px 0;padding:11px 13px;border:1px solid var(--book-border);background:var(--book-paper-alt)}
+.book-teaching-roadmap>div{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.book-teaching-roadmap>div b{color:var(--book-forest);font:8px var(--mono);letter-spacing:.1em}
+.book-teaching-roadmap>div span{color:var(--muted2);font:8px var(--mono)}
+.book-teaching-roadmap ol{display:grid;gap:5px;margin:9px 0 0;padding:0;list-style:none}
+.book-teaching-roadmap li{display:grid;grid-template-columns:25px minmax(0,1fr);align-items:start;gap:7px;padding:6px 0;border-top:1px solid var(--book-border)}
+.book-teaching-roadmap li>span{color:var(--book-sage);font:8px var(--mono)}
+.book-teaching-roadmap li>b{color:var(--book-ink-soft);font-size:9px;line-height:1.45}
+.book-teaching-check{margin:10px 0 0;padding:10px 12px;border-left:3px solid var(--book-warm);background:color-mix(in srgb,var(--book-warm) 9%,var(--book-paper))}
+.book-teaching-check>span{color:var(--book-warm);font:8px var(--mono);letter-spacing:.12em}
+.book-teaching-check p{margin:4px 0;color:var(--book-forest);font:italic 15px/1.45 'Playfair Display',Georgia,serif}
+.book-teaching-check small{color:var(--muted);font-size:8px;line-height:1.5}
 .book-section-heading{margin:5px 0 12px}
 .book-section-heading>span{color:var(--book-sage);font:8px var(--mono);letter-spacing:.14em}
 .book-section-heading h3{margin:5px 0 4px;color:var(--book-forest);font:600 22px/1.2 'Playfair Display',Georgia,serif}

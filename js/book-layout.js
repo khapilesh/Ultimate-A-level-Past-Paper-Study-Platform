@@ -21,12 +21,12 @@ function vLibraryHome(){
       "<span class='library-book-desc'>"+esc(S.desc)+"</span><span class='library-book-bottom'><span>"+topics+" topics · "+progress.pct+"% read</span><b>↗</b></span></span></button>";
   }).join("");
   return "<section class='library-home'><div class='library-welcome'><div class='library-copy'><div class='book-eyebrow'>EDEXCEL INTERNATIONAL A LEVEL · YOUR STUDY LIBRARY</div>"+
-    "<h1>Choose a subject.<br><em>Open a book.</em></h1><p>Browse a real contents page, settle into a topic, then turn through detailed notes or exam-style practice at your own pace.</p>"+
+    "<h1>Choose a subject.<br><em>Open a book.</em></h1><p>Browse a real contents page, settle into a topic, then follow a guided lesson or test yourself with exam-style practice at your own pace.</p>"+
     "<div class='library-actions'><button class='btn btn-p' onclick=\"openStudyBook('physics')\">Open your first book <span>→</span></button><button class='btn btn-g' onclick=\"go('guide')\">Study guide &amp; resources</button><button class='btn btn-g' onclick=\"go('games')\">🎮 Play science games</button></div></div>"+
     "<aside class='library-note'><span class='library-note-top'>A NOTE FOR YOUR NEXT SESSION <span>✳</span></span><p>Small chapters.<br>Clear explanations.<br>One page at a time.</p><small>YOUR DESK · "+c.topics+" CHAPTERS</small></aside></div>"+
     "<div class='shelf-heading'><h2>Your subjects</h2><span>Click a cover to open its contents</span></div><div class='library-shelf'>"+books+"</div>"+
     "<div class='library-bottom-row'><article><span>01</span><div><b>Read in chapters</b><p>Pick a topic from the contents page and move through one idea at a time.</p></div></article>"+
-    "<article><span>02</span><div><b>Switch from notes to practice</b><p>Open hints, draft answers, reveal mark schemes and move between questions like pages.</p></div></article>"+
+    "<article><span>02</span><div><b>Build understanding, then practise</b><p>Follow the teaching, draft your own answers, reveal mark schemes and move between questions like pages.</p></div></article>"+
     "<article><span>03</span><div><b>Your study data stays here</b><p>"+c.questions+" practice prompts · "+c.topics+" syllabus topics · "+(p.streak||1)+"-day study streak.</p></div></article></div>"+
     "<div class='library-resource-link'><div><b>Looking for official papers, grade thresholds, FAQs or more about the platform?</b><span>All the original study information is still available in the study guide.</span></div><button class='btn btn-g btn-s' onclick=\"go('guide')\">Open the study guide →</button></div></section>";
 }
@@ -40,20 +40,20 @@ function vBookSubject(){
   var units=S.units.map(function(u){return "<option value='"+u.id+"'"+(u.id===U.id?" selected":"")+">"+esc(u.code)+" · "+esc(u.short)+" — "+esc(u.title)+"</option>";}).join("");
   var topics=U.topics.map(function(t,i){
     var done=p.topics[view.sid+":"+t.id], selected=t.id===view.tid, nq=countQ(view.sid,U.id,t.id);
-    return "<button class='book-toc-topic"+(selected?" selected":"")+(done?" completed":"")+"' onclick=\"selectBookTopic('"+t.id+"')\" aria-current='"+(selected?"page":"false")+"'><span class='book-toc-number'>"+String(i+1).padStart(2,"0")+"</span><span class='book-toc-copy'><b>"+esc(t.name)+"</b><small>"+nq+" practice prompts"+(t.notes.sections&&t.notes.sections.length?" · "+t.notes.sections.length+" note sections":"")+"</small></span><span class='book-toc-status'>"+(done?"✓":"›")+"</span></button>";
+    return "<button class='book-toc-topic"+(selected?" selected":"")+(done?" completed":"")+"' onclick=\"selectBookTopic('"+t.id+"')\" aria-current='"+(selected?"page":"false")+"'><span class='book-toc-number'>"+String(i+1).padStart(2,"0")+"</span><span class='book-toc-copy'><b>"+esc(t.name)+"</b><small>"+nq+" practice prompts"+(t.notes.sections&&t.notes.sections.length?" · "+t.notes.sections.length+" teaching sections":"")+"</small></span><span class='book-toc-status'>"+(done?"✓":"›")+"</span></button>";
   }).join("");
-  var tabs=[[0,"▤","Study notes"],[1,"✎","Practice"],[2,"◌","AI tutor"]].map(function(row){
+  var tabs=[[0,"✦","Detailed teaching"],[1,"✎","Practice"],[2,"◌","AI tutor"]].map(function(row){
     return "<button class='book-tab"+(view.tab===row[0]?" active":"")+"' onclick='setTab("+row[0]+")' aria-pressed='"+(view.tab===row[0])+"'><span>"+row[1]+"</span>"+row[2]+"</button>";
   }).join("");
   var body=view.tab===0?renderBookNotes(T):view.tab===1?vPapers():vAI();
-  var pageLabel=view.tab===0?"READING ROOM":view.tab===1?"PRACTICE DESK":"TUTOR'S DESK";
+  var pageLabel=view.tab===0?"TEACHING STUDIO":view.tab===1?"PRACTICE DESK":"TUTOR'S DESK";
   return "<section class='book-room' style='--book-accent:"+S.color+"'><div class='book-room-heading'><div class='book-heading-main'>"+
     "<button class='back-to-library' onclick=\"go('home')\">← Bookshelf</button><div class='book-heading-line'><span class='book-heading-icon'>"+S.icon+"</span><div><div class='book-small-label'>"+esc(S.qual)+" · "+S.units.length+" UNITS</div><h1>"+esc(S.name)+"</h1></div></div></div>"+
     "<label class='book-unit-picker'><span>CHOOSE A UNIT</span><select onchange='setBookUnit(this.value)'>"+units+"</select></label></div>"+
-    "<div class='book-tabs' role='tablist' aria-label='Study mode'>"+tabs+"<div class='book-tabs-meta'>"+esc(U.code)+" · "+esc(U.short)+"<small>"+esc(U.title)+" · "+pageLabel+"</small></div></div>"+
+    "<div class='book-tabs' role='tablist' aria-label='Learning mode'>"+tabs+"<div class='book-tabs-meta'>"+esc(U.code)+" · "+esc(U.short)+"<small>"+esc(U.title)+" · "+pageLabel+"</small></div></div>"+
     "<div class='book-spread'><aside class='book-contents-page'><div class='book-page-running'><span>CONTENTS</span><span>"+esc(U.code)+"</span></div><div class='book-contents-title'><span>"+esc(U.short.toUpperCase())+" · "+esc(U.level||"IAL")+"</span><h2>"+esc(U.title)+"</h2><p>Choose a chapter to open it. Your progress is marked beside each topic.</p></div>"+
     "<div class='book-topic-count'><span>CHAPTERS</span><b>"+U.topics.length+" topics</b></div><nav class='book-topic-index' aria-label='Topics in "+esc(U.short)+"'>"+topics+"</nav>"+
-    "<div class='book-contents-tip'><b>Reading path</b><p>Start with the overview, explore the deeper notes, then test yourself with a question or flashcard.</p></div><div class='book-page-folio'><span>IAL MASTERY</span><span>"+String(S.units.indexOf(U)+1).padStart(2,"0")+" · CONTENTS</span></div></aside>"+
+    "<div class='book-contents-tip'><b>Teaching path</b><p>Start with the lesson map, follow the guided explanations, explore each syllabus section, then check your understanding.</p></div><div class='book-page-folio'><span>IAL MASTERY</span><span>"+String(S.units.indexOf(U)+1).padStart(2,"0")+" · CONTENTS</span></div></aside>"+
     "<section class='book-reading-page'><div class='book-page-running'><span><b>"+esc(U.code)+"</b> · "+esc(U.short.toUpperCase())+"</span><span>"+pageLabel+"</span></div><div class='book-page-content'>"+body+"</div></section></div></section>";
 }
 function selectBookTopic(tid){
@@ -93,43 +93,45 @@ function renderBookNotes(T){
   return html;
 }
 function bookPageLabel(page,index){
-  if(!page) return "CHAPTER OVERVIEW";
-  if(page.kind==="overview") return "CHAPTER OVERVIEW";
-  if(page.kind==="points") return "QUICK REVISION · PART "+String(page.part).padStart(2,"0")+" / "+String(page.total).padStart(2,"0");
-  if(page.kind==="walkthrough") return "GUIDED EXPLANATION · PART "+String(page.part).padStart(2,"0")+" / "+String(page.total).padStart(2,"0");
-  if(page.kind==="sections") return "EXPANDED NOTES · PART "+String(page.part).padStart(2,"0")+" / "+String(page.total).padStart(2,"0");
-  if(page.kind==="toolkit") return "FORMULAE · DEFINITIONS · WORKED EXAMPLE";
-  if(page.kind==="exam") return "EXAM CHECK · COMMON ERRORS & RECALL";
+  if(!page) return "TEACHING OVERVIEW";
+  if(page.kind==="overview") return "TEACHING OVERVIEW";
+  if(page.kind==="points") return "CORE IDEAS · PART "+String(page.part).padStart(2,"0")+" / "+String(page.total).padStart(2,"0");
+  if(page.kind==="walkthrough") return "DETAILED TEACHING · PART "+String(page.part).padStart(2,"0")+" / "+String(page.total).padStart(2,"0");
+  if(page.kind==="sections") return "LESSON DETAILS · PART "+String(page.part).padStart(2,"0")+" / "+String(page.total).padStart(2,"0");
+  if(page.kind==="toolkit") return "TEACHING TOOLKIT · FORMULAE & EXAMPLES";
+  if(page.kind==="exam") return "CHECK YOUR UNDERSTANDING · EXAM TIPS";
   return "FLASHCARDS · PAGE "+String(index+1).padStart(2,"0");
 }
 function renderBookNotePage(page,T,n){
   if(!page||page.kind==="overview"){
     var lede=n.lede||"Build this topic from its core ideas, then check the worked examples and practice questions.";
-    var qCount=countQ(view.sid,view.uid,T.id);
-    return "<div class='book-page-intro'><span class='book-overline'>THE CHAPTER AT A GLANCE</span><h3>"+esc(T.name)+"</h3><p class='book-page-lede'>"+esc(lede)+"</p><div class='book-topic-facts'><span>"+esc(unitOf(view.sid,view.uid).code)+"</span><span>"+(n.sections||[]).length+" detailed sections</span><span>"+qCount+" practice prompts</span></div></div>"+
-      "<div class='book-page-callout'><b>HOW TO USE THIS CHAPTER</b><p>Turn through the short summary, open the expanded explanations, then use the retrieval check or try a question without looking at the answer.</p></div>"+
-      "<p class='book-page-hint'>The full revision summary, guided walkthrough, formulae, worked examples, classic mistakes and exam tips are all kept in the following pages.</p>";
+    var qCount=countQ(view.sid,view.uid,T.id), teachingSteps=n.walkthrough||[];
+    var route=teachingSteps.length?"<section class='book-teaching-roadmap'><div><b>YOUR TEACHING PATH</b><span>"+teachingSteps.length+" guided explanations</span></div><ol>"+teachingSteps.map(function(step,i){return "<li><span>"+String(i+1).padStart(2,"0")+"</span><b>"+esc(step.title)+"</b></li>";}).join("")+"</ol></section>":"";
+    return "<div class='book-page-intro'><span class='book-overline'>WHAT YOU'LL LEARN</span><h3>"+esc(T.name)+"</h3><p class='book-page-lede'>"+esc(lede)+"</p><div class='book-topic-facts'><span>"+esc(unitOf(view.sid,view.uid).code)+"</span><span>"+(n.sections||[]).length+" teaching sections</span><span>"+teachingSteps.length+" guided explanations</span><span>"+qCount+" practice prompts</span></div></div>"+
+      "<div class='book-page-callout'><b>HOW THIS LESSON BUILDS UNDERSTANDING</b><p>First connect the core ideas, then follow each explanation step by step. Study the detailed sections and any worked method, answer the retrieval prompt from memory, and finish with a practice question.</p></div>"+route+
+      "<p class='book-page-hint'>Where applicable, formulae, definitions and worked examples sit alongside the complete section explanations, common misconceptions and exam advice in the following teaching pages.</p>";
   }
   if(page.kind==="points"){
-    return "<div class='book-section-heading'><span>QUICK REVISION SUMMARY</span><h3>Core ideas to remember</h3><p>All original summary points are retained and split across pages for easier review.</p></div><ol class='book-point-list'>"+page.items.map(function(item){return "<li>"+item+"</li>";}).join("")+"</ol>";
+    return "<div class='book-section-heading'><span>CORE CONCEPTS</span><h3>Start with these ideas</h3><p>Use each statement as an anchor, then connect it to the step-by-step explanations and worked methods that follow.</p></div><ol class='book-point-list'>"+page.items.map(function(item){return "<li>"+item+"</li>";}).join("")+"</ol>";
   }
   if(page.kind==="walkthrough"){
-    return "<div class='book-section-heading'><span>GUIDED WALKTHROUGH</span><h3>Follow the reasoning</h3><p>Step-by-step explanations connect the main ideas and show why each relationship matters.</p></div>"+
-      page.parts.map(function(part,i){return "<article class='book-walkthrough'><span>STEP "+String(i+1).padStart(2,"0")+"</span><h4>"+esc(part.title)+"</h4><p>"+esc(part.text)+"</p></article>";}).join("");
+    var teachCheck=n.reviewPrompt?"<aside class='book-teaching-check'><span>PAUSE &amp; EXPLAIN</span><p>"+esc(n.reviewPrompt)+"</p><small>Answer in your own words before turning the page. Then check the exam checklist and correct any gaps.</small></aside>":"";
+    return "<div class='book-section-heading'><span>DETAILED TEACHING · FOLLOW THE CONNECTIONS</span><h3>Understand each step</h3><p>Read the explanations in order. Each one links a core idea to its physical, chemical, biological or mathematical meaning; pause and explain the connection before moving on.</p></div>"+
+      page.parts.map(function(part,i){return "<article class='book-walkthrough'><span>TEACHING STEP "+String(i+1).padStart(2,"0")+"</span><h4>"+esc(part.title)+"</h4><p>"+esc(part.text)+"</p></article>";}).join("")+teachCheck;
   }
   if(page.kind==="sections"){
-    return "<div class='book-section-heading'><span>EXPANDED CHAPTER NOTES</span><h3>Explore the details</h3><p>Open each section when you are ready. Every original subheading and note point is preserved.</p></div>"+
-      page.items.map(function(section,i){return "<details class='book-deep-section'"+(i===0?" open":"")+"><summary>"+esc(section.title)+"</summary>"+(section.intro?"<p class='book-section-intro'>"+esc(section.intro)+"</p>":"")+"<ul>"+(section.points||[]).map(function(point){return "<li>"+point+"</li>";}).join("")+"</ul></details>";}).join("");
+    return "<div class='book-section-heading'><span>DETAILED TEACHING · SYLLABUS SECTIONS</span><h3>Build the idea step by step</h3><p>Each section starts with the central explanation, then unpacks the facts, relationships and applications. Both sections open so the full lesson is visible; collapse either one if you want to focus.</p></div>"+
+      page.items.map(function(section){return "<details class='book-deep-section' open><summary>"+esc(section.title)+"</summary>"+(section.intro?"<p class='book-section-intro'>"+esc(section.intro)+"</p>":"")+"<ul>"+(section.points||[]).map(function(point){return "<li>"+point+"</li>";}).join("")+"</ul></details>";}).join("");
   }
   if(page.kind==="toolkit"){
-    return "<div class='book-section-heading'><span>REFERENCE DESK</span><h3>Relationships and worked methods</h3><p>Keep the symbols, definitions and method steps together while you revise.</p></div>"+
+    return "<div class='book-section-heading'><span>TEACHING TOOLKIT</span><h3>Symbols, definitions and worked methods</h3><p>Connect each formula and key term to its meaning, then follow the worked solution one step at a time.</p></div>"+
       ((n.formulas||[]).length?"<h4 class='book-subheading'>Formulae</h4><div class='book-formula-grid'>"+n.formulas.map(function(f){return "<div><b>"+f.e+"</b><small>"+f.w+"</small></div>";}).join("")+"</div>":"")+((n.defs||[]).length?"<h4 class='book-subheading'>Definitions</h4><div class='book-definitions'>"+n.defs.map(function(d){return "<p><b>"+d.t+"</b> — "+d.d+"</p>";}).join("")+"</div>":"")+
       (n.worked?"<article class='book-worked-example'><span>WORKED EXAMPLE</span><p class='worked-prompt'>"+n.worked.q+"</p><ol>"+(n.worked.steps||[]).map(function(step){return "<li>"+step+"</li>";}).join("")+"</ol></article>":"");
   }
   if(page.kind==="exam"){
-    return "<div class='book-section-heading'><span>EXAM CHECKLIST</span><h3>Recall, apply, review</h3><p>Keep the common pitfalls and practical exam advice visible before moving on.</p></div>"+
-      "<div class='book-exam-columns'><section><h4>Common mistakes</h4><ul>"+(n.mistakes||[]).map(function(x){return "<li>"+x+"</li>";}).join("")+"</ul></section><section><h4>Exam tips</h4><ul>"+(n.tips||[]).map(function(x){return "<li>"+x+"</li>";}).join("")+"</ul></section></div>"+
-      (n.oos?"<div class='book-beyond'>"+n.oos+"</div>":"")+(n.reviewPrompt?"<div class='book-retrieval'><span>RETRIEVAL CHECK · CLOSE YOUR NOTES</span><p>"+esc(n.reviewPrompt)+"</p></div>":"");
+    return "<div class='book-section-heading'><span>CHECK YOUR UNDERSTANDING</span><h3>Recall, apply, review</h3><p>Compare your understanding with the common pitfalls and exam advice, then use a retrieval prompt to identify any gaps.</p></div>"+
+      "<div class='book-exam-columns'><section><h4>Common misconceptions</h4><ul>"+(n.mistakes||[]).map(function(x){return "<li>"+x+"</li>";}).join("")+"</ul></section><section><h4>Exam application</h4><ul>"+(n.tips||[]).map(function(x){return "<li>"+x+"</li>";}).join("")+"</ul></section></div>"+
+      (n.oos?"<div class='book-beyond'>"+n.oos+"</div>":"")+(n.reviewPrompt?"<div class='book-retrieval'><span>RETRIEVAL CHECK · ANSWER FROM MEMORY</span><p>"+esc(n.reviewPrompt)+"</p></div>":"");
   }
   if(page.kind==="flashcards"){
     var cards=view._cards||[]; if(view.flashIdx>=cards.length)view.flashIdx=0;

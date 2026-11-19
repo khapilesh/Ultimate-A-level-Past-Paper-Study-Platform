@@ -91,15 +91,15 @@ function vHome(){
   return ""+
   "<section class='hero'><div class='kicker'>🎓 EDEXCEL INTERNATIONAL A LEVEL • 2026</div>"+
   "<h1>Master <span class='grad'>Physics, Chemistry,<br>Biology & Maths</span> — One Platform</h1>"+
-  "<p class='sub'>Topic-wise original exam-style question sets with mark-scheme points, full-credit sample answers and cited examiner-report insights; deeper guided notes for <b>every syllabus topic</b>; timed mocks and an AI tutor.</p>"+
-  "<div class='hero-cta'><button class='btn btn-p' onclick=\"go('subject/physics',1)\">📝 Start exam-style practice</button><button class='btn btn-g' onclick=\"go('subject/chemistry',0)\">📖 Revise a topic</button></div>"+
+  "<p class='sub'>Topic-wise original exam-style question sets with mark-scheme points, full-credit sample answers and cited examiner-report insights; detailed, step-by-step teaching for <b>every syllabus topic</b>; timed mocks and an AI tutor.</p>"+
+  "<div class='hero-cta'><button class='btn btn-p' onclick=\"go('subject/physics',1)\">📝 Start exam-style practice</button><button class='btn btn-g' onclick=\"go('subject/chemistry',0)\">🧑‍🏫 Learn a topic</button></div>"+
   "<div class='hero-stats'><div class='hstat'><b>"+c.questions+"+</b><span>PRACTICE PROMPTS</span></div><div class='hstat'><b>"+c.topics+"</b><span>SYLLABUS TOPICS</span></div><div class='hstat'><b>24</b><span>UNITS COVERED</span></div><div class='hstat'><b>🔥 "+(p.streak||1)+"</b><span>DAY STREAK</span></div></div></section>"+
-  "<h2 class='sec-title'>Choose your subject</h2><p class='sec-sub'>Each subject has <b>Revise</b> • <b>Past Paper Questions</b> • <b>Ask AI</b> tabs. Progress saves automatically.</p>"+
+  "<h2 class='sec-title'>Choose your subject</h2><p class='sec-sub'>Each subject has a <b>Detailed Teaching</b> lesson space, <b>Past Paper Questions</b> and an <b>Ask AI</b> tutor. Progress saves automatically.</p>"+
   "<div class='subj-grid'>"+cards+"</div>"+
   "<h2 class='sec-title'>Why this works</h2><p class='sec-sub'>Built around how A* students actually revise.</p>"+
   "<div class='feat-grid'>"+
   "<div class='feat'><div class='n'>📝</div><h4>Topic-wise exam practice</h4><p>Questions are grouped into topic sets with selectable variants — tick <b>multiple topics</b> for mixed practice.</p><ul><li>Original exam-style prompts modelled on WPH/WCH/WBI/WMA papers</li><li>Mark-scheme checkpoints, full-credit samples and examiner-report insights</li><li>Clearly labelled retry drills support spaced practice</li><li>Timed <b>Mock Builder</b> with score tracking</li></ul></div>"+
-  "<div class='feat'><div class='n'>📖</div><h4>Detailed notes with guided explanations</h4><p>Each syllabus topic combines quick revision with a deeper step-by-step walkthrough.</p><ul><li>Focused sections, formulae, definitions and worked examples</li><li>Expandable explanations connect mechanisms and applications</li><li>⚠️ classic mistakes + ⭐ exam tips per topic</li><li>Flashcards, retrieval prompts and completion tracking</li></ul></div>"+
+  "<div class='feat'><div class='n'>🧑‍🏫</div><h4>Detailed topic teaching</h4><p>Every syllabus topic follows a lesson path from core ideas to step-by-step explanations, expanded sections and application.</p><ul><li>Guided explanations connect mechanisms, methods and evidence</li><li>Formulae, definitions and worked examples show how ideas are used</li><li>Common misconceptions and exam application tips</li><li>Retrieval prompts, flashcards and completion tracking</li></ul></div>"+
   "<div class='feat'><div class='n'>🤖</div><h4>Ask AI tutor</h4><p>Stuck? Ask in plain English — the built-in tutor explains, defines, quizzes and links you to practice.</p><ul><li>Knows the whole syllabus offline — no account needed</li><li><i>Explain… / Quiz me on… / Formula for…</i></li><li>Optional: plug in your own API key for full AI chat</li></ul></div>"+
   "</div>"+
   "<h2 class='sec-title'>Know your targets — Physics A thresholds (June 2025)</h2><p class='sec-sub'>Real unit thresholds so you can aim precisely. Thresholds vary slightly each session — check the linked hubs for your series.</p>"+
@@ -113,7 +113,7 @@ function vHome(){
   "<h2 class='sec-title'>Quick answers</h2><div class='faq'>"+
   "<details><summary>Which papers are covered?</summary><p>Physics WPH11–WPH16, Chemistry WCH11–WCH16, Biology WBI11–WBI16, and Maths P1–P4 (WMA11–WMA14), S1 (WST01), M1 (WME01) — current Edexcel IAL specification, in-syllabus content only (anything extra is labelled out-of-syllabus).</p></details>"+
   "<details><summary>Are these real past-paper questions?</summary><p>The topical bank contains original exam-style questions modelled on the current specification; it is not a reproduction of official past-paper questions. Topic sets include clearly labelled repeat drills. Use the Archive tab and linked hubs to find official question papers and mark schemes.</p></details>"+
-  "<details><summary>Where do examiner-report insights come from?</summary><p>Question cards link to representative Pearson Edexcel examiner reports. Notes are paraphrased and labelled topic-specific only when the report passage matches; otherwise they are clearly marked as general cross-paper advice. Topic pitfalls elsewhere are study guidance, not quotations or claims about a specific report.</p></details>"+
+  "<details><summary>Where do examiner-report insights come from?</summary><p>Question cards link to representative Pearson Edexcel examiner reports. Examiner-report insights are paraphrased and labelled topic-specific only when the report passage matches; otherwise they are clearly marked as general cross-paper advice. Topic pitfalls elsewhere are study guidance, not quotations or claims about a specific report.</p></details>"+
   "<details><summary>Does the AI need internet or an account?</summary><p>No. The built-in tutor works fully offline from the syllabus database. Optionally, you can add your own OpenAI-compatible API key for full conversational AI — your key never leaves your browser except to your chosen provider.</p></details>"+
   "<details><summary>Is my progress saved?</summary><p>Yes — topics completed, question self-marks, XP and streaks are stored privately in your browser (localStorage). Nothing is uploaded anywhere.</p></details>"+
   "</div>";
@@ -125,7 +125,7 @@ function vSubject(){
   var units=S.units.map(function(u){
     return "<button class='uchip"+(u.id===view.uid?" on":"")+"' style='--ac:"+S.color+"' onclick=\"setUnit('"+u.id+"')\"><b>"+u.code+" • "+u.short+"</b><small>"+esc(u.title)+" • "+u.time+" • "+u.marks+" marks</small></button>";
   }).join("");
-  var tabs=["📖 Revise","📝 Past Paper Questions","🤖 Ask AI"].map(function(t,i){
+  var tabs=["🧑‍🏫 Detailed Teaching","📝 Past Paper Questions","🤖 Ask AI"].map(function(t,i){
     return "<button class='tab"+(view.tab===i?" on":"")+"' style='--ac:"+S.color+"' onclick='setTab("+i+")'>"+t+"</button>";
   }).join("");
   var body = view.tab===0? vRevise() : view.tab===1? vPapers() : vAI();
@@ -154,20 +154,20 @@ function vDetailedNotes(t,n){
   var walkthrough=n.walkthrough||[];
   var walkBody=walkthrough.map(function(part){return "<article class='walkthrough-part'><h5>"+esc(part.title)+"</h5><p>"+esc(part.text)+"</p></article>";}).join("");
   var walk=walkthrough.length?"<details class='walkthrough'><summary><span>🧑‍🏫 Read the full explanatory walkthrough</span><small>"+walkthrough.length+" deeper steps • expand when ready</small></summary><div class='walkthrough-body'>"+walkBody+"</div></details>":"";
-  return "<section class='nsec deep-notes'><h4>📘 Detailed topic notes <span class='pill'>"+sections.length+" focused sections</span></h4>"+
-    "<p class='deep-guide'>Expanded explanations organised around the chapter headings in your book. Use the shortcuts to jump to a subtopic; open the guided walkthrough for the underlying mechanisms and connections.</p>"+
-    "<nav class='deep-jumps' aria-label='Detailed notes subtopics'>"+jumps+"</nav><div class='deep-sections'>"+body+"</div>"+walk+"</section>";
+  return "<section class='nsec deep-notes'><h4>🧑‍🏫 Detailed topic teaching <span class='pill'>"+sections.length+" focused sections</span></h4>"+
+    "<p class='deep-guide'>Step-by-step teaching organised around the chapter headings. Use the shortcuts to jump to a concept, then open the guided explanation to understand the mechanisms and connections.</p>"+
+    "<nav class='deep-jumps' aria-label='Detailed teaching sections'>"+jumps+"</nav><div class='deep-sections'>"+body+"</div>"+walk+"</section>";
 }
 function vRevise(){
   var S=subj(view.sid), U=unitOf(view.sid,view.uid), p=P();
   if(!view.tid) view.tid=U.topics[0].id;
   var list=U.topics.map(function(t){
     var done=p.topics[view.sid+":"+t.id];
-    return "<button class='topic-item"+(t.id===view.tid?" on":"")+(done?" done":"")+"' onclick=\"setTopic('"+t.id+"')\"><span class='dot'>"+(done?"✓":"•")+"</span><span><b>"+esc(t.name)+"</b><small>"+countQ(view.sid,view.uid,t.id)+" practice Qs"+((t.notes.sections&&t.notes.sections.length)?" • "+t.notes.sections.length+" study sections":"")+((t.notes.walkthrough&&t.notes.walkthrough.length)?" • "+t.notes.walkthrough.length+" guided explanations":"")+"</small></span></button>";
+    return "<button class='topic-item"+(t.id===view.tid?" on":"")+(done?" done":"")+"' onclick=\"setTopic('"+t.id+"')\"><span class='dot'>"+(done?"✓":"•")+"</span><span><b>"+esc(t.name)+"</b><small>"+countQ(view.sid,view.uid,t.id)+" practice Qs"+((t.notes.sections&&t.notes.sections.length)?" • "+t.notes.sections.length+" teaching sections":"")+((t.notes.walkthrough&&t.notes.walkthrough.length)?" • "+t.notes.walkthrough.length+" guided explanations":"")+"</small></span></button>";
   }).join("");
   var t=topicOf(view.sid,view.uid,view.tid), n=t.notes;
   var detailed=vDetailedNotes(t,n);
-  var recall=n.reviewPrompt?"<div class='nsec deep-review'><h4>🧠 Retrieval check <span class='pill'>close your notes first</span></h4><p>"+esc(n.reviewPrompt)+"</p><small>Try answering from memory, then revisit the relevant section to correct any gaps.</small></div>":"";
+  var recall=n.reviewPrompt?"<div class='nsec deep-review'><h4>🧠 Retrieval check <span class='pill'>answer from memory first</span></h4><p>"+esc(n.reviewPrompt)+"</p><small>Try answering from memory, then revisit the relevant teaching section to correct any gaps.</small></div>":"";
   var pts=(n.points||[]).map(function(x){return "<li>"+x+"</li>";}).join("");
   var forms=(n.formulas||[]).map(function(f){return "<div class='formula'><div class='eq'>"+f.e+"</div><div class='what'>"+f.w+"</div></div>";}).join("");
   var defs=(n.defs||[]).map(function(d){return "<div class='def'><b>"+d.t+":</b> "+d.d+"</div>";}).join("");
